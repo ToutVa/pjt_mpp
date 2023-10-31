@@ -1,11 +1,18 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/alt-text */
 function Header(props) {
-    return (
-        <header>
-            <h1>HEADER HEADER HEADER HEADER HEADER</h1>
-            HEADER HEADER HEADER HEADER HEADER
-        </header>
-    );
+  return (
+    <header>
+      <div className="logo"></div>
+      <nav>
+        <ul>
+          <li>
+            <a href="#"> tetst</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+  );
 }
 
 export default Header;
-
