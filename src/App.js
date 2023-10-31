@@ -8,6 +8,9 @@ import './css/layout.css';
 import Header from './ui/comm/Header';
 import Footer from './ui/comm/Footer';
 
+// main 화면구성
+import mppMain from'./ui/main/MppMain';
+
 function Home () {
   return ( 
     <div>
@@ -23,7 +26,9 @@ function App() {
         <Header/>
         <div className='contentWrapper'>
           <Routes>
-            <Route path="/" element={<Home />}/>
+          <Route path="/" element = {<Home / >} />
+            <Route path="/ui/main" Component={mppMain} />
+            <Route path="/*" element = {'NOT FOUND'} />
           </Routes>
         </div>
         <Footer/>
