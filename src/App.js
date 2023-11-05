@@ -5,33 +5,34 @@ import './App.css';
 import './css/layout.css';
 
 // 공통
-import Header from './ui/comm/Header';
-import Footer from './ui/comm/Footer';
+import Layout from './ui/comm/Layout';
+import ProtectedRoute from './ui/main/routes/ProtectedRoute';
 
 // main 화면구성
-import mppMain from'./ui/main/MppMain';
+import Home from'./ui/main/Home';
+import Login from'./ui/main/register/Login';
+import MyPage from'./ui/main/myPage/MyPage';
 
-function Home () {
-  return ( 
-    <div>
-      <h2>Home</h2>
-    </div>
-  )
-}
+
 
 function App() {
   return (
     <div className='App'>
       <BrowserRouter>
-        <Header/>
         <div className='contentWrapper'>
           <Routes>
-          <Route path="/" element = {<Home / >} />
-            <Route path="/ui/main" Component={mppMain} />
+            <Route element ={<Layout />}>
+              <Route path="/" element = {<Home / >} />
+            </Route>
+            <Route path="/login" element={<Login />} />
+            
+            <Route element={<ProtectedRoute />}>
+              <Route path= "/myPage" element={<MyPage />} />
+            </Route>
+            
             <Route path="/*" element = {'NOT FOUND'} />
           </Routes>
         </div>
-        <Footer/>
       </BrowserRouter>
     </div>
   );
