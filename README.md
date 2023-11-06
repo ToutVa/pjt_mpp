@@ -5,30 +5,8 @@ SERVER    - NODE.JS
 DB        - MongoDB
 
 
-개발환경 설정 
-npm install  진행시 필요모듈 전부 다운됨. 
-
-DIR 현재
-
-src 
-    css
-    img
-    ui
-        comm
-        main
-APP.JS
-INDEX.JS
-
-
-추후변경예정 
-
-DIR 추후
-
-Client 
-    src
-
-SERVER
-    SERVER.JS 
+client > npm start
+server > npm run start 
 
 
 #현재 진행사항 
