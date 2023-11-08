@@ -1,7 +1,7 @@
 const MyPage = () => {
   return (
     <div>
-      MYPAGE 입니다. 
+      MYPAGE 입니다.
     </div>
   );
 };
