@@ -5,18 +5,18 @@ import { useRecoilState} from "recoil";
 import { loginStatus } from "../main/recoil/TestLoginAtom";
 
 /* eslint-disable jsx-a11y/alt-text */
-function Header(props) {
-
+const Header = ({type}) => {
+  
   const [profileStat , setProfileStat] = useRecoilState(loginStatus);
   
   return (
-    <header>
+    <header className={type}>
       <Link to={"/"}>
         <div className="logo" />
       </Link>
       <nav>
         <ul className="menu">
-          <li><a href="#"> 좋아요</a></li>
+          <li><a href="#">좋아요</a></li>
           <li>
             <Link to= {profileStat === true ? "/myPage": "/login"}>
               <p className="linked-text">{profileStat === true ? "MyPage": "로그인"}</p>

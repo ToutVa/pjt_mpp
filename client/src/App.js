@@ -6,6 +6,7 @@ import './css/layout.css';
 
 // 공통
 import Layout from './ui/comm/Layout';
+import CoverLayout from './ui/comm/CoverLayout';
 import ProtectedRoute from './ui/main/routes/ProtectedRoute';
 
 // main 화면구성
@@ -21,7 +22,7 @@ function App() {
       <BrowserRouter>
         <div className='contentWrapper'>
           <Routes>
-            <Route element ={<Layout />}>
+            <Route element ={<CoverLayout />}>
               <Route path="/" element = {<Home / >} />
             </Route>
             <Route element ={<Layout />}>

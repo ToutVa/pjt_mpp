@@ -24,6 +24,9 @@ header {
     align-items: center;
     justify-content: center;
 }
+header.cover {
+    background-color: #B9D4C7;
+}
 
 /* 풋터 */
 footer {

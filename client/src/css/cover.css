@@ -1,0 +1,24 @@
+.cover-main {
+    background-color: #B9D4C7;
+    width: 100%;
+    height: 600px;
+    flex-shrink: 0;
+    display: grid;
+    justify-content: center;
+}
+
+.cover-main > h1,
+.cover-main > h2,
+.cover-main > h3,
+.cover-main > h4,
+.cover-main > h5 {
+    margin-top: 10vh;
+    color: #FFFFFF;
+}
+
+.cover-content {
+    background-color: #FFFFFF;
+    width: 100%;
+    height: 300px;
+    flex-shrink: 0;
+}
