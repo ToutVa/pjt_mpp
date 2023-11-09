@@ -24,7 +24,9 @@ function App() {
             <Route element ={<Layout />}>
               <Route path="/" element = {<Home / >} />
             </Route>
-            <Route path="/login" element={<Login />} />
+            <Route element ={<Layout />}>
+              <Route path="/login" element={<Login />} />
+            </Route>
             
             <Route element={<ProtectedRoute />}>
               <Route path= "/myPage" element={<MyPage />} />

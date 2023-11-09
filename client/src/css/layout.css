@@ -7,33 +7,95 @@ html, body{
     height: 100%;
 }
 
+main {
+    margin :0;
+    padding :0;
+    width: 100%;
+    background-color: #00000001;
+    min-height: calc(100% - 80px);
+}
+
 /* 헤더 */
 header {
-    width : 100;
-    height :80px;
+    width : 100%;
+    height :40px;
+    top : 0px;
     display: flex;
     align-items: center;
     justify-content: center;
-    
 }
-
 
 /* 풋터 */
 footer {
+    width : 100%;
+    height :40px;
+    bottom: 0px;
+	position: absolute;
     background : #333;
     color : #fff;
 }
-
-.logo {
-    height: 60px;
-    width: 200px;
-    background : url(../img/logo.svg)no-repeat center;
-    display: block;
+footer > p {
+    margin :0;
 }
 
-.menu {
+.footer-Main {
+    font-size: calc(1px + 2vmin);
+    padding: 10%;
+}
+.footer-Mobile {
+    font-size: calc(1px + 2vmin);
+    width: 100%;
+    margin-top: 150px;
+}
+
+
+.logo {
+    height: 30px;
+    width: 100px;
+    background-image: url("../img/logo.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.menu > li{
+    display: inline-block;
+    margin-left: 10px;
+}
+.menu > li:first-child{
+    margin-left: 0px;
+}
+
+.side-menu {
+    float: right;
     height: 24px;
     width: 24px;
     background : url(../img/menu.svg)no-repeat center;
     display: block;
+}
+
+.side-menu > nav > ul > li {
+    display: none;
+}
+
+.side-menu:hover > nav > ul {
+    position: relative;
+    background-color: rgb(218, 218, 218);
+    border: 0 0 13px 13px;
+}
+.side-menu:hover > nav > ul > li {
+    background-color: rgb(218, 218, 218);
+    display: block;
+}
+
+
+a {
+    text-decoration: none;
+}
+ul.vertical>li {
+    margin-left: 10px;
+    display: inline-block;
+}
+ul.vertical>li:first-child {
+    margin-left: 0px;
 }

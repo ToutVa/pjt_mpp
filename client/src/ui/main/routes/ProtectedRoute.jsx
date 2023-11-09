@@ -9,11 +9,11 @@ const ProtectedRoute = () => {
   return isLogin ? (
     <Outlet />
   ) : (
-    <Navigate
-      to={"/login"}
-      replace
-      state={{ redirecredFrom: currentLocation }}
-    />
+      <Navigate
+        to={"/login"}
+        replace
+        state={{ redirecredFrom: currentLocation }}
+      />
   );
 };
 

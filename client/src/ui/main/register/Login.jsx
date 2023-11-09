@@ -6,8 +6,6 @@ import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router";
 
 
-
-
 const Login = () => {
     const [id, setId] = useState();
     const [password, setPassword] = useState();
@@ -29,6 +27,7 @@ const Login = () => {
       };
 
     return (
+      <>
         <FormWrapper onSubmit={handleSubmit}>
             <InputWrapper>
                 ID
@@ -52,6 +51,7 @@ const Login = () => {
             </InputWrapper>
             <Button type="submit">로그인</Button>
         </FormWrapper>
+      </>
     )
 }
 

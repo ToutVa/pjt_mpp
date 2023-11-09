@@ -4,14 +4,9 @@ import styled from "styled-components";
 
 const Home = () => {
   return (
-    <Wrapper>
-      <Link to={"/login"}>
-        <Button>로그인</Button>
-      </Link>
-      <Link to={"/mypage"}>
-        <Button>마이페이지</Button>
-      </Link>
-    </Wrapper>
+    <>
+      <h2>테스트 페이지</h2>
+    </>
   );
 };
 
