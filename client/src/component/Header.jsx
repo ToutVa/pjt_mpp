@@ -2,7 +2,7 @@
 
 import { Link } from "react-router-dom";
 import { useRecoilState} from "recoil";
-import { loginStatus } from "../main/recoil/TestLoginAtom";
+import { loginStatus } from "comm/recoil/TestLoginAtom";
 
 /* eslint-disable jsx-a11y/alt-text */
 const Header = ({type}) => {

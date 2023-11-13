@@ -1,6 +1,6 @@
 import React from "react";
 
-import '../../css/cover.css';
+import 'css/cover.css';
 
 const Home = () => {
   return (

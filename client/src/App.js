@@ -2,17 +2,17 @@ import {BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 
 // css
-import './css/layout.css';
+import 'css/layout.css';
 
 // 공통
-import Layout from './ui/comm/Layout';
-import CoverLayout from './ui/comm/CoverLayout';
-import ProtectedRoute from './ui/main/routes/ProtectedRoute';
+import Layout from 'component/Layout';
+import CoverLayout from 'component/CoverLayout';
+import ProtectedRoute from 'comm/routes/ProtectedRoute';
 
 // main 화면구성
-import Home from'./ui/main/Home';
-import Login from'./ui/main/register/Login';
-import MyPage from'./ui/main/myPage/MyPage';
+import Home from'pages/Home';
+import Login from'pages/register/Login';
+import MyPage from'pages/myPage/MyPage';
 
 
 
