@@ -9,8 +9,8 @@ import { useLocation, useNavigate } from "react-router";
 const Login = () => {
     const [id, setId] = useState();
     const [password, setPassword] = useState();
-    const setAccessToken = useSetRecoilState();
-    const isLogin = useRecoilValue(isLoginSelector);
+    //const setAccessToken = useSetRecoilState();
+    //const isLogin = useRecoilValue(isLoginSelector);
 
     const navigate = useNavigate();
     const location = useLocation();
