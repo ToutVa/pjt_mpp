@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
   },
   password : {
     type : String,
-    maxlength : 50
+    maxlength : 100
   },
   name: {
     type: String,
@@ -50,15 +50,19 @@ userSchema.pre('save', function(next) {
   }
 })
 
+userSchema.method('test', function(test, cb) {
+  console.log('test');
+});
 
-userSchema.method.comparePassword = function(plainPassword, cb) {
+userSchema.method('comparePassword', function(plainPassword, cb) {
+  console.log(plainPassword, this);
   bcrypt.compare(plainPassword, this.password, function(err, isMatch) {
     if(err) return cb(err);
     cb(null, isMatch);
   })
-}
+});
 
-userSchema.method.generateToken = function (cb) {
+userSchema.method('generateToken', function (cb) {
 
   let user = this;
 
@@ -66,12 +70,12 @@ userSchema.method.generateToken = function (cb) {
   const token = jwt.sign(user._id.toHexString(), 'sercretToken');
 
   user.token = token;
-  user.save(function(err, user) {
-    if (err) return cb(err);
-    cb(null, user);
+  user.save().then(() => {
+    cb(null,user);
+  }).catch((err) => {
+    return cb(err);
   })
-
-}
+});
 
 
 

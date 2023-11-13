@@ -43,39 +43,39 @@ app.post('/register', async (req, res) => {
   });
 
   
-  app.post('/login', async (req, res) => {
-    
+app.post('/api/user/login', async (req, res) => {
+    const user = new User(req.body);
 
     // 요청된 id가 dababase에 존재하는지 확인
-    console.log("id Match");
-    const findResult = User.findOne({ email: req.body.id}).then(( )=> {
-     
-    }).catch((err) => {
-      res.json({loginSucces : false,
-                message : "제공된 이메일에 해당하는 유저가 없습니다."});
-    })
+    const findUser = await User.findOne({ id : req.body.id});
 
-    console.log("id, password Match");
+    // findOne 값 없을 시 null
+    if (findUser === null) {
+      return res.json({loginSucces : false,
+        message : "제공된 이메일에 해당하는 유저가 없습니다."});
+    }
+
+        
 
     // 요청된 id와 비밀번호가 맞는지 확인
-    User.comparePassword(req.body.password, (err, isMatch) => {
+    findUser.comparePassword(req.body.password, (err, isMatch) => {
+      console.log(req.body);
       if (!isMatch) 
         return res.json({loginSucces : false, message : "비밀번호가 틀렸습니다."});
       
           // 비밀번호 맞다면 토큰 생성
-      User.generateToken((err, user) => {
+      findUser.generateToken((err, user) => {
         if (err) return res.status(400).send(err);
 
         // token 저장 
         res.cookie("x_auth", user.token)
           .status(200)
-          .json({loginSucces : true, userId : user._id});
+          .json({loginSucces : true, userId : user.id});
         
         })
 
     })
-     
-  })
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

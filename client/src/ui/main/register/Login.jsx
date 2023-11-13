@@ -9,8 +9,8 @@ import { useLocation, useNavigate } from "react-router";
 const Login = () => {
     const [id, setId] = useState();
     const [password, setPassword] = useState();
-    //const setAccessToken = useSetRecoilState();
-    //const isLogin = useRecoilValue(isLoginSelector);
+    const setAccessToken = useSetRecoilState();
+    const isLogin = useRecoilValue(isLoginSelector);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -19,7 +19,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("/user/login", { id: id, pw: password }).then((res) => {
+        axios.post("/api/user/login", { id: id, password: password }).then((res) => {
           console.log(res.data);
           //setAccessToken(res.data.accessToken);
           navigate(from);
