@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <>
       <div className="cover-main">
-        <h3>지도 속 나를 기록하는 여행앱</h3>
+        <h2>지도 속 나를 기록하는 여행앱</h2>
       </div>
       <div className="cover-content">
 

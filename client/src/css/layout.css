@@ -20,13 +20,24 @@ header {
     width : 100%;
     height :40px;
     top : 0px;
-    display: flex;
     align-items: center;
     justify-content: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 header.cover {
+    width : 96%;
+    height :50px;
+    top : 0px;
     background-color: #B9D4C7;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0 2% 0 2%;
 }
+
 
 /* 풋터 */
 footer {
@@ -56,6 +67,14 @@ footer > p {
     height: 30px;
     width: 100px;
     background-image: url("../assets/logo.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+.cover-logo {
+    height: 45px;
+    width: 80px;
+    background-image: url("../assets/logo-cover-simple.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -102,3 +121,30 @@ ul.vertical>li {
 ul.vertical>li:first-child {
     margin-left: 0px;
 }
+
+.flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.flex > .item {
+    margin-right: 15px;
+}
+.flex > .item:last-of-type {
+    margin-right: 0px;
+}
+
+.linked-text {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+
+
+
+
+/*글자 색 지정CSS*/
+.white  {   color: #FFFFFF;}
+.red    {   color: #ff0000;}
+.green  {   color: #00ff00;}
