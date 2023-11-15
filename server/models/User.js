@@ -8,19 +8,36 @@ const userSchema = new mongoose.Schema({
   // _id 부분은 기본적으로 생략. 알아서 Object.id를 넣어줌
   id : {
     type : String,
-    maxlength : 50
+    maxlength : 50,
+    required: true, // null 여부
   },
   password : {
     type : String,
-    maxlength : 100
+    maxlength : 100,
+    required: true // null 여부
   },
   name: {
     type: String,
     required: true, // null 여부
   },
-  age: {
+  birth: {
     type: Number,
     required: true,
+  },
+  gender: {
+    type: String,
+    required: true,
+    maxlength : 1
+  },
+  cellPhone: {
+    type: Number,
+    required: true,
+    maxlength : 11
+  },
+  email: {
+    type: String,
+    required: true,
+    maxlength : 30
   },
   token : {
     type : String

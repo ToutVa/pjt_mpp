@@ -1,16 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { isLoginSelector } from "comm/recoil/TokenAtom";
+import { TokenAtom, isLoginSelector } from "comm/recoil/TokenAtom";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router";
+import { Link } from 'react-router-dom';
+
 
 
 const Login = () => {
     const [id, setId] = useState();
     const [password, setPassword] = useState();
-    //const setAccessToken = useSetRecoilState();
-    //const isLogin = useRecoilValue(isLoginSelector);
+    const setAccessToken = useSetRecoilState(TokenAtom);
+    const isLogin = useRecoilValue(isLoginSelector);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -20,9 +22,16 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post("/api/user/login", { id: id, password: password }).then((res) => {
-          console.log(res.data);
-          //setAccessToken(res.data.accessToken);
-          navigate(from);
+          const data = res.data;
+          if (data.loginSucces) {
+            setAccessToken(res.data.token);
+            navigate(from);
+          } else {
+            alert(data.message);
+          }
+        }).catch((err) => {
+          console.log(err);
+          alert(err);
         });
       };
 
@@ -37,7 +46,6 @@ const Login = () => {
                 placeholder="아이디를 입력해주세요"
                 onChange={(e) => {
                     setId(e.target.value);
-                    console.log(id);
                 }}
                 />
             </InputWrapper>
@@ -51,6 +59,7 @@ const Login = () => {
             </InputWrapper>
             <Button type="submit">로그인</Button>
         </FormWrapper>
+        <Button><Link to= '/sign' className="links">회원가입</Link></Button>
       </>
     )
 }
