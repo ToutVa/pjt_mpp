@@ -27,7 +27,7 @@ app.get('/', (req, res) => { //express 앱(app)을 넣고, root directory에 오
   res.send('Hello World!') //"Hello World!" 를 출력되게 해준다.
 })
 
-app.post('/register', async (req, res) => { 
+app.post('/api/user/sign', async (req, res) => { 
   // 회원가입 할때 필요한 정보들을 client 에서 가져옴
 
   const user = new User(req.body);
@@ -35,6 +35,7 @@ app.post('/register', async (req, res) => {
   const result = await user.save().then(() => {
       res.status(200).json({
         success : true
+        , message : "회원가입에 성공하셨습니다."
       })
       }).catch((err) => {
         res.json({success : false, err})
@@ -45,10 +46,10 @@ app.post('/register', async (req, res) => {
   
 app.post('/api/user/login', async (req, res) => {
     const user = new User(req.body);
-
+  console.log('1')
     // 요청된 id가 dababase에 존재하는지 확인
     const findUser = await User.findOne({ id : req.body.id});
-
+    console.log('2')
     // findOne 값 없을 시 null
     if (findUser === null) {
       return res.json({loginSucces : false,
@@ -56,7 +57,7 @@ app.post('/api/user/login', async (req, res) => {
     }
 
         
-
+    console.log('3')
     // 요청된 id와 비밀번호가 맞는지 확인
     findUser.comparePassword(req.body.password, (err, isMatch) => {
       console.log(req.body);
@@ -68,13 +69,19 @@ app.post('/api/user/login', async (req, res) => {
         if (err) return res.status(400).send(err);
 
         // token 저장 
-        res.cookie("x_auth", user.token)
+        res.cookie("x_auth", user.token, {maxAge : 30 * 60 * 1000})
           .status(200)
-          .json({loginSucces : true, userId : user.id});
+          .json({loginSucces : true, userId : user.id, token : user.token});
         
         })
 
     })
+});
+
+// logout구현 
+app.post('/api/user/logout', async (req, res) => {
+    console.log('logout');
+    return res.clearCookie('x_auth').end();
 });
 
 app.listen(port, () => {

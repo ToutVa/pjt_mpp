@@ -12,6 +12,7 @@ import ProtectedRoute from 'comm/routes/ProtectedRoute';
 // main 화면구성
 import Home from'pages/Home';
 import Login from'pages/register/Login';
+import Sign from'pages/register/Signup';
 import MyPage from'pages/myPage/MyPage';
 
 
@@ -25,8 +26,12 @@ function App() {
             <Route element ={<CoverLayout />}>
               <Route path="/" element = {<Home / >} />
             </Route>
+
             <Route element ={<Layout />}>
               <Route path="/login" element={<Login />} />
+            </Route>
+            <Route element ={<Layout />}>
+              <Route path="/sign" element={<Sign />} />
             </Route>
             
             <Route element={<ProtectedRoute />}>
