@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const config = require('./config/key');
 
 const {User} = require("./models/User");
+const {Post} = require("./models/Post");
 const Sales = require("./models/Test");
 
 
@@ -27,6 +28,22 @@ app.get('/', (req, res) => { //express 앱(app)을 넣고, root directory에 오
   res.send('Hello World!') //"Hello World!" 를 출력되게 해준다.
 })
 
+// ====================================================
+// 게시글 생성
+app.post('/api/post/create', async (req, res) => {
+  console.log('게시글 생성'+req.body);
+  const post = new Post(req.body);
+
+  const result = await post.save().then(() => {
+    res.status(200).json({
+        success : true
+      , message : "게시물이 저장되었습니다."
+    })
+    }).catch((err) => {
+      res.json({success : false, err})
+    })
+});
+
 app.post('/api/user/sign', async (req, res) => { 
   // 회원가입 할때 필요한 정보들을 client 에서 가져옴
 
@@ -45,7 +62,7 @@ app.post('/api/user/sign', async (req, res) => {
 
   
 app.post('/api/user/login', async (req, res) => {
-    const user = new User(req.body);
+  const user = new User(req.body);
   console.log('1')
     // 요청된 id가 dababase에 존재하는지 확인
     const findUser = await User.findOne({ id : req.body.id});
@@ -87,4 +104,3 @@ app.post('/api/user/logout', async (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 }) //포트 5000번에서 이 앱을 실행한다.
-
