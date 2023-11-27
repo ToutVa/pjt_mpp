@@ -1,0 +1,97 @@
+.post {
+    width: 100%;
+    min-height: calc(100vh - 40px) ;
+    flex-shrink: 0;
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    overflow: hidden;
+    grid-template-columns: 280px 650px 280px;
+    margin-top: 40px;
+    padding-bottom: 100px;
+}
+
+.post > .center {    
+    width: 100%;
+}
+
+.post .item{
+    box-shadow: 2px 2px 5px #00000036;
+    border-radius: 15px;
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 500px;
+}
+.post > .center > .item:first-of-type{
+    margin-top: 0px;
+}
+
+.post > .center > .item > .title-bar{ 
+    border-bottom: 1px solid #C9C9C9;
+    height: 50px;
+    padding: 0 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.post > .center > .item > .title-bar > .user{ 
+    width: 40px;
+    height: 40px;
+    background-color: #c5c5c5;
+    border-radius: 100%;
+    display: inline-block;
+    margin-right: 10px;
+
+}
+.post > .center > .item > .title-bar .title{ 
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    max-width: 550px;
+}
+.post > .center > .item > .title-bar .user-id{ 
+    color: #999999;
+    font-size: 12px;
+}
+
+.post > .center > .item > .content {
+    height: 400px;
+    background-color: rgb(97, 184, 156);
+}
+
+.post > .center > .item > .bottom { 
+    border-top: 1px solid #C9C9C9;
+    height: 50px;
+    padding: 0 10px;
+
+}
+
+.post > .center > .item > .bottom > .icon-group {
+    margin-top: 5px;
+}
+.post > .center > .item > .bottom > .icon-group > button {
+    width: 25px;
+    height: 25px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: 0px;
+    background-color: #FFFFFF00;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.post > .center > .item > .bottom > .icon-group > .like { 
+    background-image: url("../assets/icon-like-small.svg");
+    &:hover {
+        filter: invert(31%) sepia(31%) saturate(6029%) hue-rotate(346deg) brightness(92%) contrast(90%);
+    }
+}
+
+.post > .center > .item > .bottom > .icon-group > .comment { 
+    background-image: url("../assets/icon-comment-small.svg");
+    &:hover {
+        filter: invert(29%) sepia(3%) saturate(3151%) hue-rotate(314deg) brightness(114%) contrast(86%);
+    }
+}
