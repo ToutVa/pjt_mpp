@@ -15,6 +15,7 @@ import Login from'pages/register/Login';
 import Sign from'pages/register/Signup';
 import MyPage from'pages/myPage/MyPage';
 import Posting from'pages/post/Posting';
+import PostMain from 'pages/post/PostMain';
 
 
 
@@ -25,21 +26,16 @@ function App() {
         <div className='contentWrapper'>
           <Routes>
             <Route element ={<CoverLayout />}>
-              <Route path="/" element = {<Home / >} />
+              <Route path="/" element = {<Home />} />
             </Route>
 
             <Route element ={<Layout />}>
               <Route path="/login" element={<Login />} />
-            </Route>
-            <Route element ={<Layout />}>
               <Route path="/sign" element={<Sign />} />
-            </Route>
-            
-            <Route element ={<Layout />}>
+              <Route path= "/feed" element={<PostMain />} />
+
               <Route element={<ProtectedRoute />}>
                 <Route path= "/myPage" element={<MyPage />} />
-              </Route>
-              <Route element={<ProtectedRoute />}>
                 <Route path= "/post" element={<Posting />} />
               </Route>
             </Route>
