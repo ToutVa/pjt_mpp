@@ -14,6 +14,7 @@ import Home from'pages/Home';
 import Login from'pages/register/Login';
 import Sign from'pages/register/Signup';
 import MyPage from'pages/myPage/MyPage';
+import Posting from'pages/post/Posting';
 
 
 
@@ -34,10 +35,14 @@ function App() {
               <Route path="/sign" element={<Sign />} />
             </Route>
             
-            <Route element={<ProtectedRoute />}>
-              <Route path= "/myPage" element={<MyPage />} />
+            <Route element ={<Layout />}>
+              <Route element={<ProtectedRoute />}>
+                <Route path= "/myPage" element={<MyPage />} />
+              </Route>
+              <Route element={<ProtectedRoute />}>
+                <Route path= "/post" element={<Posting />} />
+              </Route>
             </Route>
-            
             <Route path="/*" element = {'NOT FOUND'} />
           </Routes>
         </div>
