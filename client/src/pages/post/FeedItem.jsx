@@ -1,4 +1,4 @@
-const PostItem = (props) => {
+const FeedItem = (props) => {
     return (
       <div className="item">
         <div className="title-bar">
@@ -27,5 +27,5 @@ const PostItem = (props) => {
     
   };
   
-  export default PostItem;
+  export default FeedItem;
   
