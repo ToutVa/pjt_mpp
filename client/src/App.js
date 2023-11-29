@@ -15,7 +15,7 @@ import Login from'pages/register/Login';
 import Sign from'pages/register/Signup';
 import MyPage from'pages/myPage/MyPage';
 import Posting from'pages/post/Posting';
-import PostMain from 'pages/post/PostMain';
+import Feed from 'pages/post/Feed';
 
 
 
@@ -32,7 +32,7 @@ function App() {
             <Route element ={<Layout />}>
               <Route path="/login" element={<Login />} />
               <Route path="/sign" element={<Sign />} />
-              <Route path= "/feed" element={<PostMain />} />
+              <Route path= "/feed" element={<Feed />} />
 
               <Route element={<ProtectedRoute />}>
                 <Route path= "/myPage" element={<MyPage />} />
