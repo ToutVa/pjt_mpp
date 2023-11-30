@@ -1,6 +1,7 @@
 const {default: FeedItem } = require("./FeedItem");
 
 const FeedContent = (props) => {
+  /* TODO : 아이템 가져오는 부분은 계속 추가로*/
     const item = [{sqno : 1,
       title : "test",
       cont : "content",
