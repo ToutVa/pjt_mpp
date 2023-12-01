@@ -18,7 +18,7 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const from = location?.state?.redirectedFrom?.pathname || "/";
+    const from = location?.state?.redirectedFrom?.pathname || "/feed";
 
     const handleSubmit = (e) => {
         e.preventDefault();
