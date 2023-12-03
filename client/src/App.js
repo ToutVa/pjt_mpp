@@ -14,7 +14,7 @@ import Home from'pages/Home';
 import Login from'pages/register/Login';
 import Sign from'pages/register/Signup';
 import MyPage from'pages/myPage/MyPage';
-import Posting from'pages/post/Posting';
+import Posting from'pages/post/PostDragDrop';
 import Feed from 'pages/feed/Feed';
 
 

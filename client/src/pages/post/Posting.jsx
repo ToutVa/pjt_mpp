@@ -1,7 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
+import "css/post.css";
 import { useLocation, useNavigate } from "react-router";
+
 
 
 
@@ -34,34 +36,42 @@ const Posting = () => {
 
     return (
       <>
-        <FormWrapper onSubmit={handleSubmit}>
-            <InputWrapper>
-                제목
-                <input
-                type="text"
-                autoFocus
-                placeholder="제목을 입력해주세요"
-                onChange={(e) => setTitle(e.target.value)}
-                />
-            </InputWrapper>
-            <InputWrapper>
-                촬영시간
-                <input
-                type="filmTime"
-                placeholder="사진 촬영한 시간을 입력해주세요"
-                onChange={(e) => setFilmTime(e.target.value)}
-                />
-            </InputWrapper>
-            <InputWrapper>
-                위치
-                <input
-                type="filmLocation"
-                placeholder="사진 촬영한 위치를 입력해주세요"
-                onChange={(e) => setFilmLocation(e.target.value)}
-                />
-            </InputWrapper>
-            <Button type="submit">게시물 등록</Button>
-        </FormWrapper>
+        <div className="center" onSubmit={handleSubmit}>
+            <div className="imgContain">
+              <div className="imgWrap">
+                <img src = '../assets/logo.png' alt = "이미지" className="imgBox" />
+              </div>
+            </div>
+            <div className="imgInfo">
+              <InputWrapper>
+                  제목
+                  <input
+                  type="text"
+                  name="title"
+                  autoFocus
+                  placeholder="제목을 입력해주세요"
+                  onChange={(e) => setTitle(e.target.value)}
+                  />
+              </InputWrapper>
+              <InputWrapper>
+                  촬영시간
+                  <input
+                  type="filmTime"
+                  placeholder="사진 촬영한 시간을 입력해주세요"
+                  onChange={(e) => setFilmTime(e.target.value)}
+                  />
+              </InputWrapper>
+              <InputWrapper>
+                  위치
+                  <input
+                  type="filmLocation"
+                  placeholder="사진 촬영한 위치를 입력해주세요"
+                  onChange={(e) => setFilmLocation(e.target.value)}
+                  />
+              </InputWrapper>
+            </div>
+        </div>
+        <button type="submit" className="btn-primary">게시물 등록</button>
       </>
     )
 }
