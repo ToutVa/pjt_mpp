@@ -40,23 +40,37 @@ route.post('/login', async (req, res) => {
         if (!isMatch) 
           return res.json({loginSucces : false, message : "비밀번호가 틀렸습니다."});
         
-            // 비밀번호 맞다면 토큰 생성
-        findUser.generateToken((err, user) => {
-          if (err) return res.status(400).send(err);
-  
-          // token 저장 
-          res.cookie("x_auth", user.token, {maxAge : 30 * 60 * 1000})
-            .status(200)
-            .json({loginSucces : true, userId : user.id, token : user.token});
-          })
+        // 비밀번호 맞다면 토큰 생성
+        const accessToken = findUser.getAccessToken(user);
+        const refreshToken = findUser.getRefreshToken(user);
+
+        res.cookie("accessToken", accessToken, {
+          secure : false,
+          httpOnly : true,
+        });
+
+        res.cookie("refreshToken", refreshToken, {
+          secure : false,
+          httpOnly : true,
+        });
+
+        res.status(200).json({
+          resultMsg : "login Succes",
+          userData : {id : findUser.id, name : findUser.name, email : findUser.email}
+        });
   
       })
   });
   
   // logout구현 
   route.post('/logout', async (req, res) => {
-      console.log('logout');
-      return res.clearCookie('x_auth').end();
+      try {
+        res.cookie('accessToken', '');
+        res.cookie('refreshToken', '');
+        res.status(200).json("Logout Success");
+      } catch (err) {
+        res.status(500).json(err);
+      }
   });
 
 

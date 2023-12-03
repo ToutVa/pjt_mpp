@@ -1,10 +1,11 @@
 const express = require('express');
+const { authValidator } = require('../middleware/auth');
 const route = express.Router();
 
 // data Model 
 const {Post} = require("../models/Post");
 
-route.get('/', async (req,res) => {
+route.get('/', authValidator, async (req,res) => {
     console.log('게시글 목록');
     let postJson;
     

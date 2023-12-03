@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
+const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = require('../config/dev');
+
 const userSchema = new mongoose.Schema({
   // _id 부분은 기본적으로 생략. 알아서 Object.id를 넣어줌
   id : {
@@ -67,31 +69,52 @@ userSchema.pre('save', function(next) {
   }
 })
 
-userSchema.method('test', function(test, cb) {
-  console.log('test');
-});
-
-userSchema.method('comparePassword', function(plainPassword, cb) {
+userSchema.method('comparePassword', function(plainPassword, callback) {
   console.log(plainPassword, this);
   bcrypt.compare(plainPassword, this.password, function(err, isMatch) {
-    if(err) return cb(err);
-    cb(null, isMatch);
+    if(err) return callback(err);
+    callback(null, isMatch);
   })
 });
 
-userSchema.method('generateToken', function (cb) {
+// accessToken 생성
+userSchema.method('getAccessToken', function () {
 
   let user = this;
 
-  // jwt token
-  const token = jwt.sign(user._id.toHexString(), 'sercretToken');
+  // jwt accessToken 생성
+  const accessToken = jwt.sign({
+      id : user.id,
+      name : user.name,
+      email : user.email,
+    }, 
+    ACCESS_TOKEN_SECRET,
+    { expiresIn : '1m',
+      issuer : 'pjtMpp',
+    }
+  );
 
-  user.token = token;
-  user.save().then(() => {
-    cb(null,user);
-  }).catch((err) => {
-    return cb(err);
-  })
+  return accessToken;
+});
+
+// accessToken 생성
+userSchema.method('getRefreshToken', function () {
+
+  let user = this;
+
+  // jwt accessToken 생성
+  const refreshToken = jwt.sign({
+      id : user.id,
+      name : user.name,
+      email : user.email,
+    }, 
+    REFRESH_TOKEN_SECRET,
+    { expiresIn : '24h',
+      issuer : 'pjtMpp',
+    }
+  );
+
+  return refreshToken;
 });
 
 
