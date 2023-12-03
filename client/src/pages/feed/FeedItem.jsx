@@ -13,7 +13,7 @@ const FeedItem = (props) => {
             </div>
         </div>
         <div className="content">
-          {props.content.cont}
+          {props.content.content}
         </div>
         <div className="bottom">
           <div className="icon-group">
