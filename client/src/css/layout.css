@@ -62,8 +62,36 @@ footer {
     height :40px;
     bottom: 0px;
 	position: absolute;
-    background : #333;
-    color : #fff;
+    color : #636363;
+    background-color: #FFF;
+
+    width : calc(100% - 40px);
+    height :60px;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding: 0 20px;
+
+}
+
+footer .center {
+    width: 650px;
+    display: flex;
+    justify-content: center;
+
+    &:after {
+        content: "";
+        width: 650px;
+        height: 1px;
+        bottom: 49px;
+        background-image: linear-gradient(#fff0, #fff0), linear-gradient(to right, #23155700 0%, #000000 10%, #000000 90%, #fff80000 100%);
+        background-origin: border-box;
+        background-clip: content-box, border-box;
+        margin: 50px 10px 10px;
+        position: absolute;
+    }
 }
 footer > p {
     margin :0;
