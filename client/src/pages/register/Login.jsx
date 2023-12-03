@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { TokenAtom, isLoginSelector } from "comm/recoil/TokenAtom";
+import { useSetRecoilState } from "recoil";
+import { TokenUser } from "comm/recoil/TokenAtom";
 import '../../css/login.css';
 import { useLocation, useNavigate } from "react-router";
 import TextBox from '../register/TextBox.jsx';
@@ -12,8 +12,7 @@ import RegisterButton from '../register/RegisterButton.jsx';
 const Login = () => {
     const [id, setId] = useState();
     const [password, setPassword] = useState();
-    const setAccessToken = useSetRecoilState(TokenAtom);
-    const isLogin = useRecoilValue(isLoginSelector);
+    const setAccessToken = useSetRecoilState(TokenUser);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -24,8 +23,8 @@ const Login = () => {
         e.preventDefault();
         axios.post("/api/user/login", { id: id, password: password }).then((res) => {
           const data = res.data;
-          if (data.loginSucces) {
-            setAccessToken(res.data.token);
+          if (data.resultMsg) {
+            setAccessToken(data.userData);
             navigate(from);
           } else {
             alert(data.message);

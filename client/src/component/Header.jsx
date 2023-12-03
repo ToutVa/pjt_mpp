@@ -2,7 +2,7 @@
 
 import { Link } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { TokenAtom, isLoginSelector } from "comm/recoil/TokenAtom";
+import { TokenUser, isLoginSelector } from "comm/recoil/TokenAtom";
 import axios from "axios";
 
 /* eslint-disable jsx-a11y/alt-text */
@@ -11,7 +11,7 @@ import axios from "axios";
 const Header = ({type}) => {
   
   const isLogin = useRecoilValue(isLoginSelector);
-  const setAccessToken = useSetRecoilState(TokenAtom);
+  const setAccessToken = useSetRecoilState(TokenUser);
   
   const fn_logout = () => {
       // logout api 실행

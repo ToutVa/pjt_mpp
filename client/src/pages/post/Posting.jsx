@@ -2,8 +2,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { TokenAtom, isLoginSelector } from "comm/recoil/TokenAtom";
 
 
 
@@ -11,8 +9,6 @@ const Posting = () => {
     const [title, setTitle] = useState();
     const [filmTime, setFilmTime] = useState();
     const [filmLocation, setFilmLocation] = useState();
-
-    console.log("TokenAtom", TokenAtom);
 
     const navigate = useNavigate();
     const location = useLocation();
