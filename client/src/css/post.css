@@ -1,0 +1,118 @@
+.PostDragDrop {
+    text-align: center;
+    display   : block;
+}
+
+.PostDragDrop > h4 {
+    width          : calc(100% - 0px);
+    text-align     : center;
+    align-items    : center;
+    justify-content: center;
+    overflow       : hidden;
+    text-overflow  : ellipsis;
+    white-space    : nowrap;
+    padding-bottom : 10px;
+    border-bottom  : 1px rgb(185, 185, 185) solid;
+}
+
+.PostDragDrop > .imgWrap > #preview{
+    width : 250px;
+    height: 250px;
+}
+
+.PostDragDrop > .file {
+    display: none;
+}
+  
+.file::file-selector-button {
+    font-size    : 14px;
+    background   : #ffffff;
+    border       : 1px solid #111;
+    border-radius: 12px;
+    padding      : 4px 32px;
+    cursor       : pointer;
+}
+
+.previewMsg {
+    color        : #000;
+    font-family  : Inder;
+    font-size    : 1.5rem;
+    font-style   : normal;
+    font-weight  : 200;
+    line-height  : normal;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.center {
+    display : inline-flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+}
+
+
+
+.imgContain{
+    display : inline-flex;
+    margin-top : 10px;
+    margin-bottom: 20px;
+}
+
+.imgWrap{
+    width: 100%;
+}
+
+.imgInfo{
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    border: 1px solid #eee;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.imgBox{
+    align-items: center;
+    width : 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: grey;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.btn-primary{
+    padding: 16px;
+    width: 100%;
+    background-color: #00a5ba;
+    border : 1px #00a5ba;
+    color: #fff;
+}
