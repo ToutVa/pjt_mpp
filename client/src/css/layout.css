@@ -264,3 +264,18 @@ ul.vertical>li:first-child {
           }
     }
 }
+
+
+.ReactModalPortal > .ReactModal__Overlay {
+    background-color: #0000009e !important;
+}
+
+.ReactModalPortal > .ReactModal__Overlay > .ReactModal__Content  {
+    background-color: white !important;
+    width: 600px;
+    height: 520px;
+    position: absolute;
+    left: calc(50% - 300px);
+    top: calc(50% - 260px);
+    border-radius: 20px;
+}

@@ -115,3 +115,10 @@
         filter: brightness(80%);
     }
 }
+
+.feed > .center > .ReactModal__Content--after-open { 
+    width: 500px;
+    height: 500px;
+    position: fixed;
+
+}

@@ -34,11 +34,9 @@ const Header = ({type}) => {
           <div className="cover-logo"/>
         </Link>
         <div className="flex">
-          <Link className="item" to= {isLogin === true ? "/post": "/login"}>
-                <p className="linked-text white">{isLogin === true ? "Post": ""}</p>
-          </Link>
-          <Link className="item" to= {isLogin === true ? "/myPage": "/login"}>
-                <p className="linked-text white">{isLogin === true ? "MyPage": "login"}</p>
+
+          <Link className="item" to= "/login">
+                <p className="linked-text white">login</p>
           </Link>
           <Link className="item" to= {isLogin === true ? "/": "/sign"}>
                 <p onClick = {fn_logout}
