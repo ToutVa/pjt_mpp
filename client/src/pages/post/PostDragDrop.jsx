@@ -2,21 +2,28 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import "css/post.css";
-import baseImgUrl from  "assets/image.png";
+import baseImgUrl from  "assets/icon-file.svg";
 
 
 
 const PostDragDrop = () => {
   const [files, setFiles] = useState();
 
-  const onLoadFile = (e) => {
-    const files = e.target.files;
-    console.log(files);
-    if(files.length == 0){
+  const addFile = (file) => {
+    if(files.length === 0){
       var imgWrap = document.getElementById('preview');
       imgWrap.src = baseImgUrl;
     }else{
       setFiles(files);
+      
+      files.forEach((val, idx) => {
+        if(val.type.split("/")[0] === "image") {
+          
+        }
+      });
+      
+
+      
 
       var reader = new FileReader();
       reader.onload = function(){
@@ -26,14 +33,36 @@ const PostDragDrop = () => {
       };
       reader.readAsDataURL(files[0]);
     }
+  }
+
+  //File OnChange 이벤트 함수
+  const onLoadFile = (e) => {
+    const files = e.target.files;
+    addFile(files);
   };
+
+  //기본 DragOver 이벤트 제거 함수
+  const onDragOver = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+  //File Drag & Drop 이벤트 함수
+  const onDropFile = (e) => {
+    debugger;
+    e.preventDefault();
+
+    const files = e.dataTransfer.files;
+    addFile(files);
+  };
+
+
 
   return (
     <>
-    <div className="PostDragDrop">
+    <div className="PostDragDrop" onDrop={onDropFile} onDragOver ={onDragOver}>
       <h4>새 게시물 만들기</h4>
 
-      <div className="imgWrap">
+      <div className="imgWrap" >
         <img id="preview" src ={baseImgUrl} alt= ""/>
       </div>  
 
