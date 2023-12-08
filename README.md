@@ -27,7 +27,7 @@ server > npm run backend
 
 # Docker 
 > 명령어
-> docker build .  // dockerfile 을 기준으로 이미지파일 생성 
+> docker build .  // dockerfile 을 기준으로 이미지파일 생성
 > docker build -t client-image // client-image 로 dockerfile image 생성
 > docker run -d --name client-image clinet // docker 이미지 실행 
 
