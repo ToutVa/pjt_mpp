@@ -6,7 +6,6 @@ const route = express.Router();
 const {Post} = require("../models/post");
 
 route.get('/', authValidator, async (req,res) => {
-    console.log('게시글 목록');
     let postJson;
     
     postJson = await Post.find({}).catch((err) => {
