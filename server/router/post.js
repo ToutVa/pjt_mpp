@@ -3,7 +3,7 @@ const { authValidator } = require('../middleware/auth');
 const route = express.Router();
 
 // data Model 
-const {Post} = require("../models/Post");
+const {Post} = require("../models/post");
 
 route.get('/', authValidator, async (req,res) => {
     console.log('게시글 목록');

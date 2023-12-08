@@ -2,7 +2,7 @@ const express = require('express');
 const route = express.Router();
 
 // data Model 
-const {User} = require("../models/User");
+const {User} = require("../models/user");
 
 route.post('/sign', async (req, res) => { 
     // 회원가입 할때 필요한 정보들을 client 에서 가져옴

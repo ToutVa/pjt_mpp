@@ -12,10 +12,7 @@ const Home = () => {
       </div>
       <div className="cover-content">
         <div className="item text">
-          <h3>맑은 하모니카 손에 익은 기타</h3>
-          <h3>Your melody (나는 떠날래)</h3>
-          <h3>어린왕자 your melody</h3>
-          <h3>찾아 떠날래~~~~</h3>
+
         </div>
         <div className="item img">
           

@@ -1,0 +1,25 @@
+# docker 컨테이너 버전을 명시
+version: "3"
+
+services:
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+    restart : always
+    ports: 
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+
+  server:
+    restart : always
+    build: 
+      dockerfile: Dockerfile
+      context: './server'
+    ports: 
+      - "5000:5000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
