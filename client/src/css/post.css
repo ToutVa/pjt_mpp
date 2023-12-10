@@ -1,9 +1,9 @@
-.PostDragDrop {
+.post-drag-drop {
     text-align: center;
     display   : block;
 }
 
-.PostDragDrop > h4 {
+.post-drag-drop > h4 {
     width          : calc(100% - 0px);
     text-align     : center;
     align-items    : center;
@@ -15,12 +15,12 @@
     border-bottom  : 1px rgb(185, 185, 185) solid;
 }
 
-.PostDragDrop > .imgWrap > #preview{
-    width : 220px;
+.post-drag-drop > .img-wrap > #preview{
+    width : 250px;
     height: 250px;
 }
 
-.PostDragDrop > .file {
+.file {
     display: none;
 }
   
@@ -33,7 +33,7 @@
     cursor       : pointer;
 }
 
-.previewMsg {
+.preview-msg {
     color        : #000;
     font-family  : Inder;
     font-size    : 1.5rem;
@@ -43,29 +43,27 @@
 }
 
 
-.imgContain{
+.img-contain{
     display : inline-flex;
     margin-top : 10px;
     margin-bottom: 20px;
 }
 
-.imgWrap{
+.img-wrap{
     width: 100%;
 }
 
-.imgInfo{
-    display: flex;
-    flex-direction: column;
+.img-info{
+    width : 100%;
+    display: inline-block;
     padding: 16px;
     border: 1px solid #eee;
-    align-items: flex-start;
-    gap: 16px;
 }
 
-.imgBox{
+.img-box{
     align-items: center;
-    width : 200px;
-    height: 200px;
+    width : 250px;
+    height: 250px;
     object-fit: cover;
     border-radius: 4px;
     background-position: 50%;

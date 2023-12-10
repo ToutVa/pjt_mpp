@@ -3,42 +3,51 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import "css/post.css";
 import baseImgUrl from  "assets/icon-file.svg";
+import { useLocation, useNavigate } from 'react-router';
 
 
 
 const PostDragDrop = () => {
   const [files, setFiles] = useState();
+  const [maxFileCnt, setMaxFileCnt] = useState(10);
+  const fileInput = React.createRef();
+  const navigate = useNavigate();
+  
+  /* 컴퓨터에서 선택 버튼 클릭이벤트 */
+  const handleButtonClick = e => {
+    fileInput.current.click();
+  };
 
-  const addFile = (file) => {
-    if(files.length === 0){
-      var imgWrap = document.getElementById('preview');
-      imgWrap.src = baseImgUrl;
-    }else{
-      setFiles(files);
-      
-      files.forEach((val, idx) => {
-        if(val.type.split("/")[0] === "image") {
-          
-        }
-      });
-      
+  /* 파일 state 저장이벤트 */
+  const addFile = (fileArr) => {
+    console.log("fileArr",fileArr.length);
+    console.log("files",files);
+    if(fileArr.length == 0){
+      if(files == undefined){
+        var imgWrap = document.getElementById('preview');
+        imgWrap.src = baseImgUrl;
+      }
+    }else if(fileArr.length > maxFileCnt) {
+      alert("첨부파일은 최대 " + maxFileCnt + "개 까지 첨부 가능합니다.");
 
-      
-
+      document.querySelector("input[type=file]").value = ""; // 초기화
+    }else if(fileArr.length > 0){
       var reader = new FileReader();
       reader.onload = function(){
         var dataURL = reader.result;
         var imgWrap = document.getElementById('preview');
         imgWrap.src = dataURL;
       };
-      reader.readAsDataURL(files[0]);
+
+      setFiles(fileArr);
+      reader.readAsDataURL(fileArr[0]);
     }
   }
 
   //File OnChange 이벤트 함수
   const onLoadFile = (e) => {
-    const files = e.target.files;
-    addFile(files);
+    const fileArr = e.target.files;
+    addFile(fileArr);
   };
 
   //기본 DragOver 이벤트 제거 함수
@@ -48,29 +57,39 @@ const PostDragDrop = () => {
   }
   //File Drag & Drop 이벤트 함수
   const onDropFile = (e) => {
-    debugger;
     e.preventDefault();
 
-    const files = e.dataTransfer.files;
-    addFile(files);
+    const fileArr = e.dataTransfer.files;
+    addFile(fileArr);
   };
 
+  const handleSubmit = () => {
+    if(files == undefined){
+      alert("선택된 이미지가 존재하지 않습니다.");
+    }else {
+      navigate('/posting', {state : {files}});
+    }
+  }
 
 
   return (
     <>
-    <div className="PostDragDrop" onDrop={onDropFile} onDragOver ={onDragOver}>
+    <div className="post-drag-drop" onDrop={onDropFile} onDragOver ={onDragOver}>
       <h4>새 게시물 만들기</h4>
 
-      <div className="imgWrap" >
+      <div className="img-wrap" >
         <img id="preview" src ={baseImgUrl} alt= ""/>
       </div>  
 
-      <form>
-        <input type="file" className="file" onChange={onLoadFile} />
-        <p className="previewMsg">사진을 여기에 끌어다 놓으세요.</p>
-        <Button type="submit">사진 선택 완료</Button>
-      </form>
+
+        <p className="preview-msg">사진을 여기에 끌어다 놓으세요.</p>
+        <div>
+          <input type="file" className="file" ref={fileInput}
+                multiple    accept = "image/jpg,image/png,image/jpeg"
+                onChange={onLoadFile} />
+          <Button onClick={handleButtonClick}>컴퓨터에서 선택</Button>
+          <Button onClick={handleSubmit}>이미지선택 완료</Button>
+        </div>
     </div>
     </>
   )
@@ -83,6 +102,7 @@ const Button = styled.button`
   border-radius: 1rem;
   border : 1px rgb(97, 184, 156);
   color: #fff;
+  margin-bottom : 10px;
 `;
  
 
