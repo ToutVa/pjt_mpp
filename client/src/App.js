@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 
 // css
@@ -10,14 +10,10 @@ import CoverLayout from 'component/CoverLayout';
 import ProtectedRoute from 'comm/routes/ProtectedRoute';
 
 // main 화면구성
-import Home from'pages/Home';
-import Login from'pages/register/Login';
-import Sign from'pages/register/Signup';
-import MyPage from'pages/myPage/MyPage';
-import Posting from'pages/post/PostDragDrop';
+import Home from 'pages/Home';
+import MyPage from 'pages/myPage/MyPage';
+import Posting from 'pages/post/PostDragDrop';
 import Feed from 'pages/feed/Feed';
-
-
 
 function App() {
   return (
@@ -25,21 +21,18 @@ function App() {
       <BrowserRouter>
         <div className='contentWrapper'>
           <Routes>
-            <Route element ={<CoverLayout />}>
-              <Route path="/" element = {<Home />} />
+            <Route element={<CoverLayout />}>
+              <Route path='/' element={<Home />} />
             </Route>
 
-            <Route element ={<Layout />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/sign" element={<Sign />} />
-
+            <Route element={<Layout />}>
               <Route element={<ProtectedRoute />}>
-                <Route path= "/feed" element={<Feed />} />
-                <Route path= "/myPage" element={<MyPage />} />
-                <Route path= "/post" element={<Posting />} />
+                <Route path='/feed' element={<Feed />} />
+                <Route path='/myPage' element={<MyPage />} />
+                <Route path='/post' element={<Posting />} />
               </Route>
             </Route>
-            <Route path="/*" element = {'NOT FOUND'} />
+            <Route path='/*' element={'NOT FOUND'} />
           </Routes>
         </div>
       </BrowserRouter>
