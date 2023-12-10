@@ -1,69 +1,68 @@
 .login-main {
-    border-top: 1px solid #eee;
-    width: 100%;
-    gap: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items:center;
-    overflow: hidden;
-    padding-top: 150px;
+  width: 100%;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  padding-top: 70px;
 }
 
 .login-logo {
-    height: 120px;
-    width: 500px;
-    margin-bottom: 40px;
-    background-image: url("../assets/logo-large.svg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+  height: 120px;
+  width: 500px;
+  margin-bottom: 63px;
+  background-image: url('../assets/logo-large.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .textBox {
-    display: flex;  
-    align-items:center;
-    justify-content: center;
-    width: 300px;
-    height: 30px;
-    background-color: #FFF;
-    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 30px;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
 }
 
 .input {
-    border-width: 0px;
-    margin: 10px;
-    width: 100%;
+  border-width: 0px;
+  margin: 10px;
+  width: 100%;
 }
 
 .button {
-    border-width: 0px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 300px;
-    height: 30px;
+  border-width: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 30px;
 }
 
 .button-text {
-    font-family: "Inder";
-    color:#FFF;
-    font-size: 16px;
+  font-family: 'Inder';
+  color: #fff;
+  font-size: 16px;
 }
 
 .button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .button:active {
-    opacity: 0.55;
+  opacity: 0.55;
 }
 
 .submit-button {
-    background-color: #E45A5A;
-    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+  background-color: #e45a5a;
+  box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
 }
 
 .link-button {
-    background-color: #888;
-    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
+  background-color: #888;
+  box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
 }
