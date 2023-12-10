@@ -1,8 +1,14 @@
 PROJECT MPP 
 
-CLIENT    - REACT 
+CLIENT    - REACT
+
 SERVER    - NODE.JS, NGINX 추가예정 
+
 DB        - MongoDB
+
+* ARCHITECTURE
+
+DOCKER CONTAINER ( REACT :3000 <>  NGINX:3050  <> SERVER:5000  < >  MONGO-DB) 
 
 client > npm start
 server > npm run backend
