@@ -12,6 +12,8 @@ COPY . .
 EXPOSE 3000
 # npm start 스크립트 실행
 CMD ["npm", "start"]
+# DOCKER HOT LOAD
+# ENV CHOKIDAR_USEPOLLING=true
 
 # dockerfile 로 docker image build 필요
 # docker build . 

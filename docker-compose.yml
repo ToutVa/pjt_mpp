@@ -2,24 +2,38 @@
 version: "3"
 
 services:
+  nginx:
+    depends_on:
+      - api
+      - client
+    restart: always
+    build: 
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "3050:80"
+
   client:
+    stdin_open : true
     build:
       dockerfile: Dockerfile
-      context: ./client
+      context: ./client # compose 파일 기준의 docker 위치
     restart : always
-    ports: 
-      - "3000:3000"
+    #ports: 
+    #  - "3000:3000"
     volumes:
       - ./client:/app
       - /app/node_modules
+    #environment:
+    #  - CHOKIDAR_USEPOLLING=true
 
-  server:
+  api:
     restart : always
     build: 
       dockerfile: Dockerfile
       context: './server'
-    ports: 
-      - "5000:5000"
+    #ports: 
+    #  - "5000:5000"
     volumes:
       - ./server:/app
       - /app/node_modules
