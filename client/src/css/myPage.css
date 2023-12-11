@@ -1,0 +1,115 @@
+p.pin::before {
+    width: 15px;
+    height: 15px;
+    content: "";
+    background-image: url("../assets/icon-pin.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    display: inline-block;
+}
+
+.my-page > .center > .item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.my-page > .center .item > .map {
+    margin-top: 5px;
+    width: 100%;
+    height: 400px;
+    background-color: rgb(182, 182, 182);
+    border-radius: 15px;
+    align-items: center;
+
+    text-align-last:center;
+}
+
+.my-page > .center > .item > .time-line {
+    margin-top: 10px;
+}
+
+.my-page > .center > .item > .time-line > .area {
+    width: calc(100% - 20px);
+    height: 120px;
+    background-color: rgb(226, 226, 226);
+    border-radius: 15px;
+    text-align-last: center;
+    white-space: nowrap;
+    overflow-x: scroll;
+    padding: 10px;
+
+    &::-webkit-scrollbar {
+        height: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+        height: 30%;
+        background: #8a8a8a;
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+        background: rgba(145, 145, 145, 0);
+    }
+}
+.my-page > .center  > .item > .time-line > .area > .item {
+    display: inline-block;
+    width: 100px;
+    height: 80px;
+    background-color: #5f5f5f;
+    margin-left: 5px;
+    &:first-of-type {
+        margin-left : 0px;
+    }
+}
+
+.my-page > .center  > .item > .time-line > .bar {
+    width: calc(100% - 40px);
+    height: 2px;
+    background-image: linear-gradient(#fff0, #fff0), linear-gradient(to right, #23155700 0%, #000000 3%, #000000 97%, #fff80000 100%);
+    position: relative;
+    margin: 20px;
+    &::after {
+        content: "▶";
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        top: -11px;
+        right: 2px;
+    }
+}
+.my-page > .center  > .item > .time-line > .bar > .point {
+    position:absolute;
+    width: 10px;
+    height: 10px;
+    top:-5px;
+    left: 10px;
+    background-color: rgb(182, 60, 60);
+    border-radius: 100%;
+    border: 2px solid rgb(124, 124, 124);
+    &:hover {
+        background-color: rgb(231, 66, 66);
+        border: 2px solid rgb(20, 20, 20);
+    }
+
+}
+
+
+.my-page > .center  > .item > .container {
+    display: grid;
+    grid-template-columns : 1fr 1fr;
+}
+
+.my-page > .center  > .item > .container > .section {
+    height: 120px;
+    display: block;
+    width: calc(100% - 35px);
+    height: 200px;
+    border: 2px solid #7a7a7a ;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 10px;
+}
+
+
+

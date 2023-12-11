@@ -23,7 +23,7 @@ const CreatePost = () => {
 const Feed = () => {
   return (
     <>
-      <div className="feed"> 
+      <div className="feed main-frame"> 
         <div className="left">
           left Side
         </div>

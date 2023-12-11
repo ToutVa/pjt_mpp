@@ -45,6 +45,8 @@ header {
   background-color: #fff;
 }
 
+
+
 header > .center {
   width: 650px;
   display: flex;
@@ -81,7 +83,7 @@ header.cover {
   justify-content: space-between;
   padding: 0 2% 0 2%;
 }
-
+  
 /* 풋터 */
 footer {
   width: 100%;
@@ -125,6 +127,25 @@ footer .center {
     position: absolute;
   }
 }
+
+.main-frame {
+    width: 100%;
+    min-height: calc(100vh - 40px) ;
+    flex-shrink: 0;
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    overflow: hidden;
+    grid-template-columns: 280px 650px 280px;
+    margin-top: 40px;
+    padding-bottom: 100px;
+}
+
+.main-frame > .center {    
+width: 100%;
+}
+
+
 footer > p {
   margin: 0;
 }
