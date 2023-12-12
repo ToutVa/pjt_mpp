@@ -101,59 +101,66 @@ const Posting = (files) => {
 
 
     return (
-      <>
-        <form className="center" onSubmit={handleSubmit} onLoad = {setImgUrl}>
-            <div className="img-contain">
-              <div className="img-wrap">
-                <img id = "preview" src = {baseImgUrl} alt = "이미지" className="img-box" />
-              </div>
-              <div className="img-info">
-                <InputWrapper>
-                    제목
-                    <input
-                    type="text"
-                    name="title"
-                    autoFocus
-                    placeholder="제목을 입력해주세요"
-                    onChange={(e) => setTitle(e.target.value)}
-                    />
-                </InputWrapper>
-                <InputWrapper>
-                    촬영시간
-                    <input
-                    type="filmTime"
-                    placeholder="사진 촬영한 시간을 입력해주세요"
-                    onChange={(e) => setFilmTime(e.target.value)}
-                    />
-                </InputWrapper>
-                <InputWrapper>
-                    위치
-                    <input
-                    type="filmLocation"
-                    placeholder="사진 촬영한 위치를 입력해주세요"
-                    onChange={(e) => setFilmLocation(e.target.value)}
-                    />
-                </InputWrapper>
-              </div>
+      <div className="main-frame post">
+        <div className="left"></div>
+        <div className="center">
+          <div className="time-line">
+            <div className="area">
+              <div className="item"></div>
+              <div className="item"></div>
             </div>
-            <button type="submit" className="btn-primary">게시물 등록</button>
-        </form>
-      </>
+            <div className="btn-grp">
+              <button>사진추가</button>
+              <button>사진삭제</button>
+            </div>
+            <div className="bar">
+              <div className="point"></div>
+            </div>
+          </div>
+          <form className="img-contain" onSubmit={handleSubmit} onLoad = {setImgUrl}>
+            <div className="img-wrap">
+              <img id = "preview" src = {baseImgUrl} alt = "이미지" className="img-box" />
+            </div>
+            <div className="img-info">
+              <table>
+                <thead></thead>
+                <tbody>
+                  <tr>
+                    <td>제목</td>
+                    <td><input type="text" name="title" autoFocus placeholder="제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)}/></td>
+                  </tr>
+                  <tr>
+                    <td>촬영시간</td>
+                    <td><input type="filmTime" placeholder="사진 촬영한 시간을 입력해주세요" onChange={(e) => setFilmTime(e.target.value)}/></td>
+                  </tr>
+                  <tr>
+                    <td>날씨</td><td>
+                    <input type="radio" id="sun" name="weather" value="sun"/><label for="sun" className="icon"></label>
+                    <input type="radio" id="cloud" name="weather" value="cloud"/><label for="cloud" className="icon"></label>
+                    <input type="radio" id="rain" name="weather" value="rain"/><label for="rain" className="icon"></label>
+                    <input type="radio" id="thunder" name="weather" value="thunder"/><label for="thunder" className="icon"> </label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>계절</td><td>2</td>
+                  </tr>
+                  <tr>
+                    <td>위치</td>
+                    <td><input type="filmLocation" placeholder="사진 촬영한 위치를 입력해주세요"onChange={(e) => setFilmLocation(e.target.value)}/></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="map">지도영역</div>
+            <input type="text" placeholder="#태그"/>
+            <button type="submit" className="btn-primary mt15">게시물 등록</button>
+          </form>
+          
+        </div>
+      <div className="right"></div>
+    </div>
     )
 }
-
-const InputWrapper = styled.label`
-  display: inline-block;
-  flex-direction: column;
-  align-items: flex-start;
-  & > input {
-    width  : 210px;
-    padding: 8px 16px;
-    border: 1px solid #eee;
-  }
-`;
- 
-
 
 export default Posting;
   

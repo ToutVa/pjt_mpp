@@ -69,6 +69,7 @@ p.pin::before {
     background-image: linear-gradient(#fff0, #fff0), linear-gradient(to right, #23155700 0%, #000000 3%, #000000 97%, #fff80000 100%);
     position: relative;
     margin: 20px;
+    z-index: -1;
     &::after {
         content: "▶";
         position: absolute;
