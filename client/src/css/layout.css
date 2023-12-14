@@ -292,6 +292,44 @@ a {
   }
 }
 
+td {
+  padding: 0px 5px;
+}
+
+input {
+  width: calc(100% - 10px);
+  border-radius: 10px;
+  border: 1px solid #c9c9c9;
+  padding-left: 5px;
+  height: 20px;
+  &:focus {
+    outline: none !important;
+  }
+  
+  &[type=radio] {
+    width: 0px;
+  }
+}
+
+label.icon {
+  display: inline-block;height: 35px;width: 35px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  &[for=sun] {background-image: url('../assets/icon-weather-sun.png');}
+  &[for=snow] {background-image: url('../assets/icon-weather-snow.png');}
+  &[for=thunder] {background-image: url('../assets/icon-weather-thunder.png');}
+  &[for=rain] {background-image: url('../assets/icon-weather-rain.png');}
+  &[for=cloud] {background-image: url('../assets/icon-weather-cloud.png');}
+
+  
+}
+
+input:checked + label.icon {
+  filter: drop-shadow(0px 0px 3px #84978e);
+}
+
+
 ul.vertical > li {
   margin-left: 10px;
   display: inline-block;
@@ -366,3 +404,32 @@ ul.vertical > li:first-child {
   top: calc(50% - 260px);
   border-radius: 20px;
 }
+
+
+
+
+/*width 공통*/
+.w10 {width: 10px;}
+.w20 {width: 20px;}
+.w30 {width: 30px;}
+.w50 {width: 50px;}
+.w100 {width: 100px;}
+.w10p {width: 10%;}
+.w50p {width: 50%;}
+.w100p {width: 100%;}
+
+/*margin*/
+.m10  {margin : 10px}
+.m20  {margin : 20px}
+.mr5  {margin-right:5px}
+.mr10 {margin-right:10px}
+.mr15 {margin-right:15px}
+.mt5  {margin-top:5px}
+.mt10 {margin-top:10px}
+.mt15 {margin-top:15px}
+.ml5  {margin-left:5px}
+.ml10 {margin-left:10px}
+.ml15 {margin-left:15px}
+.mb5  {margin-bottom:5px}
+.mb10 {margin-bottom:10px}
+.mb15 {margin-bottom:15px}
