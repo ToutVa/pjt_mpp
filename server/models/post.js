@@ -21,14 +21,15 @@ const postSchema = new mongoose.Schema({
     maxlength : 200,
     required  : true, // null 여부
   },
-  token : {
-    type : String
+  registUser : {
+    type     : String,
   },
-  tokenExp : {
-    type : Number
+  registDate : {
+    type     : Date,
   }
+
 });
 
-const Post = mongoose.model('PosT', postSchema);
+const Post = mongoose.model('Post', postSchema);
 
 module.exports = {Post} 

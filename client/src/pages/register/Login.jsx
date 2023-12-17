@@ -50,7 +50,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post('/api/user/login', { id: id, password: password })
+      .post('/api/auth/login', { id: id, password: password })
       .then((res) => {
         const data = res.data;
         if (data.resultMsg) {

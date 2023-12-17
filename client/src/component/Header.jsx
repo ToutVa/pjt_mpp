@@ -66,7 +66,7 @@ const Header = ({ type }) => {
 
   const fn_logout = () => {
     // logout api 실행
-    axios.post('/api/user/logout').then((res) => {
+    axios.post('/api/auth/logout').then((res) => {
       // token undefined 설정
       setAccessToken(undefined);
     });
