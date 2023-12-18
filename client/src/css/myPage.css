@@ -102,15 +102,69 @@ p.pin::before {
 }
 
 .my-page > .center  > .item > .container > .section {
-    height: 120px;
-    display: block;
+    display: grid;
     width: calc(100% - 35px);
     height: 200px;
-    border: 2px solid #7a7a7a ;
+    border: 2px solid #7a7a7a;
     border-radius: 15px;
     margin: 5px;
     padding: 10px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 30px 1fr 1fr;
+    position: relative;
 }
+
+.my-page > .center  > .item > .container > .section > .book-mark {
+    content: "";
+    position: absolute;
+    right: 20px;
+    background-image: url("../assets/book-mark.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 35px;
+    height: 24px;
+
+    &.red    {filter: drop-shadow(2px 0px 2px #84978e) hue-rotate(360deg)} 
+    &.green  {filter: drop-shadow(2px 0px 2px #84978e) hue-rotate(90deg)} 
+    &.blue   {filter: drop-shadow(2px 0px 2px #84978e) hue-rotate(212deg)} 
+    &.purple {filter: drop-shadow(2px 0px 2px #84978e) hue-rotate(270deg)} 
+}
+
+
+.my-page > .center  > .item > .container > .section > .title {
+    grid-column: 1 / span 2;
+
+}
+.my-page > .center  > .item > .container > .section > .item {
+    display: flex;
+    background-color: #5f5f5f;
+    margin: 3px;
+    position: relative;
+    cursor: pointer;
+    
+    &:hover {
+
+    }
+}
+.my-page > .center  > .item > .container > .section > .item:hover > p {
+    opacity: 100%;
+}
+.my-page > .center  > .item > .container > .section > .item > p {
+    opacity: 0%;
+    transition: all 0.3s;
+    background-color: #00000042;
+    color: #FFFFFF;
+    height: 20px;
+    width: 70px;
+    text-align: center;
+    border-radius: 15px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-35px) translateY(-25px);
+}
+
 
 
 
