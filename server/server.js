@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const config = require('./config/key');
 
 // router 경로설정 
+const auth = require('./router/auth');
 const user = require('./router/user');
 const post = require('./router/post');
 
@@ -29,6 +30,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // router 설정 
+app.use('/api/auth', auth);
 app.use('/api/user', user);
 app.use('/api/post', post);
 
