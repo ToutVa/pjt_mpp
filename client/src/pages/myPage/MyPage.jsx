@@ -1,11 +1,11 @@
 import "css/myPage.css";
+import Bookmark from "./BookMark";
 
 const MyPage = () => {
   return (
     <div className="main-frame my-page">
       <div className="left"></div>
       <div className="center">
-
         <div className="item">
           <p className="pin">내 여행글</p>
           <div className="map">(지도영역)</div>
@@ -21,21 +21,12 @@ const MyPage = () => {
               <div className="item"></div>
               <div className="item"></div>
               <div className="item"></div>
-
             </div>
           </div>
         </div>
-
         <div className="item">
-          <p className="pin">저장된여행글</p>
-          <div className="container">
-            <div className="section">여행영역</div>
-            <div className="section">여행영역</div>
-            <div className="section">여행영역</div>
-            <div className="section">여행영역</div>
-          </div>
+          <Bookmark />
         </div>
-
       </div>
       <div className="right"></div>
       
