@@ -126,15 +126,15 @@ const Posting = (files) => {
                 <thead></thead>
                 <tbody>
                   <tr>
-                    <td>제목</td>
+                    <td><p>제목</p></td>
                     <td><input type="text" name="title" autoFocus placeholder="제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)}/></td>
                   </tr>
                   <tr>
-                    <td>촬영시간</td>
+                    <td><p>촬영시간</p></td>
                     <td><input type="filmTime" placeholder="사진 촬영한 시간을 입력해주세요" onChange={(e) => setFilmTime(e.target.value)}/></td>
                   </tr>
                   <tr>
-                    <td>날씨</td><td>
+                    <td><p>날씨</p></td><td>
                     <input type="radio" id="sun" name="weather" value="sun"/><label for="sun" className="icon"></label>
                     <input type="radio" id="cloud" name="weather" value="cloud"/><label for="cloud" className="icon"></label>
                     <input type="radio" id="rain" name="weather" value="rain"/><label for="rain" className="icon"></label>
@@ -142,10 +142,10 @@ const Posting = (files) => {
                     </td>
                   </tr>
                   <tr>
-                    <td>계절</td><td>2</td>
+                    <td><p>계절</p></td><td>2</td>
                   </tr>
                   <tr>
-                    <td>위치</td>
+                    <td><p>위치</p></td>
                     <td><input type="filmLocation" placeholder="사진 촬영한 위치를 입력해주세요"onChange={(e) => setFilmLocation(e.target.value)}/></td>
                   </tr>
                 </tbody>

@@ -302,6 +302,8 @@ input {
   border: 1px solid #c9c9c9;
   padding-left: 5px;
   height: 20px;
+  font-size: 10px;
+
   &:focus {
     outline: none !important;
   }
@@ -309,6 +311,11 @@ input {
   &[type=radio] {
     width: 0px;
   }
+}
+
+p {
+  margin: 0;
+  font-size: 12px;
 }
 
 label.icon {
