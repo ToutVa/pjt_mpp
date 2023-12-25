@@ -9,25 +9,30 @@ const postSchema = new mongoose.Schema({
   title : {
     type      : String,
     maxlength : 200,
-    required  : true, // null 여부
+    required  : true // null 여부
   },
   filmTime : {
     type      : String,
     maxlength : 200,
-    required  : true, // null 여부
+    required  : true // null 여부
   },
   filmLocation: {
     type      : String,
     maxlength : 200,
-    required  : true, // null 여부
+    required  : true // null 여부
   },
-  registUser : {
-    type     : String,
+  filmWeather : {
+    type     : String
+  },
+  filmSeason : {
+    type     : String
+  },
+  userEmail : {
+    type     : String
   },
   registDate : {
-    type     : Date,
+    type     : String
   }
-
 });
 
 const Post = mongoose.model('Post', postSchema);
