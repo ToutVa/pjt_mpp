@@ -1,98 +1,55 @@
-import axios from "axios";
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
 import "css/post.css";
+import axios from "axios";
 import baseImgUrl from  "assets/icon-file.svg";
 import { useLocation } from 'react-router';
 import imageCompression from "browser-image-compression";
+import PostTimeline from "pages/post/PostTimeline";
 
 
 const Posting = (files) => {
-    const [title, setTitle] = useState();
-    const [filmTime, setFilmTime] = useState();
-    const [filmLocation, setFilmLocation] = useState();
-
-    const location = useLocation();
+    const location    = useLocation();
     const selectFiles = { ...location.state.files };
+
+    const [title       , setTitle]        = useState();
+    const [filmTime    , setFilmTime]     = useState();
+    const [filmLocation, setFilmLocation] = useState();
+    const [filmWeather , setFilmWeather]  = useState();
+    const [filmSeason  , setFilmSeason]   = useState();
     
-    const setImgUrl = () => {
-      var reader = new FileReader();
+    const userEmail   = JSON.parse(window.localStorage.getItem("userData")).userData.email;
+    const registDate  = new Date().toLocaleString();
+    
+    useEffect(()=> {
+      for (let index  = 0; index < Object.keys(selectFiles).length; index++) {
+        var reader    = new FileReader();
 
-      reader.onload = function(){
-        var dataURL = reader.result;
-        var imgWrap = document.getElementById('preview');
-        imgWrap.src = dataURL;
-      };
-
-      reader.readAsDataURL(selectFiles[0]);
-    };
+        reader.onload = function(){
+          var dataURL = reader.result;
+          var imgWrap = document.getElementById('preview');
+          imgWrap.src = dataURL;
+        };
+        
+        reader.readAsDataURL(selectFiles[index]);
+      }
+    }, []);
     
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-
-      console.log("압축 시작");
-
-      const options = {
-        maxSizeMB: 0.1,
-        maxWidthOrHeight: 1920,
-        useWebWorker: true,
-      };
-
-      try {
-        // 압축 결과
-        const compressedFile = await imageCompression(selectFiles[0], options);
-        console.log("압축완료", compressedFile);
-        const reader = new FileReader();
-        reader.readAsDataURL(compressedFile);
-        reader.onloadend = () => {
-          const base64data = reader.result;
-          handlingDataForm(base64data);
-        };
-
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const handlingDataForm = async dataURI => {
-      // dataURL 값이 data:image/jpeg:base64,~~~~~~~ 이므로
-      // ','를 기점으로 잘라서 ~~~~~인 데이터 부분만 다시 인코딩
-      const byteString = atob(dataURI.split(",")[1]);
-
-      const byteLength = new ArrayBuffer(byteString.length);
-      const unitArray = new Uint8Array(byteLength);
-
-      console.log(byteLength);
-      console.log(unitArray);
-      for (let i = 0; i < byteString.length; i++) {
-        unitArray[i] = byteString.charCodeAt(i);
-      }
-      const blob = new Blob([unitArray], {
-        type: "image/png"
-      });
-      const file = new File([blob], "image.png");
-      console.log("file", file);
-
       const formData = new FormData();
-      formData.append("file", file);
+      const headers  = {"Content-Type": "multipart/form-data"};
     
-      // 필요시 더 추가합니다.
-      formData.append("title", {title});
-      formData.append("filmTime", {filmTime});
-      formData.append("filmLocation", {filmLocation});
-    
-      try {
-        const headers = {
-          "Content-Type": "multipart/form-data"
-        };
+      formData.append("fileInfo", JSON.stringify({title, filmTime, filmLocation,
+                                                  filmWeather, filmSeason, userEmail, registDate}));
 
-        axios.post("/api/post/create", formData, headers)
+      try {
+        axios.post("/api/post/img", formData, headers)
             .then((res) => {
-                console.log(res);
-                alert(res.data.message);
+              console.log(res);
+              alert(res.data.message);
             }).catch((err) => {
-                console.log(err);
+              console.log(err);
             });
       } catch (error) {
         alert(error.response.data.errors);
@@ -104,20 +61,8 @@ const Posting = (files) => {
       <div className="main-frame post">
         <div className="left"></div>
         <div className="center">
-          <div className="time-line">
-            <div className="area">
-              <div className="item"></div>
-              <div className="item"></div>
-            </div>
-            <div className="btn-grp">
-              <button>사진추가</button>
-              <button>사진삭제</button>
-            </div>
-            <div className="bar">
-              <div className="point"></div>
-            </div>
-          </div>
-          <form className="img-contain" onSubmit={handleSubmit} onLoad = {setImgUrl}>
+          <PostTimeline files = {files}/>
+          <form className="img-contain" onSubmit={handleSubmit}>
             <div className="img-wrap">
               <img id = "preview" src = {baseImgUrl} alt = "이미지" className="img-box" />
             </div>
@@ -134,6 +79,7 @@ const Posting = (files) => {
                     <td><input type="filmTime" placeholder="사진 촬영한 시간을 입력해주세요" onChange={(e) => setFilmTime(e.target.value)}/></td>
                   </tr>
                   <tr>
+<<<<<<< HEAD
                     <td><p>날씨</p></td><td>
                     <input type="radio" id="sun" name="weather" value="sun"/><label for="sun" className="icon"></label>
                     <input type="radio" id="cloud" name="weather" value="cloud"/><label for="cloud" className="icon"></label>
@@ -147,6 +93,21 @@ const Posting = (files) => {
                   <tr>
                     <td><p>위치</p></td>
                     <td><input type="filmLocation" placeholder="사진 촬영한 위치를 입력해주세요"onChange={(e) => setFilmLocation(e.target.value)}/></td>
+=======
+                    <td>위치</td>
+                    <td><input type="filmLocation" placeholder="사진 촬영한 위치를 입력해주세요"onChange={(e) => setFilmLocation(e.target.value)}/></td>
+                  </tr>
+                  <tr>
+                    <td>날씨</td><td>
+                    <input type="radio" id="sun" name="weather" value="sun" onChange={(e) => setFilmWeather(e.target.value)}/><label for="sun" className="icon"></label>
+                    <input type="radio" id="cloud" name="weather" value="cloud" onChange={(e) => setFilmWeather(e.target.value)}/><label for="cloud" className="icon"></label>
+                    <input type="radio" id="rain" name="weather" value="rain" onChange={(e) => setFilmWeather(e.target.value)}/><label for="rain" className="icon"></label>
+                    <input type="radio" id="thunder" name="weather" value="thunder" onChange={(e) => setFilmWeather(e.target.value)}/><label for="thunder" className="icon"> </label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>계절</td><td>겨울</td>
+>>>>>>> 2203ca8918c5ff34f6e9b5de7be8bad46668e593
                   </tr>
                 </tbody>
               </table>
