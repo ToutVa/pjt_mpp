@@ -1,10 +1,7 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import "css/post.css";
 import baseImgUrl from  "assets/icon-file.svg";
 import { useLocation } from 'react-router';
-import imageCompression from "browser-image-compression";
 
 
 const PostTimeline = (files) => {

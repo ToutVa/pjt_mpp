@@ -3,8 +3,9 @@ import "css/post.css";
 import axios from "axios";
 import baseImgUrl from  "assets/icon-file.svg";
 import { useLocation } from 'react-router';
-import imageCompression from "browser-image-compression";
 import PostTimeline from "pages/post/PostTimeline";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 
 const Posting = (files) => {
@@ -39,12 +40,15 @@ const Posting = (files) => {
       e.preventDefault();
       const formData = new FormData();
       const headers  = {"Content-Type": "multipart/form-data"};
+
+      console.log("selectFiles", selectFiles);
     
+      // formData.append("file", selectFiles[0]);
       formData.append("fileInfo", JSON.stringify({title, filmTime, filmLocation,
                                                   filmWeather, filmSeason, userEmail, registDate}));
 
       try {
-        axios.post("/api/post/img", formData, headers)
+        axios.post("/api/post/create", formData, headers)
             .then((res) => {
               console.log(res);
               alert(res.data.message);
@@ -76,11 +80,24 @@ const Posting = (files) => {
                   </tr>
                   <tr>
                     <td>촬영시간</td>
-                    <td><input type="filmTime" placeholder="사진 촬영한 시간을 입력해주세요" onChange={(e) => setFilmTime(e.target.value)}/></td>
+                    <td>
+                    <DatePicker
+                      dateFormat="yyyy년 MM월 dd일 a hh시"
+                      dateFormatCalendar="yyyy년 MM월"
+                      locale="ko"
+                      showTimeSelect
+                      timeFormat="HH:mm"
+                      timeIntervals={60}
+                      timeCaption="촬영시간"
+                      placeholderText="사진 촬영한 시간을 입력해주세요"
+                      selected={filmTime}
+                      onChange={(data) => setFilmTime(data)}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td>위치</td>
-                    <td><input type="filmLocation" placeholder="사진 촬영한 위치를 입력해주세요"onChange={(e) => setFilmLocation(e.target.value)}/></td>
+                    <td><input type="text" placeholder="사진 촬영한 위치를 입력해주세요"onChange={(e) => setFilmLocation(e.target.value)}/></td>
                   </tr>
                   <tr>
                     <td>날씨</td><td>

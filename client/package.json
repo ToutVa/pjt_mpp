@@ -9,9 +9,11 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.0",
     "browser-image-compression": "^2.0.2",
+    "date-fns": "^3.0.6",
     "eslint": "^8.52.0",
     "eslint-config-naver": "^2.1.0",
     "react": "^18.2.0",
+    "react-datepicker": "^4.25.0",
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.17.0",
@@ -46,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-datepicker": "^4.19.4"
   }
 }
