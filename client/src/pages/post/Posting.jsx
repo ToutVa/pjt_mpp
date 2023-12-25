@@ -79,21 +79,6 @@ const Posting = (files) => {
                     <td><input type="filmTime" placeholder="사진 촬영한 시간을 입력해주세요" onChange={(e) => setFilmTime(e.target.value)}/></td>
                   </tr>
                   <tr>
-<<<<<<< HEAD
-                    <td><p>날씨</p></td><td>
-                    <input type="radio" id="sun" name="weather" value="sun"/><label for="sun" className="icon"></label>
-                    <input type="radio" id="cloud" name="weather" value="cloud"/><label for="cloud" className="icon"></label>
-                    <input type="radio" id="rain" name="weather" value="rain"/><label for="rain" className="icon"></label>
-                    <input type="radio" id="thunder" name="weather" value="thunder"/><label for="thunder" className="icon"> </label>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><p>계절</p></td><td>2</td>
-                  </tr>
-                  <tr>
-                    <td><p>위치</p></td>
-                    <td><input type="filmLocation" placeholder="사진 촬영한 위치를 입력해주세요"onChange={(e) => setFilmLocation(e.target.value)}/></td>
-=======
                     <td>위치</td>
                     <td><input type="filmLocation" placeholder="사진 촬영한 위치를 입력해주세요"onChange={(e) => setFilmLocation(e.target.value)}/></td>
                   </tr>
@@ -107,7 +92,6 @@ const Posting = (files) => {
                   </tr>
                   <tr>
                     <td>계절</td><td>겨울</td>
->>>>>>> 2203ca8918c5ff34f6e9b5de7be8bad46668e593
                   </tr>
                 </tbody>
               </table>
