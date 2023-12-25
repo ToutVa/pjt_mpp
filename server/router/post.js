@@ -1,11 +1,9 @@
 const express = require('express');
+const route   = express.Router();
+const multer  = require('multer');
+const path    = require('path');
+const fs      = require('fs');
 const { authValidator } = require('../middleware/auth');
-const route = express.Router();
-const bodyParser = require('body-parser');
-const multer = require('multer');
-const util = require('util');
-const path = require('path');
-const fs = require('fs');
 
 // data Model 
 const {Post} = require("../models/post");
@@ -23,6 +21,7 @@ route.get('/', authValidator, async (req,res) => {
     })
 })
 
+// 파일이 저장될 폴더 생성
 fs.readdir('uploads', (error) => {
   if(error){
     console.log('uploads 폴더를 생성합니다.');
