@@ -15,3 +15,61 @@ export function isEmail(data) {
 
     return ret;
 }
+
+/**
+ * dateFormat 
+ * @param date 날짜(YYYYMMDD) 형식
+ * @param formatter 반환시킬 포멧형식
+ * @returns String
+ */
+export function dateFormat(date, formatter) {
+    let rtn="";
+
+    if(formatter ==="YYYY/MM/DD") {
+
+    }
+
+    return rtn;
+}
+
+
+/**
+ * toggleClass 
+ * @param ele element 객체
+ * @param classNm toggle 시킬 class
+ * @returns String
+ */
+export function toggleClass(ele, classNm) {
+    if(ele.className.indexOf(classNm) < 0) {
+        ele.className = ele.className + " " + classNm;
+    }else {
+        ele.className = ele.className + " " + classNm;
+    }
+}
+
+/**
+ * addClass 
+ * @param ele element 객체
+ * @param classNm toggle 시킬 class
+ * @returns String
+ */
+export function addClass(ele, classNm) {
+    if(ele.className.indexOf(classNm) < 0) {
+        ele.className = ele.className + " " + classNm;
+    }
+}
+
+/**
+ * removeClass 
+ * @param ele element 객체
+ * @param classNm toggle 시킬 class
+ * @returns String
+ */
+export function removeClass(ele, classNm) {
+    if(ele !== null) {
+        if(ele.className.indexOf(classNm) > -1) {
+            ele.className = ele.className.replaceAll(" "+classNm, "")
+                                         .replaceAll(classNm, "");
+        }
+    }
+}
