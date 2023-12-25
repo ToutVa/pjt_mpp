@@ -36,6 +36,8 @@ const FeedItem = (props) => {
         {comment.length > 0 ?
         <div className="comment-area" id="comment-area">
           <FeedComment commentList= {comment}/>
+
+          <div><input className="mb15 mt15" type="text" placeholder="댓글을 입력해 주세요"/></div>
           <div className="more">더보기 +</div>
         </div>
         :<></>
