@@ -66,3 +66,9 @@
   background-color: #888;
   box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.25);
 }
+
+
+.auth-button {
+  width: 20%;
+  height: 30px;
+}

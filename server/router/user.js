@@ -1,22 +1,26 @@
 const express = require("express");
 const route = express.Router();
 
+const { authValidator } = require("../middleware/auth");
+
 // data Model
 const { User } = require("../models/user");
 const { Post } = require("../models/post");
 
-route.get("/mypage", async (req, res) => {
-  const token = req.cookies.accessToken;
-  const userInfo = jwt.decode(token, ACCESS_TOKEN_SECRET);
+// mypage api
+route.get("/mypage", authValidator, async (req, res) => {
+  // authValidator에서 req에 userInfo 저장
+  const userInfo = req.userInfo;
 
   // 유저정보 확인
-  const userPost = await Post.find({ id: userInfo.id });
+  const userPost = await Post.find({ id: userInfo.email }).catch((err) => {
+    res.json({ success: false, err });
+  });
 
-  try {
-    const findPost = await Post.find({ id: id });
-  } catch (err) {
-    res.status(500).json(err);
-  }
+  res.status(200).json({
+    success: true,
+    post: userPost,
+  });
 });
 
 module.exports = route;
