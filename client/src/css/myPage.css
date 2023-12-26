@@ -98,10 +98,6 @@ p.pin::before {
 
 .tab-container > .tab-header {
     display: flex;
-
-}
-.tab-container > .tab-header > .tab:active {
-    width: 120px;
 }
 
 .tab-container > .tab-header > .tab.on {

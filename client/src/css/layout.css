@@ -43,7 +43,7 @@ header {
   padding: 0 20px;
   position: sticky;
   background-color: #fff;
-  z-index: 999;
+  z-index: 998;
 }
 
 
@@ -432,6 +432,10 @@ ul.vertical > li:first-child {
   }
 }
 
+.ReactModalPortal {
+  z-index: 999;
+  position: absolute;
+}
 .ReactModalPortal > .ReactModal__Overlay {
   background-color: #0000009e !important;
 }
