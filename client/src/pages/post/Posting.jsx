@@ -75,7 +75,7 @@ const Posting = (files) => {
                 <thead></thead>
                 <tbody>
                   <tr>
-                    <td>제목</td>
+                    <td><p>제목</p></td>
                     <td><input type="text" name="title" autoFocus placeholder="제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)}/></td>
                   </tr>
                   <tr>

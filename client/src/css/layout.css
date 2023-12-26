@@ -43,6 +43,7 @@ header {
   padding: 0 20px;
   position: sticky;
   background-color: #fff;
+  z-index: 999;
 }
 
 
@@ -233,6 +234,7 @@ footer > p {
 }
 .side-menu > .btn-menu.active + nav > ul {
   opacity: 100;
+  visibility: visible;
 }
 .side-menu > nav > ul {
   position: relative;
@@ -247,6 +249,7 @@ footer > p {
   opacity: 0;
   transition: all 0.3s;
   box-shadow: 2px 2px 5px #00000036;
+  visibility: hidden;
 }
 .side-menu > nav > ul > li {
   list-style: none;
@@ -302,6 +305,8 @@ input {
   border: 1px solid #c9c9c9;
   padding-left: 5px;
   height: 20px;
+  font-size: 12px;
+
   &:focus {
     outline: none !important;
   }
@@ -309,6 +314,50 @@ input {
   &[type=radio] {
     width: 0px;
   }
+}
+
+
+.close {
+  height: 30px;
+  width: 30px;
+  background-image: url('../assets/icon-close.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  cursor: pointer;
+}
+
+
+.btn-area > .left {
+  float: left;
+}
+
+.btn-area > .right {
+  float: right;
+}
+
+.btn-area .btn-primary{
+  padding: 16px;
+  width: 30px;
+  background-color: #00a5ba;
+  border: 1px #00a5ba;
+  color: #fff;
+  border-radius: 10px;
+
+  &.wd10 { width: 10px;}
+  &.wd12 { width: 12px;}
+  &.wd14 { width: 14px;}
+  &.wd16 { width: 16px;}
+  &.wd18 { width: 18px;}
+  &.wd20 { width: 20px;}
+}
+
+
+
+
+p {
+  margin: 0;
+  font-size: 12px;
 }
 
 label.icon {
@@ -321,8 +370,6 @@ label.icon {
   &[for=thunder] {background-image: url('../assets/icon-weather-thunder.png');}
   &[for=rain] {background-image: url('../assets/icon-weather-rain.png');}
   &[for=cloud] {background-image: url('../assets/icon-weather-cloud.png');}
-
-  
 }
 
 input:checked + label.icon {
@@ -356,15 +403,9 @@ ul.vertical > li:first-child {
 }
 
 /*글자 색 지정CSS*/
-.white {
-  color: #ffffff;
-}
-.red {
-  color: #ff0000;
-}
-.green {
-  color: #00ff00;
-}
+.white  {color: #ffffff;}
+.red    {color: #ff0000;}
+.green  {color: #00ff00;}
 
 /*login.css*/
 .login {

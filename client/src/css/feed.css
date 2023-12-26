@@ -88,7 +88,7 @@
     display: flex;
     align-items: center;
     height: 40px;
-    z-index: -1;
+    z-index: 0;
     position: relative;
 
     &:last-of-type {
@@ -97,17 +97,17 @@
 }
 
 .feed > .center > .item > .bottom > .comment-area > .content > .detail {
-    height: 20px;
+    height: 17px;
     top: -15px;
     position: relative;
 }
-.feed > .center > .item > .bottom > .comment-area > .content > div > span {
+.feed > .center > .item > .bottom > .comment-area > .content > .detail > span {
     color: #C9C9C9;
-    font-size: 9px;
+    font-size: 10px;
 }
-.feed > .center > .item > .bottom > .comment-area > .content > div > p {
-    margin: 3px 0;
-    font-size: 11px;
+.feed > .center > .item > .bottom > .comment-area > .content > .detail > p {
+    margin: 1px 0;
+    font-size: 12px;
 }
 .feed > .center > .item > .bottom > .comment-area > .more {
     border-top: 1px solid #6464644d;
@@ -128,7 +128,7 @@
     height: 30px;
     background-color: #C9C9C9;
     border-radius: 50%;
-    margin: 0 8px;
+    cursor: pointer;
 }
 
 .feed > .center > .btn-create-post { 
