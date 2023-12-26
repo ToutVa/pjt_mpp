@@ -67,7 +67,8 @@ route.post("/login", async (req, res) => {
   const user = new User(req.body);
 
   // 요청된 id가 dababase에 존재하는지 확인
-  const findUser = await User.findOne({ id: req.body.email });
+  console.log(req.body);
+  const findUser = await User.findOne({ email: req.body.email });
 
   // findOne 값 없을 시 null
   if (findUser === null) {

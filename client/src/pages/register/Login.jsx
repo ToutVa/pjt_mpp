@@ -38,7 +38,7 @@ const SignupPopup = () => {
 };
 
 const Login = () => {
-  const [id, setId] = useState();
+  const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const setAccessToken = useSetRecoilState(TokenUser);
 
@@ -50,7 +50,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post('/api/auth/login', { id: id, password: password })
+      .post('/api/auth/login', { email: email, password: password })
       .then((res) => {
         const data = res.data;
         if (data.resultMsg) {
@@ -74,7 +74,7 @@ const Login = () => {
         type='text'
         placeholder='아이디를 입력해주세요'
         onChange={(e) => {
-          setId(e.target.value);
+          setEmail(e.target.value);
         }}
       />
       <TextBox

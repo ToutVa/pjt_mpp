@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     required: true, // null 여부
   },
   birth: {
-    type: Number,
+    type: Date,
     required: true,
   },
   gender: {

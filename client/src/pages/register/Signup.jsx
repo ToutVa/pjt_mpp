@@ -7,13 +7,12 @@ import SubmitButton from './SubmitButton.jsx';
 import LinkButton from './LinkButton.jsx';
 
 const Signup = () => {
-  const [id, setId] = useState();
+  const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [name, setName] = useState();
   const [birth, setBirth] = useState();
   const [gender, setGender] = useState();
   const [cellPhone, setCellPhone] = useState();
-  const [email, setEmail] = useState();
 
   // 이메일 인증 관련 변수
   const [authNum, setAuthNum] = useState();
@@ -29,7 +28,7 @@ const Signup = () => {
     e.preventDefault();
     axios
       .post('/api/auth/sign', {
-        id: id,
+        email: email,
         password: password,
         name: name,
         birth: birth,
