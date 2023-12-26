@@ -1,8 +1,49 @@
 const express = require("express");
+const nodemailer = require('nodemailer');
 const route = express.Router();
 
 // data Model
 const { User } = require("../models/user");
+const { stmpTransport } = require("../config/email");
+
+route.put("/emailAuth", async (req, res) => {
+  console.log('emailAuth - start ');
+  console.log('req ' , req.body.email);
+  // 이메일 인증할 시 랜덤번호
+  let generateRandomNumber = function (min, max) {
+    const randNum = Math.floor(Math.random() * (max - min + 1)) + min;
+  
+    return randNum;
+  }
+
+  const number = generateRandomNumber(111111,999999);
+  const email = req.body.email;
+
+  let mailOptions = {
+    from : 'dudrhkd1319@naver.com',
+    to : email,
+    subject : "인증 관련 메일 입니다.",
+    html : "<h1> 인증번호를 입력해주세요 \n\n\n\n\n <h1>" + number
+  }
+
+  stmpTransport.sendMail(mailOptions, (err, response) => {
+    console.log("response : ", response);
+    console.log(err);
+
+
+    if (err) {
+      res.json({result : false, message : '메일 전송에 실패하였습니다.'});
+      stmpTransport.close();
+      return;
+    } else {
+      res.json({result : true, message : '메일 전송에 성공하였습니다. ', authNum : number});
+      stmpTransport.close();
+      return;
+    }
+  });
+  console.log("22222222222222 ");
+
+});
 
 route.post("/sign", async (req, res) => {
   // 회원가입 할때 필요한 정보들을 client 에서 가져옴
@@ -26,7 +67,7 @@ route.post("/login", async (req, res) => {
   const user = new User(req.body);
 
   // 요청된 id가 dababase에 존재하는지 확인
-  const findUser = await User.findOne({ id: req.body.id });
+  const findUser = await User.findOne({ id: req.body.email });
 
   // findOne 값 없을 시 null
   if (findUser === null) {

@@ -29,10 +29,13 @@ const authValidator = async (req, res, next) => {
 
   // 토큰 만료정보 확인
   const verifyToken = getTokenVerify(token);
+  const userInfo = jwt.decode(token, ACCESS_TOKEN_SECRET);
+  req.userInfo = userInfo;
+  console.log(verifyToken);
 
   // access token 만료시
   if (verifyToken == "jwt expired") {
-    const userInfo = jwt.decode(token, ACCESS_TOKEN_SECRET);
+    
 
     // 유저정보 확인
     const findUser = await User.findOne({ id: userInfo.id });
@@ -56,6 +59,14 @@ const authValidator = async (req, res, next) => {
         httpOnly: true,
       });
     }
+  } else if (verifyToken == "jwt malformed") {
+    return res.status(401).json({
+      message: "Token error.",
+    });
+  } else if (verifyToken == "invalid signature") {
+    return res.status(401).json({
+      message: "Token invalid.",
+    });
   }
 
   next();

@@ -1,9 +1,9 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import "css/post.css";
 import baseImgUrl from  "assets/icon-file.svg";
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
+import axios from "axios";
 
 
 
@@ -22,8 +22,8 @@ const PostDragDrop = () => {
   const addFile = (fileArr) => {
     console.log("fileArr",fileArr.length);
     console.log("files",files);
-    if(fileArr.length == 0){
-      if(files == undefined){
+    if(fileArr.length === 0){
+      if(files === undefined){
         var imgWrap = document.getElementById('preview');
         imgWrap.src = baseImgUrl;
       }
@@ -84,9 +84,9 @@ const PostDragDrop = () => {
 
         <p className="preview-msg">사진을 여기에 끌어다 놓으세요.</p>
         <div>
-          <input type="file" className="file" ref={fileInput}
-                multiple    accept = "image/jpg,image/png,image/jpeg"
-                onChange={onLoadFile} />
+          <input type="file" id = "selectedFiles" className="file" ref={fileInput}
+                 multiple    accept = "image/jpg,image/png,image/jpeg"
+                 onChange={onLoadFile} />
           <Button onClick={handleButtonClick}>컴퓨터에서 선택</Button>
           <Button onClick={handleSubmit}>이미지선택 완료</Button>
         </div>
