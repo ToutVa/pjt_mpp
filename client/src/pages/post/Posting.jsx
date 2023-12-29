@@ -7,10 +7,12 @@ import PostTimeline from 'pages/post/PostTimeline';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const Posting = (files) => {
+const Posting = (props) => {
+  // parameter 설정
   const location = useLocation();
   const selectFiles = { ...location.state.files };
 
+  const [files, setFiles] = useState();
   const [title, setTitle] = useState();
   const [filmTime, setFilmTime] = useState();
   const [filmLocation, setFilmLocation] = useState();
@@ -21,18 +23,22 @@ const Posting = (files) => {
     .email;
   const registDate = new Date().toLocaleString();
 
+  // 화면 로딩시 실행
   useEffect(() => {
-    for (let index = 0; index < Object.keys(selectFiles).length; index++) {
-      var reader = new FileReader();
+    console.log(selectFiles);
+    setFiles(selectFiles);
 
-      reader.onload = function () {
-        var dataURL = reader.result;
-        var imgWrap = document.getElementById('preview');
-        imgWrap.src = dataURL;
-      };
+    // file reader설정
+    var reader = new FileReader();
 
-      reader.readAsDataURL(selectFiles[index]);
-    }
+    reader.onload = function () {
+      var dataURL = reader.result;
+      var imgWrap = document.getElementById('preview');
+      imgWrap.src = dataURL;
+    };
+
+    // 미리보기 설정 
+    reader.readAsDataURL(selectFiles[0]);
   }, []);
 
   const handleSubmit = async (e) => {
@@ -71,11 +77,28 @@ const Posting = (files) => {
     }
   };
 
+  const imgChanger= (e) => {
+    const idx = e.target.id.slice(-1);
+    
+     // file reader설정
+     var reader = new FileReader();
+
+     reader.onload = function () {
+       var dataURL = reader.result;
+       var imgWrap = document.getElementById('preview');
+       imgWrap.src = dataURL;
+     };
+ 
+     // 미리보기 설정 
+     reader.readAsDataURL(selectFiles[idx]);
+
+  }
+
   return (
     <div className='main-frame post'>
       <div className='left'></div>
       <div className='center'>
-        <PostTimeline files={files} />
+        <PostTimeline files={files} propsFunction={imgChanger} />
         <form className='img-contain' onSubmit={handleSubmit}>
           <div className='img-wrap'>
             <img

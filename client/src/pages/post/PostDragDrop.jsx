@@ -19,8 +19,9 @@ const PostDragDrop = () => {
   /* 파일 state 저장이벤트 */
   const addFile = (fileArr) => {
     console.log('files', files);
+    console.log(fileArr);
     // file length 0 일경우 base URL 설정
-    if (fileArr.length === 0 && files === undefined) {
+    if (fileArr.length === 0) {
       const imgWrap = document.getElementById('preview');
       imgWrap.src = baseImgUrl;
       return;
