@@ -34,9 +34,10 @@ const upload = multer({
     destination(req,file,cb){
       cb(null, 'uploads/');
     },
-    filename(req,res,cb){
-      const ext = path.extname(file.originalname);
-      cb(null, path.basename(file.originalname, ext) + new Date().valueOf() + ext);
+    filename(req,file,cb){
+      console.log(file);
+      const newFileName = file.originalname;
+      cb(null, newFileName);
     }
   }),
   limits: {
@@ -45,9 +46,7 @@ const upload = multer({
 });
 
 // 게시글 생성
-route.post('/create', upload.single('img'), async (req, res) => {
-  console.log('게시글 생성'+JSON.parse(req.body.fileInfo));
-
+route.post('/create', upload.single('file'), async (req, res) => {
   const post = new Post(JSON.parse(req.body.fileInfo));
   
   const result = await post.save().then(() => {

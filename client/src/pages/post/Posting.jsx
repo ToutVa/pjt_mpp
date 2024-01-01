@@ -37,18 +37,26 @@ const Posting = (props) => {
       imgWrap.src = dataURL;
     };
 
-    // 미리보기 설정 
+    // 미리보기 설정
     reader.readAsDataURL(selectFiles[0]);
   }, []);
 
+  // data api
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     const headers = { 'Content-Type': 'multipart/form-data' };
 
-    console.log('selectFiles', selectFiles);
+    // fileupload multi array로 변경해봤는데 실패함 
+    let fileAry = [];
+    for (let key in selectFiles) {
+      fileAry.push(selectFiles[key]);
+    }
 
-    // formData.append("file", selectFiles[0]);
+    console.log(fileAry);
+
+    // fileAry[0] 으로 진행해도 안됨 오? 
+    formData.append("file", selectFiles[0]);
     formData.append(
       'fileInfo',
       JSON.stringify({
@@ -77,29 +85,28 @@ const Posting = (props) => {
     }
   };
 
-  const imgChanger= (e) => {
+  const imgChanger = (e) => {
     const idx = e.target.id.slice(-1);
-    
-     // file reader설정
-     var reader = new FileReader();
 
-     reader.onload = function () {
-       var dataURL = reader.result;
-       var imgWrap = document.getElementById('preview');
-       imgWrap.src = dataURL;
-     };
- 
-     // 미리보기 설정 
-     reader.readAsDataURL(selectFiles[idx]);
+    // file reader설정
+    var reader = new FileReader();
 
-  }
+    reader.onload = function () {
+      var dataURL = reader.result;
+      var imgWrap = document.getElementById('preview');
+      imgWrap.src = dataURL;
+    };
+
+    // 미리보기 설정
+    reader.readAsDataURL(selectFiles[idx]);
+  };
 
   return (
     <div className='main-frame post'>
       <div className='left'></div>
       <div className='center'>
         <PostTimeline files={files} propsFunction={imgChanger} />
-        <form className='img-contain' onSubmit={handleSubmit}>
+        <form className='img-contain' encType='multipart/form-data' onSubmit={handleSubmit}>
           <div className='img-wrap'>
             <img
               id='preview'
