@@ -121,7 +121,7 @@ const Posting = (props) => {
               <tbody>
                 <tr>
                   <td>
-                    <p>제목</p>
+                    제목
                   </td>
                   <td>
                     <input
@@ -243,9 +243,20 @@ const Posting = (props) => {
           </div>
           <div className='map'>지도영역</div>
           <input type='text' placeholder='#태그' />
-          <button type='submit' className='btn-primary mt15'>
-            게시물 등록
-          </button>
+          <div className='btn-group mt20'>
+            <div className='left'>
+              <button type='submit' className='btn-cancel wd70'>
+                취소
+              </button>
+            </div>
+            <div className='right'>
+              <button type='submit' className='btn-primary wd110'>
+                게시물 등록
+              </button>
+
+            </div>
+          </div>
+          
         </form>
       </div>
       <div className='right'></div>
