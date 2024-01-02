@@ -188,23 +188,3 @@
     background-color: grey;
     cursor: pointer;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-.btn-primary{
-    padding: 16px;
-    width: 100%;
-    background-color: #00a5ba;
-    border: 1px #00a5ba;
-    color: #fff;
-    border-radius: 10px;
-}

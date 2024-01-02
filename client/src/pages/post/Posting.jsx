@@ -170,7 +170,7 @@ const Posting = (props) => {
                       value='sun'
                       onChange={(e) => setFilmWeather(e.target.value)}
                     />
-                    <label for='sun' className='icon'></label>
+                    <label htmlFor='sun' className='icon'></label>
                     <input
                       type='radio'
                       id='cloud'
@@ -178,7 +178,7 @@ const Posting = (props) => {
                       value='cloud'
                       onChange={(e) => setFilmWeather(e.target.value)}
                     />
-                    <label for='cloud' className='icon'></label>
+                    <label htmlFor='cloud' className='icon'></label>
                     <input
                       type='radio'
                       id='rain'
@@ -186,7 +186,7 @@ const Posting = (props) => {
                       value='rain'
                       onChange={(e) => setFilmWeather(e.target.value)}
                     />
-                    <label for='rain' className='icon'></label>
+                    <label htmlFor='rain' className='icon'></label>
                     <input
                       type='radio'
                       id='thunder'
@@ -194,14 +194,49 @@ const Posting = (props) => {
                       value='thunder'
                       onChange={(e) => setFilmWeather(e.target.value)}
                     />
-                    <label for='thunder' className='icon'>
+                    <label htmlFor='thunder' className='icon'>
                       {' '}
                     </label>
                   </td>
                 </tr>
                 <tr>
                   <td>계절</td>
-                  <td>겨울</td>
+                  <td>
+                    <input
+                      type='radio'
+                      id='spring'
+                      name='seasons'
+                      value='spring'
+                      onChange={(e) => setFilmSeason(e.target.value)}
+                    />
+                    <label htmlFor='spring' className='icon'></label>
+                    <input
+                      type='radio'
+                      id='summer'
+                      name='seasons'
+                      value='summer'
+                      onChange={(e) => setFilmSeason(e.target.value)}
+                    />
+                    <label htmlFor='summer' className='icon'></label>
+                    <input
+                      type='radio'
+                      id='fall'
+                      name='seasons'
+                      value='fall'
+                      onChange={(e) => setFilmSeason(e.target.value)}
+                    />
+                    <label htmlFor='fall' className='icon'></label>
+                    <input
+                      type='radio'
+                      id='winter'
+                      name='seasons'
+                      value='winter'
+                      onChange={(e) => setFilmSeason(e.target.value)}
+                    />
+                    <label htmlFor='winter' className='icon'>
+                      {' '}
+                    </label>
+                  </td>
                 </tr>
               </tbody>
             </table>

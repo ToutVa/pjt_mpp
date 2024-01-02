@@ -50,7 +50,7 @@ export function toggleClass(ele, classNm) {
 /**
  * addClass 
  * @param ele element 객체
- * @param classNm toggle 시킬 class
+ * @param classNm 추가할 class
  * @returns String
  */
 export function addClass(ele, classNm) {
@@ -62,7 +62,7 @@ export function addClass(ele, classNm) {
 /**
  * removeClass 
  * @param ele element 객체
- * @param classNm toggle 시킬 class
+ * @param classNm 지울 class
  * @returns String
  */
 export function removeClass(ele, classNm) {

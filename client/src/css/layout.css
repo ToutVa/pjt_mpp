@@ -370,6 +370,10 @@ label.icon {
   &[for=thunder] {background-image: url('../assets/icon-weather-thunder.png');}
   &[for=rain] {background-image: url('../assets/icon-weather-rain.png');}
   &[for=cloud] {background-image: url('../assets/icon-weather-cloud.png');}
+  &[for=spring] {background-image: url('../assets/icon-seasons-spring.svg');}
+  &[for=summer] {background-image: url('../assets/icon-seasons-summer.svg');}
+  &[for=fall] {background-image: url('../assets/icon-seasons-fall.svg');}
+  &[for=winter] {background-image: url('../assets/icon-seasons-winter.svg');}
 }
 
 input:checked + label.icon {
