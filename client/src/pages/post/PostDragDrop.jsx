@@ -22,6 +22,8 @@ const PostDragDrop = () => {
     console.log(fileArr);
     // file length 0 일경우 base URL 설정
     if (fileArr.length === 0) {
+      // 기존에 선택한 파일 체크 
+      if (files !== undefined) return;
       const imgWrap = document.getElementById('preview');
       imgWrap.src = baseImgUrl;
       return;
@@ -34,17 +36,20 @@ const PostDragDrop = () => {
       return;
     }
 
-    // file reader 생성 및 초기 이미지 셋팅 
-    var reader = new FileReader();
+    // file reader 생성 및 초기 이미지 셋팅
+    const reader = new FileReader();
     reader.onload = function () {
-      var dataURL = reader.result;
-      var imgWrap = document.getElementById('preview');
+
+      
+      const dataURL = reader.result;
+      const imgWrap = document.getElementById('preview');
       imgWrap.src = dataURL;
     };
 
-    // file 세팅  
+    // file 세팅
     setFiles(fileArr);
-    reader.readAsDataURL(fileArr[fileNum]); // fileNum 초기값  0 
+    console.log('fileArr => ', fileArr[0], fileNum);
+    reader.readAsDataURL(fileArr[0]); // fileNum 초기값  0
   };
 
   //File OnChange 이벤트 함수
@@ -68,7 +73,7 @@ const PostDragDrop = () => {
 
   // file 확인 이벤트
   const handleSubmit = () => {
-    if (files === undefined) {
+    if (files === undefined || files.length === 0) {
       alert('선택된 이미지가 존재하지 않습니다.');
     }
     // posting 화면으로 이동
@@ -92,7 +97,7 @@ const PostDragDrop = () => {
   // setState 비동기 오류로 인해 useEffect 함수 따로 설정하여 로직 추가. file 미리보기로직
   useEffect(() => {
     // file undefined 상태면 return
-    if (files === undefined) return;
+    if (files === undefined || files.length === 0) return;
 
     // file reader 호출
     const reader = new FileReader();
@@ -124,8 +129,6 @@ const PostDragDrop = () => {
           <img id='preview' src={baseImgUrl} alt='' />
           <button onClick={() => onClickImgMove('right')}>right</button>
         </div>
-
-        <p className='preview-msg'>사진을 여기에 끌어다 놓으세요.</p>
         <div>
           <input
             type='file'
@@ -136,7 +139,22 @@ const PostDragDrop = () => {
             accept='image/jpg,image/png,image/jpeg'
             onChange={onLoadFile}
           />
-          <Button onClick={handleButtonClick}>컴퓨터에서 선택</Button>
+          <div>
+              <p className='preview-msg'>사진을 여기에 끌어다 놓으세요.</p>
+              <div className='btn-group mt20 flex'>
+                <div className=''>
+                  <button type='submit' className='btn-primary wd150' onClick={handleButtonClick}>
+                    사진추가
+                  </button>
+                </div>
+                <div className=''>
+                  <button type='submit' className='btn-cancel wd150'>
+                    사진삭제
+                  </button>
+
+                </div>
+              </div>
+          </div>
           <Button onClick={handleSubmit}>이미지선택 완료</Button>
         </div>
       </div>
@@ -147,9 +165,9 @@ const PostDragDrop = () => {
 const Button = styled.button`
   width: 24rem;
   height: 2rem;
-  background-color: rgb(97, 184, 156);
+  background-color: #00a5ba;
   border-radius: 1rem;
-  border: 1px rgb(97, 184, 156);
+  border: 1px #00a5ba;
   color: #fff;
   margin-bottom: 10px;
 `;
