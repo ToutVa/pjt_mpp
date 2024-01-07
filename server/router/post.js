@@ -4,6 +4,7 @@ const multer  = require('multer');
 const path    = require('path');
 const fs      = require('fs');
 const { authValidator } = require('../middleware/auth');
+const dayjs = require('dayjs');
 
 // data Model 
 const {Post} = require("../models/post");
@@ -46,9 +47,20 @@ const upload = multer({
 });
 
 // 게시글 생성
-route.post('/create', upload.single('file'), async (req, res) => {
+// upload.fields([{name:'file', maxCoutn :10}])
+// upload.array('file', 10)
+// upload.single('file')
+route.post('/create', authValidator, upload.fields([{name:'file', maxCoutn :10}]), async (req, res) => {
+  console.log("req.body =>", req.body);
+
+  // 이용자 Email, 등록일시 셋팅
   const post = new Post(JSON.parse(req.body.fileInfo));
+  const d = dayjs();
+
+  post.userEmail  = req.userInfo.email;
+  post.registDate = d.format('YYYY/MM/DD HH:mm:ss');
   
+  // 저장
   const result = await post.save().then(() => {
     res.status(200).json({
         success : true
@@ -57,10 +69,6 @@ route.post('/create', upload.single('file'), async (req, res) => {
   }).catch((err) => {
     res.json({success : false, err})
   })
-
-  // res.json({
-  //   url: `/img/${req.file.file}`
-  // })
 });
 
 module.exports= route;

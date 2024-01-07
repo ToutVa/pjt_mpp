@@ -25,7 +25,7 @@ const PostTimeline = (props) => {
           id={'preview' + key}
           src={baseImgUrl}
           alt=''
-          style={{ width: 150, height: 150, marginLeft: 10, marginRight: 10}}
+          style={{ width: 100, height: 100, marginLeft: 10, marginRight: 10}}
           onClick={(e) => { props.propsFunction(e)}}
         />
       );
@@ -42,23 +42,19 @@ const PostTimeline = (props) => {
     for (let key in files) {
       const reader = new FileReader();
       reader.onload = function () {
-        var dataURL = reader.result;
-        var imgWrap = document.getElementById('preview' + key);
+        let dataURL = reader.result;
+        let imgWrap = document.getElementById('preview' + key);
         imgWrap.src = dataURL;
       };
 
       // 미리보기 설정
-      reader.readAsDataURL(files[key]);
+      reader.readAsDataURL(files[key]); 
     }
   }, [imgAry]);
 
   return (
     <div className='time-line'>
       <div className='area'>{imgAry}</div>
-      <div className='btn-grp'>
-        <button>사진추가</button>
-        <button>사진삭제</button>
-      </div>
       <div className='bar'>
         <div className='point'></div>
       </div>
