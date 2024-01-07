@@ -336,16 +336,21 @@ input {
   float: right;
 }
 
-button {font-size: 14px;}
-.btn-group button {
+button, Link {font-size: 14px;}
+.btn-group button,
+.btn-group a {
+  font-size: 14px;
+  display: inline-block;
   padding: 5px;
-  width: 70px;
-  height: 35px;
+  width: 50px;
   border: 1px #00a5ba;
   color: #fff;
   border-radius: 10px;
   transition: all 0.2s;
-  
+  margin-left: 5px;
+  text-align: center;
+
+  &.wd50 { width: 50px;}
   &.wd70 { width: 70px;}
   &.wd90 { width: 90px;}
   &.wd110 { width: 110px;}
@@ -353,12 +358,14 @@ button {font-size: 14px;}
   &.wd150 { width: 150px;}
   &:hover {filter: brightness(1.15);}
   &:active {filter: brightness(0.8);}
+
+  &:first-of-type {margin-left: 0px;}
 }
 .btn-group .btn-primary{
   background-color: #00a5ba;
 }
 
-.btn-group  .btn-cancel{
+.btn-group .btn-cancel{
   background-color: #9e9e9e;
 }
 
