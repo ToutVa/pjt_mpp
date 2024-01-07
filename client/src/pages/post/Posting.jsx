@@ -6,6 +6,7 @@ import { useLocation } from 'react-router';
 import PostTimeline from 'pages/post/PostTimeline';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { Link } from 'react-router-dom';
 
 const Posting = (props) => {
   // parameter 설정
@@ -245,18 +246,16 @@ const Posting = (props) => {
           <input type='text' placeholder='#태그' />
           <div className='btn-group mt20'>
             <div className='left'>
-              <button type='submit' className='btn-cancel wd70'>
+              <Link to="/feed" className='btn-cancel wd70'>
                 취소
-              </button>
+              </Link>
             </div>
             <div className='right'>
               <button type='submit' className='btn-primary wd110'>
                 게시물 등록
               </button>
-
             </div>
           </div>
-          
         </form>
       </div>
       <div className='right'></div>
