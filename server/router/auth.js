@@ -1,49 +1,11 @@
 const express = require("express");
+const crypto = require("crypto");
 const nodemailer = require('nodemailer');
 const route = express.Router();
 
 // data Model
 const { User } = require("../models/user");
 const { stmpTransport } = require("../config/email");
-
-route.put("/emailAuth", async (req, res) => {
-  console.log('emailAuth - start ');
-  console.log('req ' , req.body.email);
-  // 이메일 인증할 시 랜덤번호
-  let generateRandomNumber = function (min, max) {
-    const randNum = Math.floor(Math.random() * (max - min + 1)) + min;
-  
-    return randNum;
-  }
-
-  const number = generateRandomNumber(111111,999999);
-  const email = req.body.email;
-
-  let mailOptions = {
-    from : 'zv9612@naver.com',
-    to : email,
-    subject : "인증 관련 메일 입니다.",
-    html : "<h1> 인증번호를 입력해주세요 \n\n\n\n\n <h1>" + number
-  }
-
-  stmpTransport.sendMail(mailOptions, (err, response) => {
-    console.log("response : ", response);
-    console.log(err);
-
-
-    if (err) {
-      res.json({result : false, message : '메일 전송에 실패하였습니다.'});
-      stmpTransport.close();
-      return;
-    } else {
-      res.json({result : true, message : '메일 전송에 성공하였습니다. ', authNum : number});
-      stmpTransport.close();
-      return;
-    }
-  });
-  console.log("22222222222222 ");
-
-});
 
 route.post("/sign", async (req, res) => {
   // 회원가입 할때 필요한 정보들을 client 에서 가져옴
@@ -61,6 +23,44 @@ route.post("/sign", async (req, res) => {
     .catch((err) => {
       res.json({ success: false, err });
     });
+});
+
+route.put("/emailVerify",  async (req,res) => {
+  console.log('verify');
+  const token = crypto.randomBytes(20).toString('hex');
+  const expires = new Date();
+  expires.setHours(expires.getHours() + 24);  // 24시간 후 만료.
+
+  const {email} = req.body;
+  const mailOptions = {
+      from : 'dudrhkd1319@naver.com',
+      to : 'zv9612@naver.com',
+      subject : "Verify your email address",
+      html : `<p> 하단 링크를 클릭하여 이메일을 읜증하여 주세요. </p>
+              <P> <a href="http://localhost:3000/verify-email/?email=${email}?token=${token}">Verify email</a></p>
+              <p> 해당 이메일은 ${expires}에 만료됩니다.</p>`
+
+  }
+
+  stmpTransport.sendMail(mailOptions, (err, response) => {
+      console.log("response : ", response);
+      console.log(err);
+  
+  
+      if (err) {
+        res.json({result : false, message : '메일 전송에 실패하였습니다.'});
+        stmpTransport.close();
+        return;
+      } else {
+        res.json({result : true, message : '메일 전송에 성공하였습니다. '});
+        stmpTransport.close();
+        return;
+      }
+  });
+});
+
+route.put("/emailAuth/:email", async (req, res) => {
+
 });
 
 route.post("/login", async (req, res) => {

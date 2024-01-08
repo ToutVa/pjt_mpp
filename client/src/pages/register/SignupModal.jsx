@@ -27,6 +27,7 @@ const Signup = () => {
 
   const from = location?.state?.redirectedFrom?.pathname || '/';
 
+  // submit 
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
@@ -41,24 +42,23 @@ const Signup = () => {
       .then((res) => {
         console.log(res);
         alert(res.data.message);
-        navigate(from);
+        emailVerify();
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const emailAuth = (e) => {
-    e.preventDefault();
+  // email 인증
+  const emailVerify = (e) => {
     axios
-      .put('/api/auth/emailAuth', {
+      .put('/api/auth/emailVerify', {
         email: email,
       })
       .then((res) => {
         console.log(res);
         alert(res.data.message);
-        setIsSwitch(false);
-        setAuthNum(res.data.authNum);
+        navigate(from);
       })
       .catch((err) => {
         console.log(err);
@@ -101,7 +101,6 @@ const Signup = () => {
                 width: '80px',
                 height: '30px',
               }}
-              onClick={emailAuth}
             >
               <div className='button-text'>메일발송</div>
             </button>
