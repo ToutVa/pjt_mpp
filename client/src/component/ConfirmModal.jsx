@@ -1,12 +1,11 @@
 import React from 'react';
 import Modal from 'react-modal';
 import '../css/layout.css';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { confirmModalState, alertModalState } from 'comm/recoil/PopupAtom';
+import { useRecoilState } from 'recoil';
+import { confirmModalState } from 'comm/recoil/PopupAtom';
 
 const ConfirmModal = () => {
   const [modalState, setModalState] = useRecoilState(confirmModalState);
-  const setAlertModalState = useSetRecoilState(alertModalState);
   return (
     <Modal
       style={{

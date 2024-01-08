@@ -2,14 +2,13 @@ import axios from 'axios';
 import { React, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import Modal from 'react-modal';
-import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilState } from 'recoil';
 import { TokenUser } from 'comm/recoil/TokenAtom';
 import {
   loginModalState,
   signupModalState,
   alertModalState,
   confirmModalState,
-  callbackSelector,
 } from 'comm/recoil/PopupAtom';
 import '../../css/register.css';
 import TextBox from './TextBox';
