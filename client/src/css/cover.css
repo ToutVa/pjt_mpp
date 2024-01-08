@@ -84,23 +84,3 @@
   margin: 40px;
   color: #999999;
 }
-
-.login-popup {
-  width: 360px !important;
-  height: 480px !important;
-  border-radius: 20px;
-  position: absolute;
-  left: calc(50% - 180px) !important;
-  top: calc(50% - 240px) !important;
-  border-radius: 20px;
-}
-
-.signup-popup {
-  width: 360px !important;
-  height: 480px !important;
-  border-radius: 20px;
-  position: absolute;
-  left: calc(50% - 180px) !important;
-  top: calc(50% - 240px) !important;
-  border-radius: 20px;
-}

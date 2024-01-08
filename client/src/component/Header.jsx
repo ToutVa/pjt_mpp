@@ -1,66 +1,14 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { TokenUser, isLoginSelector } from 'comm/recoil/TokenAtom';
-import Modal from 'react-modal';
+import { loginModalState, signupModalState } from 'comm/recoil/PopupAtom';
+
 import axios from 'axios';
-import Login from 'pages/register/Login';
-import Signup from 'pages/register/Signup';
-
-/* eslint-disable jsx-a11y/alt-text */
-
-const LoginPopup = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  return (
-    <>
-      <Link
-        className='item'
-        onClick={() => {
-          setModalIsOpen(true);
-        }}
-      >
-        <p className='linked-text white'>login</p>
-      </Link>
-      <Modal
-        className='login-popup'
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        ariaHideApp={false}
-      >
-        <Login />
-      </Modal>
-    </>
-  );
-};
-
-const SignupPopup = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  return (
-    <>
-      <Link
-        className='item'
-        onClick={() => {
-          setModalIsOpen(true);
-        }}
-      >
-        <p className='linked-text white'>sing up</p>
-      </Link>
-      <Modal
-        className='signup-popup'
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        ariaHideApp={false}
-      >
-        <Signup />
-      </Modal>
-    </>
-  );
-};
 
 // navMenu login정보에 맞게 활성화
 const Header = ({ type }) => {
+  const setLoginModalState = useSetRecoilState(loginModalState);
+  const setSignupModalState = useSetRecoilState(signupModalState);
   const isLogin = useRecoilValue(isLoginSelector);
   const setAccessToken = useSetRecoilState(TokenUser);
 
@@ -87,16 +35,22 @@ const Header = ({ type }) => {
           <div className='cover-logo' />
         </Link>
         <div className='flex'>
-          <LoginPopup />
-          {isLogin === false ? (
-            <SignupPopup />
-          ) : (
-            <Link className='item' to='/'>
-              <p onClick={fn_logout} className='linked-text white'>
-                logout
-              </p>
-            </Link>
-          )}
+          <Link
+            className='item'
+            onClick={() => {
+              setLoginModalState(true);
+            }}
+          >
+            <p className='linked-text white'>login</p>
+          </Link>
+          <Link
+            className='item'
+            onClick={() => {
+              setSignupModalState(true);
+            }}
+          >
+            <p className='linked-text white'>signup</p>
+          </Link>
         </div>
       </header>
     );

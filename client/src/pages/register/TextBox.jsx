@@ -1,10 +1,16 @@
 import React from 'react';
 import '../../css/component.css';
-import '../../css/login.css';
+import '../../css/register.css';
 
 const TextBox = (e) => {
   return (
-    <div className='textBox'>
+    <div
+      className='textBox'
+      style={{
+        'width': e.width || 300 + 'px',
+        'height': e.height || 30 + 'px',
+      }}
+    >
       <input
         className='input'
         id={e.id}
