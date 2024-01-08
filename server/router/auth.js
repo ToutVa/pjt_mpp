@@ -20,7 +20,7 @@ route.put("/emailAuth", async (req, res) => {
   const email = req.body.email;
 
   let mailOptions = {
-    from : 'dudrhkd1319@naver.com',
+    from : 'zv9612@naver.com',
     to : email,
     subject : "인증 관련 메일 입니다.",
     html : "<h1> 인증번호를 입력해주세요 \n\n\n\n\n <h1>" + number
