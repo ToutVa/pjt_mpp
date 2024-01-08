@@ -20,21 +20,17 @@ const Posting = (props) => {
   const [filmWeather, setFilmWeather] = useState();
   const [filmSeason, setFilmSeason] = useState();
 
-  const userEmail = JSON.parse(window.localStorage.getItem('userData')).userData
-    .email;
-  const registDate = new Date().toLocaleString();
-
   // 화면 로딩시 실행
   useEffect(() => {
     console.log(selectFiles);
     setFiles(selectFiles);
 
     // file reader설정
-    var reader = new FileReader();
+    const reader = new FileReader();
 
     reader.onload = function () {
-      var dataURL = reader.result;
-      var imgWrap = document.getElementById('preview');
+      let dataURL = reader.result;
+      let imgWrap = document.getElementById('preview');
       imgWrap.src = dataURL;
     };
 
@@ -55,6 +51,7 @@ const Posting = (props) => {
     }
 
     console.log(fileAry);
+    console.log(selectFiles);
 
     // fileAry[0] 으로 진행해도 안됨 오? 
     formData.append("file", selectFiles[0]);
@@ -65,9 +62,7 @@ const Posting = (props) => {
         filmTime,
         filmLocation,
         filmWeather,
-        filmSeason,
-        userEmail,
-        registDate,
+        filmSeason
       })
     );
 
@@ -86,15 +81,17 @@ const Posting = (props) => {
     }
   };
 
+  // img변경 로직 callback
   const imgChanger = (e) => {
     const idx = e.target.id.slice(-1);
 
     // file reader설정
-    var reader = new FileReader();
+    const reader = new FileReader();
 
     reader.onload = function () {
-      var dataURL = reader.result;
-      var imgWrap = document.getElementById('preview');
+      let dataURL = reader.result;
+      let imgWrap = document.getElementById('preview');
+
       imgWrap.src = dataURL;
     };
 
@@ -140,12 +137,15 @@ const Posting = (props) => {
                     <DatePicker
                       dateFormat='yyyy년 MM월 dd일 a hh시'
                       dateFormatCalendar='yyyy년 MM월'
-                      locale='ko'
                       showTimeSelect
                       timeFormat='HH:mm'
-                      timeIntervals={60}
+                      timeIntervals={1}
                       timeCaption='촬영시간'
                       placeholderText='사진 촬영한 시간을 입력해주세요'
+                      houldCloseOnSelect // 날짜를 선택하면 datepicker가 자동으로 닫힘
+                      formatWeekDay={(nameOfDay) => nameOfDay.substring(0, 1)}
+                      minDate={new Date('2000-01-01')} // minDate 이전 날짜 선택 불가
+                      maxDate={new Date()} // maxDate 이후 날짜 선택 불가
                       selected={filmTime}
                       onChange={(data) => setFilmTime(data)}
                     />
