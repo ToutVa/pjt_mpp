@@ -88,16 +88,16 @@ const Posting = (props) => {
     // file reader설정
     const reader = new FileReader();
 
-    reader.onload = function () {
-      let dataURL = reader.result;
-      let imgWrap = document.getElementById('preview');
+     reader.onload = function () {
+       let dataURL = reader.result;
+       let imgWrap = document.getElementById('preview');
+       imgWrap.src = dataURL;
+     };
+ 
+     // 미리보기 설정 
+     reader.readAsDataURL(selectFiles[idx]);
 
-      imgWrap.src = dataURL;
-    };
-
-    // 미리보기 설정
-    reader.readAsDataURL(selectFiles[idx]);
-  };
+  }
 
   return (
     <div className='main-frame post'>

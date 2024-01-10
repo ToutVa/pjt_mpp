@@ -39,17 +39,14 @@ const PostDragDrop = () => {
     // file reader 생성 및 초기 이미지 셋팅
     const reader = new FileReader();
     reader.onload = function () {
-
-      
-      const dataURL = reader.result;
-      const imgWrap = document.getElementById('preview');
+      let dataURL = reader.result;
+      let imgWrap = document.getElementById('preview');
       imgWrap.src = dataURL;
     };
 
     // file 세팅
     setFiles(fileArr);
-    console.log('fileArr => ', fileArr[0], fileNum);
-    reader.readAsDataURL(fileArr[0]); // fileNum 초기값  0
+    reader.readAsDataURL(fileArr[fileNum]); // fileNum 초기값  0 
   };
 
   //File OnChange 이벤트 함수
@@ -86,7 +83,7 @@ const PostDragDrop = () => {
     if (val === 'left' && fileNum > 0) {
       setFileNum(fileNum - 1);
       return;
-    } 
+    }
 
     // right일 때, max값 설정
     if (val === 'right' && fileNum < files.length - 1) {
