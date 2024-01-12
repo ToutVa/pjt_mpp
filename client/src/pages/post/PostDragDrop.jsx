@@ -125,9 +125,9 @@ const PostDragDrop = () => {
         <h4>새 게시물 만들기</h4>
 
         <div className='img-wrap'>
-          <button onClick={() => onClickImgMove('left')}>left</button>
+          {files != null ? <button className="left-arrow" onClick={() => onClickImgMove('left')} /> : <div></div>}
           <img id='preview' src={baseImgUrl} alt='' />
-          <button onClick={() => onClickImgMove('right')}>right</button>
+          {files != null ? <button className="right-arrow" onClick={() => onClickImgMove('right')} />: <div></div>}
         </div>
         <div>
           <input
@@ -141,21 +141,23 @@ const PostDragDrop = () => {
           />
           <div>
               <p className='preview-msg'>사진을 여기에 끌어다 놓으세요.</p>
-              <div className='btn-group mt20 flex'>
-                <div className=''>
+              <div className='btn-group mt20'> 
+                <div className='row'>
                   <button type='submit' className='btn-primary wd150' onClick={handleButtonClick}>
                     사진추가
                   </button>
-                </div>
-                <div className=''>
                   <button type='submit' className='btn-cancel wd150'>
                     사진삭제
                   </button>
-
+                </div>
+              </div>
+              <div className='btn-group mt10'> 
+                <div className='row medium'>
+                  <button className="btn-primary auto" onClick={handleSubmit}>이미지선택 완료</button>
                 </div>
               </div>
           </div>
-          <Button onClick={handleSubmit}>이미지선택 완료</Button>
+          
         </div>
       </div>
     </>
@@ -163,8 +165,6 @@ const PostDragDrop = () => {
 };
 
 const Button = styled.button`
-  width: 24rem;
-  height: 2rem;
   background-color: #00a5ba;
   border-radius: 1rem;
   border: 1px #00a5ba;
