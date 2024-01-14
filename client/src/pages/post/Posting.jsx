@@ -7,11 +7,12 @@ import PostTimeline from 'pages/post/PostTimeline';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Link } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { postingFiles } from 'comm/recoil/FileAtom';
 
 const Posting = (props) => {
   // parameter 설정
-  const location = useLocation();
-  const selectFiles = { ...location.state.files };
+  const [postingFile, setPostingFile] = useRecoilState(postingFiles);
 
   const [files, setFiles] = useState();
   const [title, setTitle] = useState();
@@ -22,10 +23,8 @@ const Posting = (props) => {
 
   // 화면 로딩시 실행
   useEffect(() => {
-    console.log(selectFiles);
-    setFiles(selectFiles);
-
-    // file reader설정
+    console.log("postingFile=>", postingFile);
+    //file reader설정
     const reader = new FileReader();
 
     reader.onload = function () {
@@ -35,7 +34,7 @@ const Posting = (props) => {
     };
 
     // 미리보기 설정
-    reader.readAsDataURL(selectFiles[0]);
+    reader.readAsDataURL(postingFile[0]);
   }, []);
 
   // data api
@@ -46,15 +45,15 @@ const Posting = (props) => {
 
     // fileupload multi array로 변경해봤는데 실패함 
     let fileAry = [];
-    for (let key in selectFiles) {
-      fileAry.push(selectFiles[key]);
+    for (let key = 0; key < postingFile.length; key++) {
+      fileAry.push(postingFile[key]);
     }
 
     console.log(fileAry);
-    console.log(selectFiles);
+    console.log(postingFile);
 
     // fileAry[0] 으로 진행해도 안됨 오? 
-    formData.append("file", selectFiles[0]);
+    formData.append("file", postingFile[0]);
     formData.append(
       'fileInfo',
       JSON.stringify({
@@ -95,7 +94,7 @@ const Posting = (props) => {
      };
  
      // 미리보기 설정 
-     reader.readAsDataURL(selectFiles[idx]);
+     reader.readAsDataURL(postingFile[idx]);
 
   }
 
@@ -103,7 +102,7 @@ const Posting = (props) => {
     <div className='main-frame post'>
       <div className='left'></div>
       <div className='center'>
-        <PostTimeline files={files} propsFunction={imgChanger} />
+        <PostTimeline files={postingFile} propsFunction={imgChanger} />
         <form className='img-contain' encType='multipart/form-data' onSubmit={handleSubmit}>
           <div className='img-wrap'>
             <img
