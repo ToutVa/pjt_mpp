@@ -13,10 +13,11 @@ const Header = ({ type }) => {
   const setAccessToken = useSetRecoilState(TokenUser);
 
   const fn_logout = () => {
+    // token undefined 설정
+    setAccessToken(undefined);
     // logout api 실행
     axios.post('/api/auth/logout').then((res) => {
-      // token undefined 설정
-      setAccessToken(undefined);
+      alert('로그아웃 되었습니다.')
     });
   };
 
