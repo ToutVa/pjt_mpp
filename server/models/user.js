@@ -36,11 +36,15 @@ const userSchema = new mongoose.Schema({
     required: true,
     maxlength: 11,
   },
+  level : {
+    type : Number,
+    require : true
+  },
   token: {
     type: String,
   },
   tokenExp: {
-    type: Number,
+    type: Date,
   },
 });
 
@@ -81,9 +85,10 @@ userSchema.method("getAccessToken", function () {
       _id : user._id,
       name: user.name,
       email: user.email,
+      level : user.level
     },
     ACCESS_TOKEN_SECRET,
-    { expiresIn: "1m", issuer: "pjtMpp" }
+    { expiresIn: "30m", issuer: "pjtMpp" }
   );
 
   return accessToken;
@@ -96,8 +101,10 @@ userSchema.method("getRefreshToken", function () {
   // jwt accessToken 생성
   const refreshToken = jwt.sign(
     {
+      _id : user._id,
       name: user.name,
       email: user.email,
+      level : user.level
     },
     REFRESH_TOKEN_SECRET,
     { expiresIn: "24h", issuer: "pjtMpp" }

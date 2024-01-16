@@ -31,14 +31,13 @@ const authValidator = async (req, res, next) => {
   const verifyToken = getTokenVerify(token);
   const userInfo = jwt.decode(token, ACCESS_TOKEN_SECRET);
   req.userInfo = userInfo;
-  console.log(verifyToken);
+
+  // 유저정보 확인
+  const findUser = await User.findOne({ email: userInfo.email });
 
   // access token 만료시
   if (verifyToken == "jwt expired") {
     
-
-    // 유저정보 확인
-    const findUser = await User.findOne({ id: userInfo.id });
 
     if (findUser === null) {
       return res.json({ resultMsg: err });
@@ -66,6 +65,13 @@ const authValidator = async (req, res, next) => {
   } else if (verifyToken == "invalid signature") {
     return res.status(401).json({
       message: "Token invalid.",
+    });
+  }
+  console.log(findUser)
+  // user level 확인하기 
+  if (findUser.level == 1) {
+    return res.status(401).json({
+      message: "Token error.",
     });
   }
 

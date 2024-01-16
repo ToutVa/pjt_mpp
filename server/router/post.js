@@ -50,7 +50,7 @@ const upload = multer({
 // upload.fields([{name:'file', maxCoutn :10}])
 // upload.array('file', 10)
 // upload.single('file')
-route.post('/create', authValidator, upload.fields([{name:'file', maxCoutn :10}]), async (req, res) => {
+route.post('/create', authValidator, upload.fields([{name:'file', maxCount :10}]), async (req, res) => {
   console.log("req.body =>", req.body);
 
   // 이용자 Email, 등록일시 셋팅
