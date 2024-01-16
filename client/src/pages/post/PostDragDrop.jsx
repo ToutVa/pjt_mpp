@@ -123,9 +123,9 @@ const PostDragDrop = () => {
         <h4>새 게시물 만들기</h4>
 
         <div className='img-wrap'>
-          {files != null ? <button className="left-arrow" onClick={() => onClickImgMove('left')} /> : <div></div>}
+          {postingFile != null ? <button className="left-arrow" onClick={() => onClickImgMove('left')} /> : <div></div>}
           <img id='preview' src={postingFile.url} alt='' />
-          {files != null ? <button className="right-arrow" onClick={() => onClickImgMove('right')}/>: <div></div>}
+          {postingFile != null ? <button className="right-arrow" onClick={() => onClickImgMove('right')}/>: <div></div>}
         </div>
         <div>
           <input
