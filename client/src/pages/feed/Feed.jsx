@@ -8,6 +8,7 @@ import PostDragDrop from "pages/post/PostDragDrop";
 
 const CreatePost = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
   return(
     <>
       <Link className="btn-create-post" onClick={() => {setModalIsOpen(true)}} />
@@ -27,8 +28,8 @@ const Feed = () => {
         <div className="left">
           left Side
         </div>
-        <div className="center">
-          <FeedContent />
+        <div className="center" id="feed">
+          <FeedContent/>
           <CreatePost />
         </div>
         <div className="right">
