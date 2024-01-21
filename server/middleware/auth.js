@@ -67,13 +67,6 @@ const authValidator = async (req, res, next) => {
       message: "Token invalid.",
     });
   }
-  console.log(findUser)
-  // user level 확인하기 
-  if (findUser.level == 1) {
-    return res.status(401).json({
-      message: "Token error.",
-    });
-  }
 
   next();
 };

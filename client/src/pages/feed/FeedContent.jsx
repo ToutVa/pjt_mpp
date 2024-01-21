@@ -8,6 +8,7 @@ const FeedContent = (props) => {
   
   useEffect(()=> {
     axios.get("/api/post/").then((res) => {
+      console.log(res);
       const data = res.data;
       if (data.success) {
         setItemAry(data.post);

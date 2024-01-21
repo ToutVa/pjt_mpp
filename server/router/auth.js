@@ -43,7 +43,7 @@ route.put("/emailVerify", async (req, res) => {
     to: "dudrhkd1319@naver.com",
     subject: "Verify your email address",
     html: `<p> 하단 링크를 클릭하여 이메일을 인증하여 주세요. </p>
-              <P> <a href="http://localhost:5000/api/auth/emailAuth/?email=${email}?token=${token}">Verify email</a></p>
+              <P> <a href="http://localhost:5000/api/auth/emailAuth/?email=${email}&token=${token}">Verify email</a></p>
               <p> 해당 이메일은 ${expires}에 만료됩니다.</p>`,
   };
 
@@ -75,12 +75,17 @@ route.get("/emailAuth", async (req, res) => {
   const expires = new Date();
 
   // user email 조회
+  console.log(email);
   const findUser = await User.findOne({ email });
+  console.log('email-auth >>>>>>>>>>', findUser);
+  console.log('email-auth >>>>>>>>>>', findUser.token);
+
 
   // 링크 유효기간이 남았을 경우, 인증성공 
   if (findUser?.tokenExp > expires) {
     // token 값이 같으면 인증성공 
     if(findUser.token === token) {
+      console.log('email-auth >>>>>>>>>>update');
       User.updateOne({ email: email }, { level : CONSTS.USER_LEVEL_REGULAR })
         .then ((result => {
           res.write("<script>alert('verity-success')</script>");
@@ -89,7 +94,7 @@ route.get("/emailAuth", async (req, res) => {
     } else { 
       res.status(200).redirect('http://localhost:3000/email-auth');
     }
-    
+     
   } else {
     res.write("<script>잘못된 접근입니다.('success')</script>");
     res.status(200).redirect('http://localhost:3000/email-auth');
