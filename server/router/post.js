@@ -11,7 +11,6 @@ const {Post} = require("../models/post");
 
 route.get('/', authValidator, async (req,res) => {
     let postJson;
-    
     postJson = await Post.find({}).catch((err) => {
         res.json({success : false, err});
     });
@@ -21,6 +20,25 @@ route.get('/', authValidator, async (req,res) => {
         post : postJson
     })
 })
+
+route.post('/', authValidator, async (req,res) => {
+  let postJson;
+  let filter = {};
+  if(req.body.lastId !== undefined) {
+    filter._id = { $gt: req.body.lastId};
+  }
+
+  console.log("post");
+  postJson = await Post.find(filter).limit(10).catch((err) => {
+      res.json({success : false, err});
+  });
+  
+  res.status(200).json({
+      success : true,
+      post : postJson
+  })
+})
+
 
 // 파일이 저장될 폴더 생성
 fs.readdir('uploads', (error) => {
