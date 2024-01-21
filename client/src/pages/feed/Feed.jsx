@@ -21,14 +21,16 @@ const CreatePost = () => {
   );
 }
 const Feed = () => {
+  const [isEod, setIsEod] = useState(false);
   return (
     <>
       <div className="feed main-frame"> 
         <div className="left">
           left Side
         </div>
-        <div className="center">
-          <FeedContent />
+        <div className="center" id="feed">
+          <FeedContent setIsEod={setIsEod}/>
+          {isEod? <div>EOD </div> : <div></div>}
           <CreatePost />
         </div>
         <div className="right">
