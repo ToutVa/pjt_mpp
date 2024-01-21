@@ -1,5 +1,5 @@
 import "css/tabController.css";
-import {toggleClass, addClass, removeClass} from "comm/util";
+import util from "comm/util";
 import { useState } from "react";
 
 const TabController = (props) => {
@@ -22,8 +22,8 @@ const TabController = (props) => {
     setunderlineXpos(e.currentTarget.labels[0].offsetLeft);
     menuArr.forEach((arr,idx) => {
         let tmp = document.getElementById("item"+ idx);
-        if(index === idx) addClass(tmp, "on");
-        else              removeClass(tmp,"on");
+        if(index === idx) util.addClass(tmp, "on");
+        else              util.removeClass(tmp,"on");
     });
   }
   return (
