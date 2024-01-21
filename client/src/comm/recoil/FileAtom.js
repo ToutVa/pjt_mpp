@@ -14,7 +14,16 @@ export const postingFiles = atom({
   // effects_UNSTABLE: [],
 });
 
-// export const fileSelector = selector({
-//   key: 'fileSelector',
-//   get: ({ get }) => get(postingFiles)
-// });
+export const fileSelector = selector({
+  key: 'fileSelector',
+  get: ({ get }) => {get(postingFiles)},
+  set: ({ get, set}) => { set(postingFiles)}
+});
+
+export const totalfileCntSelector = selector({
+  key: 'totalfileCntSelector',
+  get: ({ get }) => {
+    const postingFileCnt = get(postingFiles);
+    return postingFileCnt.length;
+  }
+});
