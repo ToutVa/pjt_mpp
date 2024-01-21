@@ -2,8 +2,7 @@
  * 공통함수 JS
  * 
  * import 선언
- * ex.1) import {toggleClass, addClass, removeClass} from "comm/util";
- * ex.2) import util from "comm/util";
+ * import util from "comm/util";
  * 
  */
 const util = {
