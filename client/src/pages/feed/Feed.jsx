@@ -8,7 +8,6 @@ import PostDragDrop from "pages/post/PostDragDrop";
 
 const CreatePost = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
   return(
     <>
       <Link className="btn-create-post" onClick={() => {setModalIsOpen(true)}} />
@@ -22,6 +21,7 @@ const CreatePost = () => {
   );
 }
 const Feed = () => {
+  const [isEod, setIsEod] = useState(false);
   return (
     <>
       <div className="feed main-frame"> 
@@ -29,7 +29,8 @@ const Feed = () => {
           left Side
         </div>
         <div className="center" id="feed">
-          <FeedContent/>
+          <FeedContent setIsEod={setIsEod}/>
+          {isEod? <div>EOD </div> : <div></div>}
           <CreatePost />
         </div>
         <div className="right">

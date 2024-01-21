@@ -1,43 +1,52 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import commUtil from "comm/util";
 
 const {default: FeedItem } = require("./FeedItem");
 
 const FeedContent = (props) => {
-  const [page, setPage] = useState();
   const [itemAry, setItemAry] = useState([]);
   const [throttle, setThrottle] = useState(false);
-
+  
   const getFeed = () => {
-    axios.get("/api/post/?page="+page).then((res) => {
+    axios.post("/api/post/",{lastId : itemAry[itemAry.length-1]?._id}).then((res) => {
       const data = res.data;
       if (data.success) {
-        data.post.forEach((e,idx)=> {
-          itemAry.push(e);  
-        })
-        //setItemAry(data.post);
+        data.post.forEach((item,idx)=> {
+          itemAry.push(item);
+        });
+
+        //가져오는 데이터가 10개 미만인 경우 가져오기 중지
+        if(data.post.length < 10) {
+          window.removeEventListener('scroll', scrollEvent);
+        }
+
+        console.log("Length Of Item : " , itemAry.length);
       }
     }).catch((err) => {
       console.log(err);
-    }, []);
+    }, [itemAry]);
   }
 
-  const scrollEvent = (e) => {
-    if (throttle) return;
-    if (!throttle) {
-      setThrottle(true);
-      if(window.innerHeight + window.scrollY > document.getElementById("feed").offsetHeight) {
-        setPage((page) => page + 1);
-        getFeed();
+  const scrollEvent = async (e) => {
+    if(window.innerHeight + window.scrollY > document.getElementById("feed").offsetHeight) {
+      if (throttle) return;
+      if (!throttle) {
+        setThrottle(true);
         setTimeout(async () => {
+          getFeed();
           setThrottle(false);
-        }, 600);
+        }, 300);
       }
     }
   }
-
   useEffect(() => {
-    getFeed();
+    async function init() {
+      await getFeed();
+      setItemAry(itemAry);
+    }
+    init();
+    commUtil.scrollTop();
     window.addEventListener('scroll', scrollEvent);
       return () => window.removeEventListener('scroll', scrollEvent);
   }, []);
@@ -50,4 +59,3 @@ const FeedContent = (props) => {
 };
   
 export default FeedContent;
-  
