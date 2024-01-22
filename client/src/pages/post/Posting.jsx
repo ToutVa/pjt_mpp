@@ -9,6 +9,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { postingFiles } from 'comm/recoil/FileAtom';
+import dayjs from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 const Posting = (props) => {
   // parameter 설정
@@ -133,7 +137,7 @@ const Posting = (props) => {
                 <tr>
                   <td>촬영시간</td>
                   <td>
-                    <DatePicker
+                    {/* <DatePicker
                       dateFormat='yyyy년 MM월 dd일 a hh시'
                       dateFormatCalendar='yyyy년 MM월'
                       showTimeSelect
@@ -147,7 +151,29 @@ const Posting = (props) => {
                       maxDate={new Date()} // maxDate 이후 날짜 선택 불가
                       selected={filmTime}
                       onChange={(data) => setFilmTime(data)}
-                    />
+                    /> */}
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DateTimePicker
+                        viewRenderers={{
+                          hours: null,
+                          minutes: null,
+                          seconds: null,
+                        }}
+                        format='YYYY/MM/DD HH:mm:ss'
+                        slotProps={{
+                          textField: {
+                            size: 'small',
+                          },
+                        }}
+                        defaultValue={dayjs()}
+                        minDate={dayjs('2000-01-01')} // minDate 이전 날짜 선택 불가
+                        maxDate={dayjs()}
+                        value={filmTime}
+                        onChange={(newValue) => {
+                          setFilmTime(newValue);
+                        }}
+                      />
+                    </LocalizationProvider>
                   </td>
                 </tr>
                 <tr>
