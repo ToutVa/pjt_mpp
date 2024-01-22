@@ -1,8 +1,10 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router';
 import 'css/cover.css';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <div className='cover-main'>
@@ -14,7 +16,7 @@ const Home = () => {
         <div className='item text'></div>
         <div className='item img'></div>
       </div>
-      <div className='cover-arrow-down' />
+      <div className='cover-arrow-down' onClick={() => {navigate('/guestFeed');}}/>
     </>
   );
 };

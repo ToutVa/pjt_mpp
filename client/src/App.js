@@ -16,6 +16,7 @@ import MyPage from 'pages/myPage/MyPage';
 import PostDragDrop from 'pages/post/PostDragDrop';
 import Posting from 'pages/post/Posting';
 import Feed from 'pages/feed/Feed';
+import GuestFeed from 'pages/feed/GuestFeed'
 import AlertModal from 'component/AlertModal';
 import ConfirmModal from 'component/ConfirmModal';
 import LoginModal from 'pages/register/LoginModal';
@@ -43,6 +44,7 @@ function App() {
                   <Route path='/post' element={<PostDragDrop />} />
                   <Route path='/posting' element={<Posting />} />
                 </Route>
+                <Route path='/guestFeed' element={<GuestFeed />} />
               </Route>
               <Route path='/*' element={'NOT FOUND'} />
             </Routes>

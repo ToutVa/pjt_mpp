@@ -18,10 +18,6 @@ const Signup = () => {
   const [cellPhone, setCellPhone] = useState();
   const [email, setEmail] = useState();
 
-  const [authNum, setAuthNum] = useState();
-  const [authNumText, setAuthNumText] = useState();
-  const [isSwitch = true, setIsSwitch] = useState();
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -65,13 +61,6 @@ const Signup = () => {
       });
   };
 
-  const fnChkAuthNum = (e) => {
-    e.preventDefault();
-    if (authNumText === authNum) {
-      alert('인증성공');
-    }
-  };
-
   return (
     <Modal
       className='register-popup'
@@ -83,54 +72,14 @@ const Signup = () => {
         가입하기 위한 정보를 입력해주세요.
         <br />
         <br />
-        <tr>
-          <td style={{ display: 'flex' }}>
-            <TextBox
-              id='inputEmail'
-              width={isSwitch ? 210 : null}
-              type='email'
-              placeholder='이메일을 입력해주세요'
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-            <button
-              className='button submit-button ml10'
-              style={{
-                display: isSwitch ? '' : 'none',
-                width: '80px',
-                height: '30px',
-              }}
-            >
-              <div className='button-text'>메일발송</div>
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td style={{ display: 'flex' }}>
-            <TextBox
-              id='inputAuthNum'
-              width={isSwitch ? null : 210}
-              type='number'
-              placeholder='인증번호를 입력해주세요'
-              style={{ display: isSwitch ? 'none' : '' }}
-              onChange={(e) => {
-                setAuthNumText(e.target.value);
-              }}
-            ></TextBox>
-            <button
-              className='button submit-button ml10'
-              style={{
-                display: isSwitch ? 'none' : '',
-                width: '80px',
-                height: '30px',
-              }}
-              onClick={fnChkAuthNum}
-            >
-              <div className='button-text'>인증하기</div>
-            </button>
-          </td>
-        </tr>
+        <TextBox
+          id='inputEmail'
+          type='email'
+          placeholder='이메일을 입력해주세요'
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+        />
         <TextBox
           id='inputPw'
           type='password'
@@ -150,6 +99,7 @@ const Signup = () => {
         <TextBox
           id='inputBirth'
           type='date'
+          
           placeholder='생일을 입력해주세요'
           onChange={(e) => {
             setBirth(e.target.value);

@@ -209,3 +209,23 @@
     background-color: grey;
     cursor: pointer;
 }
+
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+    border-radius: 10px !important;
+    font-size: 12px !important;
+    width:199px;
+    height: 24px;
+}
+
+.css-19qh8xo-MuiInputBase-input-MuiOutlinedInput-input {
+    padding: 1px 2px 1px 5px !important;
+}
+
+.css-1yq5fb3-MuiButtonBase-root-MuiIconButton-root {
+    padding: 2px !important;
+}
+
+.css-i4bv87-MuiSvgIcon-root {
+    width: 20px !important;
+    height: 20px !important;
+}
