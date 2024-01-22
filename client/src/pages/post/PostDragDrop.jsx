@@ -2,20 +2,29 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import 'css/post.css';
 import { useNavigate } from 'react-router';
-import { useRecoilState } from 'recoil';
-import { postingFiles } from 'comm/recoil/FileAtom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { postingFiles, totalfileCntSelector } from 'comm/recoil/FileAtom';
 
 const PostDragDrop = () => {
   const [postingFile, setPostingFile] = useRecoilState(postingFiles);
-  const [files, setFiles] = useState();
   const [maxFileCnt] = useState(10);
   const [fileNum = 0, setFileNum] = useState();
+  const totalfileCnt = useRecoilValue(totalfileCntSelector);
   const fileInput = React.createRef();
   const navigate = useNavigate();
 
   /* 컴퓨터에서 선택 버튼 클릭이벤트 */
   const handleButtonClick = (e) => {
     fileInput.current.click();
+  };
+
+  /* 컴퓨터에서 파일삭제 버튼 클릭이벤트 */
+  const cancleButtonClick = (e) => {
+    let fileArray = Array.from(postingFile);
+    fileArray.splice(fileNum, 1);
+
+    setPostingFile(fileArray);
+    setFileNum(fileNum-1)
   };
 
   /* 파일 state 저장이벤트 */
@@ -123,9 +132,9 @@ const PostDragDrop = () => {
         <h4>새 게시물 만들기</h4>
 
         <div className='img-wrap'>
-          <button onClick={() => onClickImgMove('left')}>left</button>
-          <img id = 'preview' src = {postingFile.url} alt = '' />
-          <button onClick={() => onClickImgMove('right')}>right</button>
+          {postingFile != null ? <button className="left-arrow" onClick={() => onClickImgMove('left')} /> : <div></div>}
+          <img id='preview' src={postingFile.url} alt='' />
+          {postingFile != null ? <button className="right-arrow" onClick={() => onClickImgMove('right')}/>: <div></div>}
         </div>
         <div>
           <input
@@ -138,22 +147,29 @@ const PostDragDrop = () => {
             onChange={onLoadFile}
           />
           <div>
-              <p className='preview-msg'>사진을 여기에 끌어다 놓으세요.</p>
+              {totalfileCnt == 0?
+                <p className='preview-msg'>사진을 여기에 끌어다 놓으세요.</p> : 
+                <p className='preview-msg'>총 {totalfileCnt}장이 선택되었습니다.</p>
+              }
               <div className='btn-group mt20 flex'>
                 <div className=''>
                   <button type='submit' className='btn-primary wd150' onClick={handleButtonClick}>
                     사진추가
                   </button>
-                </div>
+                 </div>
                 <div className=''>
-                  <button type='submit' className='btn-cancel wd150'>
+                  <button type='submit' className='btn-cancel wd150' onClick={cancleButtonClick}>
                     사진삭제
                   </button>
-
+                </div>
+              </div>
+              <div className='btn-group mt10'> 
+                <div className='row medium'>
+                  <button className="btn-primary auto" onClick={handleSubmit}>이미지선택 완료</button>
                 </div>
               </div>
           </div>
-          <Button onClick={handleSubmit}>이미지선택 완료</Button>
+          
         </div>
       </div>
     </>
@@ -161,8 +177,6 @@ const PostDragDrop = () => {
 };
 
 const Button = styled.button`
-  width: 24rem;
-  height: 2rem;
   background-color: #00a5ba;
   border-radius: 1rem;
   border: 1px #00a5ba;

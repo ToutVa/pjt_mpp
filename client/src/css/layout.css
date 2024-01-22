@@ -335,6 +335,16 @@ input {
 .btn-group > .right {
   float: right;
 }
+.btn-group > .row {
+  display: block;
+  margin-bottom: 10px;  
+}
+
+.btn-group > .row.medium{
+  display: inline-block;
+  width: 305px;
+}
+
 
 button, Link {font-size: 14px;}
 .btn-group button,
@@ -347,7 +357,7 @@ button, Link {font-size: 14px;}
   color: #fff;
   border-radius: 10px;
   transition: all 0.2s;
-  margin-left: 5px;
+  margin-left: 10px;
   text-align: center;
 
   &.wd50 { width: 50px;}
@@ -356,6 +366,7 @@ button, Link {font-size: 14px;}
   &.wd110 { width: 110px;}
   &.wd130 { width: 130px;}
   &.wd150 { width: 150px;}
+  &.auto { width: 100%;}
   &:hover {filter: brightness(1.15);}
   &:active {filter: brightness(0.8);}
 
