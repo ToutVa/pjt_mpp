@@ -342,7 +342,7 @@ input {
 
 .btn-group > .row.medium{
   display: inline-block;
-  width: 305px;
+  width: 310px;
 }
 
 
@@ -423,6 +423,7 @@ ul.vertical > li:first-child {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  justify-content: center;
 }
 .flex > .item {
   margin-right: 15px;
