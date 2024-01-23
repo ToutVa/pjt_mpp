@@ -104,9 +104,9 @@ const util = {
         || object === null
         || object === ""
         || object.length === 0) {
-            return false;
-        }else {
             return true;
+        }else {
+            return false;
         }
     },
 }
