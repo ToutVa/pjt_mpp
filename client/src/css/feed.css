@@ -153,8 +153,12 @@
     position: fixed;
 
 }
+.feed > .left {
+    width: 260px;
+}
 
 .feed > .left > .side {
+    position: fixed;
     box-shadow: 2px 2px 5px #00000036;
     border-radius: 15px;
     width: 260px;

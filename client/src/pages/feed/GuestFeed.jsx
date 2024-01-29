@@ -1,10 +1,13 @@
-import FeedItem from './FeedItem';
+import { useState } from 'react';
+import FeedContent from './FeedContent';
 import 'css/feed.css';
 import { useSetRecoilState } from 'recoil';
 import { loginModalState } from 'comm/recoil/PopupAtom';
 
 const Feed = () => {
   const setLoginModalState = useSetRecoilState(loginModalState);
+  const [isEod, setIsEod] = useState(false);
+
   return (
     <>
       <div className='feed main-frame'>
@@ -20,15 +23,9 @@ const Feed = () => {
             </div>
           </div>
         </div>
-        <div className='center'>
-          <FeedItem content='1' key={0} />
-          <FeedItem content='1' key={1} />
-          <FeedItem content='1' key={2} />
-          <FeedItem content='1' key={3} />
-          <FeedItem content='1' key={4} />
-          <FeedItem content='1' key={5} />
-          <FeedItem content='1' key={6} />
-          {/* <FeedContent /> */}
+        <div className='center' id='feed'>
+          <FeedContent setIsEod={setIsEod} />
+          {isEod ? <div>EOD </div> : <div></div>}
         </div>
         <div className='right'>right Side</div>
       </div>

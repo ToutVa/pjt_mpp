@@ -1,15 +1,21 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useRecoilValue } from 'recoil';
+import { isLoginSelector } from 'comm/recoil/TokenAtom';
 import commUtil from "comm/util";
 
 const {default: FeedItem } = require("./FeedItem");
 
 const FeedContent = (props) => {
+  const isLogin = useRecoilValue(isLoginSelector);
   const [itemAry, setItemAry] = useState([]);
   const [throttle, setThrottle] = useState(false);
   
   const getFeed = () => {
-    axios.post("/api/post/",{lastId : itemAry[itemAry.length-1]?._id}).then((res) => {
+    let loadUrl = isLogin ? '/api/post/' : '/api/post/guestFeed';
+    console.log(isLogin);
+    console.log(loadUrl);
+    axios.post(loadUrl, {lastId : itemAry[itemAry.length-1]?._id}).then((res) => {
       const data = res.data;
       if (data.success) {
         data.post.forEach((item,idx)=> {
