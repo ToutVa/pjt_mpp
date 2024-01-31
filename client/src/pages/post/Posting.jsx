@@ -13,6 +13,8 @@ import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import AWS from 'aws-sdk';
+import * as CONSTS from '../../config/env';
 
 const Posting = (props) => {
   // parameter 설정
@@ -24,6 +26,12 @@ const Posting = (props) => {
   const [filmLocation, setFilmLocation] = useState();
   const [filmWeather, setFilmWeather] = useState();
   const [filmSeason, setFilmSeason] = useState();
+
+  AWS.config.update ({
+    region : CONSTS.ENV.S3_BUCKET_REGION,
+    accessKeyId : CONSTS.ENV.S3_BUCKET_ACCESS_KEY,
+    secretAccessKey : CONSTS.ENV.S3_BUCKET_SECRET_KEY
+  });
 
   // 화면 로딩시 실행
   useEffect(() => {
@@ -53,10 +61,23 @@ const Posting = (props) => {
       fileAry.push(postingFile[key]);
     }
 
-    console.log(fileAry);
+    console.log(AWS);
     console.log(postingFile);
 
+    const upload = new AWS.S3.ManagedUpload({
+      params : {
+        ACL: 'public-read',
+        Bucket: CONSTS.ENV.S3_BUCKET_NAME, // 버킷 이름
+        Key: "upload/123.png", // 유저 아이디
+        Body: fileAry[0], // 파일 객체
+
+      }
+    })
+    const promise = upload.promise();
+    promise.then(alert('sycc'));
+
     // fileAry[0] 으로 진행해도 안됨 오? 
+    /**
     formData.append("file", postingFile[0]);
     formData.append(
       'fileInfo',
@@ -81,7 +102,7 @@ const Posting = (props) => {
         });
     } catch (error) {
       alert(error.response.data.errors);
-    }
+    }*/
   };
 
   // img변경 로직 callback
