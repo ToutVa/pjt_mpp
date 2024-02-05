@@ -64,6 +64,27 @@ const Posting = (props) => {
     console.log(AWS);
     console.log(postingFile);
 
+    const body = {
+      name : 'client/2024/test.png',
+      type : fileAry[0].type
+    };
+
+    // 1단계 singed url 가져오기 
+    axios.post(`api/post/getFileUrl`, body)
+          .then((res) => {
+          console.log(res);
+            axios.put(res.data.url, fileAry[0])
+                 .then((res) => {
+                  console.log('res succ>>', res);
+                 })
+                 .catch((err) => {
+                  console.log('res err =>>>', err);
+                 });
+          })
+          .catch((err) => {
+          console.log(err);
+          });
+    /**
     const upload = new AWS.S3.ManagedUpload({
       params : {
         ACL: 'public-read',
@@ -75,6 +96,8 @@ const Posting = (props) => {
     })
     const promise = upload.promise();
     promise.then(alert('sycc'));
+
+    */
 
     // fileAry[0] 으로 진행해도 안됨 오? 
     /**

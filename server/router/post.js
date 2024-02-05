@@ -5,6 +5,7 @@ const path    = require('path');
 const fs      = require('fs');
 const { authValidator } = require('../middleware/auth');
 const dayjs = require('dayjs');
+const { getSignedFileUrl } = require('../config/s3');
 
 // data Model 
 const {Post} = require("../models/post");
@@ -55,8 +56,36 @@ route.post("/guestFeed", async (req,res) => {
       success : true,
       post : postJson
   })
-})
+});
 
+// fileurl 설정 
+route.post('/getFileUrl', async(req,res) => {
+  try {
+    console.log(req.body);
+    let {name, type} = (req.body);
+
+    console.log(name,type);
+
+    const fileParams = {
+      name : name,
+      type : type
+    };
+
+    console.log(name,type)
+
+    const singedUrl = await getSignedFileUrl(fileParams);
+    console.log(singedUrl);
+
+    return (res.status(201).json({
+      message : 'make url succed',
+      url : singedUrl
+    }))
+  } catch(e) {
+    return res.status(500).json({
+      message : 'make url failed',
+    });
+  }
+});
 
 // 파일이 저장될 폴더 생성
 fs.readdir('uploads', (error) => {
