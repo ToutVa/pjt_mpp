@@ -27,15 +27,9 @@ const Posting = (props) => {
   const [filmWeather, setFilmWeather] = useState();
   const [filmSeason, setFilmSeason] = useState();
 
-  AWS.config.update ({
-    region : CONSTS.ENV.S3_BUCKET_REGION,
-    accessKeyId : CONSTS.ENV.S3_BUCKET_ACCESS_KEY,
-    secretAccessKey : CONSTS.ENV.S3_BUCKET_SECRET_KEY
-  });
-
   // 화면 로딩시 실행
   useEffect(() => {
-    console.log("postingFile=>", postingFile);
+    console.log('postingFile=>', postingFile);
     //file reader설정
     const reader = new FileReader();
 
@@ -55,53 +49,6 @@ const Posting = (props) => {
     const formData = new FormData();
     const headers = { 'Content-Type': 'multipart/form-data' };
 
-    // fileupload multi array로 변경해봤는데 실패함 
-    let fileAry = [];
-    for (let key = 0; key < postingFile.length; key++) {
-      fileAry.push(postingFile[key]);
-    }
-
-    console.log(AWS);
-    console.log(postingFile);
-
-    const body = {
-      name : 'client/2024/test.png',
-      type : fileAry[0].type
-    };
-
-    // 1단계 singed url 가져오기 
-    axios.post(`api/post/getFileUrl`, body)
-          .then((res) => {
-          console.log(res);
-            axios.put(res.data.url, fileAry[0])
-                 .then((res) => {
-                  console.log('res succ>>', res);
-                 })
-                 .catch((err) => {
-                  console.log('res err =>>>', err);
-                 });
-          })
-          .catch((err) => {
-          console.log(err);
-          });
-    /**
-    const upload = new AWS.S3.ManagedUpload({
-      params : {
-        ACL: 'public-read',
-        Bucket: CONSTS.ENV.S3_BUCKET_NAME, // 버킷 이름
-        Key: "upload/123.png", // 유저 아이디
-        Body: fileAry[0], // 파일 객체
-
-      }
-    })
-    const promise = upload.promise();
-    promise.then(alert('sycc'));
-
-    */
-
-    // fileAry[0] 으로 진행해도 안됨 오? 
-    /**
-    formData.append("file", postingFile[0]);
     formData.append(
       'fileInfo',
       JSON.stringify({
@@ -112,6 +59,11 @@ const Posting = (props) => {
         filmSeason
       })
     );
+    
+    // postingFile은 이미 fileArray 상태인데, image 에 해당 방식으로 추가해야 multer에서 처리해줌;
+    for (let key = 0; key < postingFile.length; key++) {
+      formData.append("image", postingFile[key]);
+    }
 
     try {
       axios
@@ -125,7 +77,7 @@ const Posting = (props) => {
         });
     } catch (error) {
       alert(error.response.data.errors);
-    }*/
+    }
   };
 
   // img변경 로직 callback
@@ -135,23 +87,26 @@ const Posting = (props) => {
     // file reader설정
     const reader = new FileReader();
 
-     reader.onload = function () {
-       let dataURL = reader.result;
-       let imgWrap = document.getElementById('preview');
-       imgWrap.src = dataURL;
-     };
- 
-     // 미리보기 설정 
-     reader.readAsDataURL(postingFile[idx]);
+    reader.onload = function () {
+      let dataURL = reader.result;
+      let imgWrap = document.getElementById('preview');
+      imgWrap.src = dataURL;
+    };
 
-  }
+    // 미리보기 설정
+    reader.readAsDataURL(postingFile[idx]);
+  };
 
   return (
     <div className='main-frame post'>
       <div className='left'></div>
       <div className='center'>
         <PostTimeline files={postingFile} propsFunction={imgChanger} />
-        <form className='img-contain' encType='multipart/form-data' onSubmit={handleSubmit}>
+        <form
+          className='img-contain'
+          encType='multipart/form-data'
+          onSubmit={handleSubmit}
+        >
           <div className='img-wrap'>
             <img
               id='preview'
@@ -165,9 +120,7 @@ const Posting = (props) => {
               <thead></thead>
               <tbody>
                 <tr>
-                  <td>
-                    제목
-                  </td>
+                  <td>제목</td>
                   <td>
                     <input
                       type='text'
@@ -315,7 +268,7 @@ const Posting = (props) => {
           <input type='text' placeholder='#태그' />
           <div className='btn-group mt20'>
             <div className='left'>
-              <Link to="/feed" className='btn-cancel wd70'>
+              <Link to='/feed' className='btn-cancel wd70'>
                 취소
               </Link>
             </div>

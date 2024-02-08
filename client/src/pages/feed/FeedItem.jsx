@@ -3,6 +3,7 @@ import FeedComment from "./FeedComment";
 
 const FeedItem = (props) => {
   const [comment, setComment] = useState([]);
+  console.log(props.content?.imgList?.[0]?.location);
   if(props.content._id =="eod") debugger;
   const fnLoadComment = () => {
     //통신 함수 호출
@@ -10,6 +11,7 @@ const FeedItem = (props) => {
                          {id : "kim", date : "20231231", content:"와...잘찍으신다"},
                          {id : "kasdajsf", date : "20231209", content:"@@@@###히오스 지금 접속 시 캐릭터 지급$ ###@@@"},]
     setComment(commentList);
+
   }
   if(props.content._id === null) {
     return (<div>더 이상 데이터가 없습니다.</div>)
@@ -28,6 +30,7 @@ const FeedItem = (props) => {
             </div>
         </div>
         <div className="content">
+          <img src = {props.content?.imgList?.[0]?.location} height="400" width="650"></img>
           {props.content.content}
         </div>
         <div className="bottom">

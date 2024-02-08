@@ -32,6 +32,9 @@ const postSchema = new mongoose.Schema({
   },
   registDate : {
     type     : String
+  },
+  imgList : {
+    type     : Object
   }
 });
 
