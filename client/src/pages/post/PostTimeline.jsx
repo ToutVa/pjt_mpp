@@ -24,6 +24,7 @@ const PostTimeline = (props) => {
     for (let key = 0; key < files.length; key++) {
       imgCont.push(
         <img
+          key = {key}
           id={'preview' + key}
           src={files[key].name}
           alt=''

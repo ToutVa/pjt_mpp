@@ -14,11 +14,16 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import AWS from 'aws-sdk';
-import * as CONSTS from '../../config/env';
+import * as CONSTS from '../../config/api';
+import PostDragDrop from "pages/post/PostDragDrop";
+import Modal from 'react-modal';
+import MapController from 'component/MapController';
+/*global kakao*/
 
 const Posting = (props) => {
   // parameter 설정
   const [postingFile, setPostingFile] = useRecoilState(postingFiles);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const [files, setFiles] = useState();
   const [title, setTitle] = useState();
@@ -41,6 +46,24 @@ const Posting = (props) => {
 
     // 미리보기 설정
     reader.readAsDataURL(postingFile[0]);
+
+    
+    // 카카오맵 API 로딩
+    kakao.maps.load(() => {
+      var container = document.getElementById('map');
+      var options = {
+        center : new kakao.maps.LatLng(37.560003006990776, 126.97530406981836),
+        level  : 5
+      };
+
+      var map = new kakao.maps.Map(container, options);
+      var markerPosition  = new kakao.maps.LatLng(37.560003006990776, 126.97530406981836); 
+      var marker = new kakao.maps.Marker({
+        position: markerPosition
+      });
+
+      marker.setMap(map);
+    });
   }, []);
 
   // data api
@@ -97,6 +120,23 @@ const Posting = (props) => {
     reader.readAsDataURL(postingFile[idx]);
   };
 
+
+  const CreatePost = () => {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    return(
+      <>
+        <Link className="btn-create-post" onClick={() => {setModalIsOpen(true)}} />
+        <Modal className="test" 
+               isOpen={modalIsOpen} 
+               onRequestClose={() => setModalIsOpen(false)} ariaHideApp={false}>
+        <MapController />
+  
+        </Modal>
+      </>
+    );
+  }
+
+
   return (
     <div className='main-frame post'>
       <div className='left'></div>
@@ -119,6 +159,13 @@ const Posting = (props) => {
             <table>
               <thead></thead>
               <tbody>
+                <tr>
+                  <td>
+                    <button className='btn-primary wd110' onClick={CreatePost}>
+                      지도
+                    </button>
+                  </td>
+                </tr>
                 <tr>
                   <td>제목</td>
                   <td>
@@ -264,7 +311,7 @@ const Posting = (props) => {
               </tbody>
             </table>
           </div>
-          <div className='map'>지도영역</div>
+          <div id = 'map' className='map'>지도영역</div>
           <input type='text' placeholder='#태그' />
           <div className='btn-group mt20'>
             <div className='left'>
