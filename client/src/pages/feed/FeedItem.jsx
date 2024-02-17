@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import FeedComment from "./FeedComment";
+import { Link } from "react-router-dom";
 
 const FeedItem = (props) => {
   const [comment, setComment] = useState([]);
@@ -21,9 +22,9 @@ const FeedItem = (props) => {
         <div className="title-bar">
             <div className="user" />
             <div>
-                <div className="title">
+                <Link to={"/post/"+props.content._id} className="title">
                     {props.content.title}
-                </div>
+                </Link>
                 <div className="user-id">
                   ec_asd
                 </div>
