@@ -28,6 +28,7 @@
     text-overflow: ellipsis;
     overflow-x: hidden;
     max-width: 550px;
+    cursor:pointer;
 }
 .feed > .center > .item > .title-bar .user-id{ 
     color: #999999;
@@ -176,5 +177,3 @@
     align-items: center;
     justify-content: center;
 }
-
-
