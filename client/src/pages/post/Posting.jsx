@@ -1,31 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import 'css/post.css';
 import axios from 'axios';
-import baseImgUrl from 'assets/icon-file.svg';
-import { useLocation } from 'react-router';
-import PostTimeline from 'pages/post/PostTimeline';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import 'css/post.css';
 import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { postingFiles } from 'comm/recoil/FileAtom';
-import dayjs from 'dayjs';
+import { useNavigate } from 'react-router';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import AWS from 'aws-sdk';
-import * as CONSTS from '../../config/api';
-import PostDragDrop from "pages/post/PostDragDrop";
+import PostTimeline from 'pages/post/PostTimeline';
+
+import baseImgUrl from 'assets/icon-file.svg';
+import dayjs from 'dayjs';
 import Modal from 'react-modal';
-import MapController from 'component/MapController';
+
 /*global kakao*/
 
 const Posting = (props) => {
   // parameter 설정
-  const [postingFile, setPostingFile] = useRecoilState(postingFiles);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [postingFile] = useRecoilState(postingFiles);
+  const navigate = useNavigate();
 
-  const [files, setFiles] = useState();
   const [title, setTitle] = useState();
   const [filmTime, setFilmTime] = useState();
   const [filmLocation, setFilmLocation] = useState();
@@ -47,24 +42,26 @@ const Posting = (props) => {
     // 미리보기 설정
     reader.readAsDataURL(postingFile[0]);
 
-    
     // 카카오맵 API 로딩
     kakao.maps.load(() => {
       var container = document.getElementById('map');
       var options = {
-        center : new kakao.maps.LatLng(37.560003006990776, 126.97530406981836),
-        level  : 5
+        center: new kakao.maps.LatLng(37.560003006990776, 126.97530406981836),
+        level: 5,
       };
 
       var map = new kakao.maps.Map(container, options);
-      var markerPosition  = new kakao.maps.LatLng(37.560003006990776, 126.97530406981836); 
+      var markerPosition = new kakao.maps.LatLng(
+        37.560003006990776,
+        126.97530406981836
+      );
       var marker = new kakao.maps.Marker({
-        position: markerPosition
+        position: markerPosition,
       });
 
       marker.setMap(map);
     });
-  }, []);
+  }, [postingFile]);
 
   // data api
   const handleSubmit = async (e) => {
@@ -79,13 +76,13 @@ const Posting = (props) => {
         filmTime,
         filmLocation,
         filmWeather,
-        filmSeason
+        filmSeason,
       })
     );
-    
+
     // postingFile은 이미 fileArray 상태인데, image 에 해당 방식으로 추가해야 multer에서 처리해줌;
     for (let key = 0; key < postingFile.length; key++) {
-      formData.append("image", postingFile[key]);
+      formData.append('image', postingFile[key]);
     }
 
     try {
@@ -94,6 +91,8 @@ const Posting = (props) => {
         .then((res) => {
           console.log(res);
           alert(res.data.message);
+          // posting 화면으로 이동
+          navigate('/feed');
         })
         .catch((err) => {
           console.log(err);
@@ -120,22 +119,25 @@ const Posting = (props) => {
     reader.readAsDataURL(postingFile[idx]);
   };
 
-
   const CreatePost = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    return(
+    return (
       <>
-        <Link className="btn-create-post" onClick={() => {setModalIsOpen(true)}} />
-        <Modal className="test" 
-               isOpen={modalIsOpen} 
-               onRequestClose={() => setModalIsOpen(false)} ariaHideApp={false}>
-        <MapController />
-  
-        </Modal>
+        <Link
+          className='btn-create-post'
+          onClick={() => {
+            setModalIsOpen(true);
+          }}
+        />
+        <Modal
+          className='test'
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)}
+          ariaHideApp={false}
+        ></Modal>
       </>
     );
-  }
-
+  };
 
   return (
     <div className='main-frame post'>
@@ -311,7 +313,9 @@ const Posting = (props) => {
               </tbody>
             </table>
           </div>
-          <div id = 'map' className='map'>지도영역</div>
+          <div id='map' className='map'>
+            지도영역
+          </div>
           <input type='text' placeholder='#태그' />
           <div className='btn-group mt20'>
             <div className='left'>

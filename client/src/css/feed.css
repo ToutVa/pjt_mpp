@@ -177,4 +177,22 @@
     justify-content: center;
 }
 
+.feed > .center > .item > .content > button {
+    transition: 0.3s all;
+    width: 70px;
+    height: 70px;
+    border-top: 4px solid rgb(170, 170, 170);
+    border-right: 4px solid rgb(170, 170, 170);
+    border-left: 0px solid black;
+    border-bottom: 0px solid black;
+    background-color: #FFFFFF00;
+    border-radius: 2px;
+    padding: 10px 20px;
+    position : absolute;
+    
 
+    &.left-arrow {transform: rotate(225deg);}
+    &.right-arrow {transform: rotate(45deg);}
+    &:hover{border-color: rgb(100,100,100);}
+    &:active{border-color: rgb(66, 66, 66);}
+}

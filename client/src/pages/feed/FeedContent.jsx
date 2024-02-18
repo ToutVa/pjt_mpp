@@ -24,7 +24,7 @@ const FeedContent = (props) => {
 
         //가져오는 데이터가 10개 미만인 경우 가져오기 중지
         if(data.post.length < 10) {
-          window.removeEventListener('scroll', scrollEvent);
+          //window.removeEventListener('scroll', scrollEvent);
         }
 
         console.log("Length Of Item : " , itemAry.length);
