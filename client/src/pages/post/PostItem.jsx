@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 const PostItem = (props) => {
   const [comment, setComment] = useState([]);
-  console.log(props.content?.imgList?.[0]?.location);
   if(props.content._id =="eod") debugger;
   const fnLoadComment = () => {
     //통신 함수 호출
