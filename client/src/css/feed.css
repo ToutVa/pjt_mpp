@@ -196,6 +196,7 @@
     &.right-arrow {transform: rotate(45deg);}
     &:hover{border-color: rgb(100,100,100);}
     &:active{border-color: rgb(66, 66, 66);}
+}
 
 /**
  * POST DETAIL
