@@ -1,5 +1,7 @@
+
 import React, { useEffect, useState } from 'react';
-import FeedComment from './FeedComment';
+import FeedComment from "./FeedComment";
+import { Link } from "react-router-dom";
 import 'css/post.css';
 
 const FeedItem = (props) => {
@@ -48,13 +50,17 @@ const FeedItem = (props) => {
     return <div>더 이상 데이터가 없습니다.</div>;
   } else {
     return (
-      <div className='item'>
-        <div className='title-bar'>
-          <div className='user' />
-          <div>
-            <div className='title'>{props.content.title}</div>
-            <div className='user-id'>ec_asd</div>
-          </div>
+      <div className="item">
+        <div className="title-bar">
+            <div className="user" />
+            <div>
+                <Link to={"/post/"+props.content._id} className="title">
+                    {props.content.title}
+                </Link>
+                <div className="user-id">
+                  ec_asd
+                </div>
+            </div>
         </div>
         <div className='content'>
           {(imgAry.length > 1) ? (

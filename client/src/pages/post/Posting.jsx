@@ -13,6 +13,7 @@ import PostTimeline from 'pages/post/PostTimeline';
 import baseImgUrl from 'assets/icon-file.svg';
 import dayjs from 'dayjs';
 import Modal from 'react-modal';
+// import MapController from 'component/MapController';
 
 /*global kakao*/
 
@@ -29,6 +30,16 @@ const Posting = (props) => {
 
   // 화면 로딩시 실행
   useEffect(() => {
+    //JS IMPORT FOR SGIS API 
+    // if (document.querySelector(`script[src="https://sgisapi.kostat.go.kr/OpenAPI3/auth/javascriptAuth?consumer_key=e69a1611e7a844108336"]`))return;
+    // const script = document.createElement("script");
+    // script.src = "https://sgisapi.kostat.go.kr/OpenAPI3/auth/javascriptAuth?consumer_key=e69a1611e7a844108336";
+    // script.async = true;
+    // document.body.appendChild(script);
+
+    // debugger;
+    // sop.map('map');
+
     console.log('postingFile=>', postingFile);
     //file reader설정
     const reader = new FileReader();
@@ -123,18 +134,11 @@ const Posting = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     return (
       <>
-        <Link
-          className='btn-create-post'
-          onClick={() => {
-            setModalIsOpen(true);
-          }}
-        />
-        <Modal
-          className='test'
-          isOpen={modalIsOpen}
-          onRequestClose={() => setModalIsOpen(false)}
-          ariaHideApp={false}
-        ></Modal>
+        <Link className="btn-create-post" onClick={() => {setModalIsOpen(true)}} />
+        <Modal className="test" 
+               isOpen={modalIsOpen} 
+               onRequestClose={() => setModalIsOpen(false)} ariaHideApp={false}>
+        </Modal>
       </>
     );
   };
@@ -143,7 +147,7 @@ const Posting = (props) => {
     <div className='main-frame post'>
       <div className='left'></div>
       <div className='center'>
-        <PostTimeline files={postingFile} propsFunction={imgChanger} />
+        <PostTimeline files={postingFile} propsFunction={imgChanger} type='horizon'/>
         <form
           className='img-contain'
           encType='multipart/form-data'

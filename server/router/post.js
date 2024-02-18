@@ -45,6 +45,33 @@ route.post('/', authValidator, async (req,res) => {
 })
 
 /**
+ * 게시글 상세조회 api 
+ * param  : 게시글 id
+ * return : 게시글 목록 
+ */
+route.post('/getPostDtl', authValidator, async (req,res) => {
+  let postJson;
+  let filter = {};
+  console.log(">>>>", req);
+  if(req.body.id !== undefined) {
+    filter._id = req.body.id;
+    postJson = await Post.find(filter).sort({registDate : -1}).limit(10).catch((err) => {
+      res.json({success : false, err});
+    });
+    res.status(200).json({
+        success : true,
+        post : postJson
+    })
+  }else {
+    res.status(503).json({
+      success : true,
+      post : postJson
+  })
+  }
+  
+})
+
+/**
  * 게시글 조회 api
  * 권한이 없는 사용자가 게시글을 조회할 때 사용된다.
  * param  : 게시글 id

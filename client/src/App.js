@@ -14,6 +14,7 @@ import ProtectedRoute from 'comm/routes/ProtectedRoute';
 import Home from 'pages/Home';
 import MyPage from 'pages/myPage/MyPage';
 import PostDragDrop from 'pages/post/PostDragDrop';
+import PostDetail from 'pages/post/PostDetail';
 import Posting from 'pages/post/Posting';
 import Feed from 'pages/feed/Feed';
 import GuestFeed from 'pages/feed/GuestFeed'
@@ -36,13 +37,13 @@ function App() {
               <Route element={<CoverLayout />}>
                 <Route path='/' element={<Home />} />
               </Route>
-
               <Route element={<Layout />}>
                 <Route element={<ProtectedRoute />}>
-                  <Route path='/feed' element={<Feed />} />
-                  <Route path='/myPage' element={<MyPage />} />
-                  <Route path='/post' element={<PostDragDrop />} />
-                  <Route path='/posting' element={<Posting />} />
+                    <Route path='/feed' element={<Feed />} />
+                    <Route path='/myPage' element={<MyPage />} />
+                    <Route path='/post' element={<PostDragDrop />} />
+                    <Route path='/post/:postId' element={<PostDetail />} />
+                    <Route path='/posting' element={<Posting />} />
                 </Route>
                 <Route path='/guestFeed' element={<GuestFeed />} />
               </Route>
