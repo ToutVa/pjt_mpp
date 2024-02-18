@@ -11,6 +11,8 @@ const PostTimeline = (props) => {
   // 이미지 container 담아주는 배열
   const [imgAry, setImgAry] = useState();
 
+  const timeLineClass = 'time-line ' + props?.type;
+
   useEffect(() => {
     const files = postingFile;
     if (files === undefined) return;
@@ -56,7 +58,7 @@ const PostTimeline = (props) => {
   }, [imgAry]);
 
   return (
-    <div className='time-line'>
+    <div className={timeLineClass} >
       <div className='area'>{imgAry}</div>
       <div className='bar'>
         <div className='point'></div>
