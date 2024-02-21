@@ -1,26 +1,42 @@
-
 import React, { useEffect, useState } from 'react';
-import FeedComment from "./FeedComment";
-import { Link } from "react-router-dom";
+import FeedComment from './FeedComment';
+import { Link } from 'react-router-dom';
 import 'css/post.css';
-
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { isLoginSelector } from 'comm/recoil/TokenAtom';
+import { alertModalState } from 'comm/recoil/PopupAtom';
 const FeedItem = (props) => {
+  const isLogin = useRecoilValue(isLoginSelector);
+  const setAlertModalState = useSetRecoilState(alertModalState);
   const [comment, setComment] = useState([]);
   const [imgAry] = useState(props.content?.imgList);
   const [imgSrc, setImgSrc] = useState();
   const [fileNum = 0, setFileNum] = useState();
 
+  const fnChangeLike = () => {
+    if (!isLogin) {
+      setAlertModalState({ msg: '로그인을 해주세요.' });
+    }
+  };
+
+  console.log(props.content?.imgList?.[0]?.location);
+  if (props.content._id === 'eod') debugger;
   const fnLoadComment = () => {
-    //통신 함수 호출
-    const commentList = [
-      { id: 'kwon', date: '20231027', content: '여기 ㄱㄱ' },
-      { id: 'kim', date: '20231231', content: '와...잘찍으신다' },
-      {
-        id: 'kasdajsf',
-        date: '20231209',
-        content: '@@@@###히오스 지금 접속 시 캐릭터 지급$ ###@@@',
-      },
-    ];
+    let commentList = [];
+
+    if (comment.length === 0) {
+      //통신 함수 호출
+      commentList = [
+        { id: 'kwon', date: '20231027', content: '여기 ㄱㄱ' },
+        { id: 'kim', date: '20231231', content: '와...잘찍으신다' },
+        {
+          id: 'kasdajsf',
+          date: '20231209',
+          content: '@@@@###히오스 지금 접속 시 캐릭터 지급$ ###@@@',
+        },
+      ];
+    }
+
     setComment(commentList);
   };
 
@@ -50,20 +66,18 @@ const FeedItem = (props) => {
     return <div>더 이상 데이터가 없습니다.</div>;
   } else {
     return (
-      <div className="item">
-        <div className="title-bar">
-            <div className="user" />
-            <div>
-                <Link to={"/post/"+props.content._id} className="title">
-                    {props.content.title}
-                </Link>
-                <div className="user-id">
-                  ec_asd
-                </div>
-            </div>
+      <div className='item'>
+        <div className='title-bar'>
+          <div className='user' />
+          <div>
+            <Link to={'/post/' + props.content._id} className='title'>
+              {props.content.title}
+            </Link>
+            <div className='user-id'>ec_asd</div>
+          </div>
         </div>
         <div className='content'>
-          {(imgAry.length > 1) ? (
+          {imgAry.length > 1 ? (
             <button
               className='left-arrow'
               onClick={() => onClickImgMove('left')}
@@ -71,8 +85,8 @@ const FeedItem = (props) => {
           ) : (
             <div></div>
           )}
-          <img src={imgSrc} height='400' width='650' alt =""></img>
-          {(imgAry.length > 1) ? (
+          <img src={imgSrc} height='400' width='650' alt=''></img>
+          {imgAry.length > 1 ? (
             <button
               className='right-arrow'
               onClick={() => onClickImgMove('right')}
@@ -84,18 +98,20 @@ const FeedItem = (props) => {
         </div>
         <div className='bottom'>
           <div className='icon-group'>
-            <button className='like' />
+            <button className='like' onClick={fnChangeLike} />
             <button className='comment' onClick={fnLoadComment} />
           </div>
           {comment.length > 0 ? (
             <div className='comment-area' id='comment-area'>
               <FeedComment commentList={comment} />
-
               <div>
                 <input
+                  readOnly={!isLogin}
                   className='mb15 mt15'
                   type='text'
-                  placeholder='댓글을 입력해 주세요'
+                  placeholder={
+                    isLogin ? '댓글을 입력해 주세요' : '로그인을 해주세요.'
+                  }
                 />
               </div>
               <div className='more'>더보기 +</div>

@@ -1,5 +1,6 @@
 import "css/myPage.css";
 import Bookmark from "./BookMark";
+import Profile from "./Profile";
 import TabController from "component/TabController";
 
 
@@ -13,6 +14,7 @@ const MyPage = () => {
     <div className="main-frame my-page">
       <div className="left"></div>
       <div className="center">
+        <Profile/>
         <TabController menuList={menuArr}/>
       </div>
       <div className="right"></div>
