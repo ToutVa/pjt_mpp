@@ -325,15 +325,26 @@
     font-size: 12px;
 }
 
-.post > .center > .item > .map {
-    height: 100px;
+.post > .center > .item > #map {
+    height: 600px;
     width: 100%;
+    z-index: 1;
 }
 
 .post > .center > .item > .content {
-    height: 400px;
-    background-color: rgb(97, 184, 156);
+    opacity: 0;
+    height: 600px;
+    top : 60px;
+    background-color: rgba(0, 0, 0, 0.568);
     position: absolute;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    
+    &.active {
+        z-index: 2;
+        opacity: 100;
+    }
 }
 
 .post > .center > .item > .bottom { 
