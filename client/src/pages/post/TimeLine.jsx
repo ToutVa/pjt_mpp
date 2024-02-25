@@ -1,14 +1,30 @@
 import React, { useEffect, useState } from 'react';
+import util from 'comm/util';
 import 'css/post.css';
 
 const TimeLine = (props) => {
-  const imgList = props?.imgList;
+  const imgList  = props?.imgList;
+  const callback = props?.callback;
+
+  //클릭이벤트(이미지, 포인트)
+  const pointOnClick = (e) => {
+    imgList.forEach((item,idx)=> {
+      let ele = document.getElementById("timeline"+idx);
+      util.removeClass(ele,"active");
+      if(e.currentTarget.id == ele.id) {
+        util.addClass(ele,"active");
+        callback(item);
+      }
+    });
+    
+  }
 
   const makePoint = () => {
+    
     let element = [];
     imgList.forEach((item,idx)=> {
       element.push(
-        <li key={idx}>
+        <li key={idx} onClick={pointOnClick} id ={"timeline"+idx}>
           <div className={"point " + idx} />
           <img className='img' src={item.location} />
           <div className='desc'>

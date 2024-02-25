@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
+
 
 const FeedComment = (props) => {
   const postId = props.postId;
@@ -17,7 +19,7 @@ const FeedComment = (props) => {
       }
     }).catch((err) => {
       console.log(err);
-    }, [itemAry]);
+    }, []);
   }
 
   //더보기 버튼클릭이벤트
@@ -48,7 +50,6 @@ const FeedComment = (props) => {
       <div>
         <input className="mb15 mt15" type="text" placeholder="댓글을 입력해 주세요"/>
       </div>
-      <div className="more" onClick={fnBtnMoreOnclick}>더보기 +</div>
     </div>
   );
 }
