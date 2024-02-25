@@ -16,6 +16,9 @@ import baseImgUrl from 'assets/icon-file.svg';
 import dayjs from 'dayjs';
 import Modal from 'react-modal';
 import PostMap from "./PostMap";
+// import MapController from 'component/MapController';
+
+/*global kakao*/
 
 const Posting = (props) => {
   // parameter 설정
@@ -34,7 +37,7 @@ const Posting = (props) => {
 
   // 화면 로딩시 실행
   useEffect(() => {
-    console.log('postingFile=>', postingFile);
+    console.log('Posting.jsx, 파일list =>', postingFile);
     //file reader설정
     const reader = new FileReader();
 
@@ -44,12 +47,14 @@ const Posting = (props) => {
       imgWrap.src = dataURL;
     };
 
+    // 미리보기 설정
     if(!util.isEmpty(postingFile[0])){
       console.log('postingFile2=>', postingFile);
-      // 미리보기 설정
       reader.readAsDataURL(postingFile[0]);
     } 
+
     sgisMapCreate();
+
   }, [postingFile]);
 
   // data api
@@ -315,9 +320,22 @@ const Posting = (props) => {
               </tbody>
             </table>
           </div>
-          <div id='map' className='map'>
-            <PostMap/>
-          </div>
+          <table>
+            <tr>
+              <td>
+                내용
+              </td>
+              <td>
+                <input type='text'
+                      name='title'
+                      autoFocus
+                      placeholder='내용을 입력하세요...'
+                      onChange={(e) => setContext(e.target.value)}/>
+              </td>
+            </tr>
+          </table>
+          <div id='map' className='map'></div>
+          
           <input type='text' placeholder='#태그' />
           <div className='btn-group mt20'>
             <div className='left'>
