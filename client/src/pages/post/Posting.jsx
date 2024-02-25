@@ -9,13 +9,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import PostTimeline from 'pages/post/PostTimeline';
+import util from "comm/util";
 
 import baseImgUrl from 'assets/icon-file.svg';
 import dayjs from 'dayjs';
 import Modal from 'react-modal';
-// import MapController from 'component/MapController';
-
-/*global kakao*/
+import PostMap from "./PostMap";
 
 const Posting = (props) => {
   // parameter 설정
@@ -30,16 +29,6 @@ const Posting = (props) => {
 
   // 화면 로딩시 실행
   useEffect(() => {
-    //JS IMPORT FOR SGIS API 
-    // if (document.querySelector(`script[src="https://sgisapi.kostat.go.kr/OpenAPI3/auth/javascriptAuth?consumer_key=e69a1611e7a844108336"]`))return;
-    // const script = document.createElement("script");
-    // script.src = "https://sgisapi.kostat.go.kr/OpenAPI3/auth/javascriptAuth?consumer_key=e69a1611e7a844108336";
-    // script.async = true;
-    // document.body.appendChild(script);
-
-    // debugger;
-    // sop.map('map');
-
     console.log('postingFile=>', postingFile);
     //file reader설정
     const reader = new FileReader();
@@ -50,28 +39,11 @@ const Posting = (props) => {
       imgWrap.src = dataURL;
     };
 
-    // 미리보기 설정
-    reader.readAsDataURL(postingFile[0]);
-
-    // 카카오맵 API 로딩
-    kakao.maps.load(() => {
-      var container = document.getElementById('map');
-      var options = {
-        center: new kakao.maps.LatLng(37.560003006990776, 126.97530406981836),
-        level: 5,
-      };
-
-      var map = new kakao.maps.Map(container, options);
-      var markerPosition = new kakao.maps.LatLng(
-        37.560003006990776,
-        126.97530406981836
-      );
-      var marker = new kakao.maps.Marker({
-        position: markerPosition,
-      });
-
-      marker.setMap(map);
-    });
+    if(!util.isEmpty(postingFile[0])){
+      console.log('postingFile2=>', postingFile);
+      // 미리보기 설정
+      reader.readAsDataURL(postingFile[0]);
+    }
   }, [postingFile]);
 
   // data api
@@ -318,7 +290,7 @@ const Posting = (props) => {
             </table>
           </div>
           <div id='map' className='map'>
-            지도영역
+            <PostMap/>
           </div>
           <input type='text' placeholder='#태그' />
           <div className='btn-group mt20'>
