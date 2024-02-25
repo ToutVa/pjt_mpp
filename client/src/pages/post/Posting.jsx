@@ -10,13 +10,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import PostTimeline from 'pages/post/PostTimeline';
+import util from "comm/util";
 
 import baseImgUrl from 'assets/icon-file.svg';
 import dayjs from 'dayjs';
 import Modal from 'react-modal';
-// import MapController from 'component/MapController';
-
-/*global kakao*/
+import PostMap from "./PostMap";
 
 const Posting = (props) => {
   // parameter 설정
@@ -35,17 +34,7 @@ const Posting = (props) => {
 
   // 화면 로딩시 실행
   useEffect(() => {
-    //JS IMPORT FOR SGIS API 
-    // if (document.querySelector(`script[src="https://sgisapi.kostat.go.kr/OpenAPI3/auth/javascriptAuth?consumer_key=e69a1611e7a844108336"]`))return;
-    // const script = document.createElement("script");
-    // script.src = "https://sgisapi.kostat.go.kr/OpenAPI3/auth/javascriptAuth?consumer_key=e69a1611e7a844108336";
-    // script.async = true;
-    // document.body.appendChild(script);
-
-    // debugger;
-    // sop.map('map');
-
-    console.log('Posting.jsx, 파일list =>', postingFile);
+    console.log('postingFile=>', postingFile);
     //file reader설정
     const reader = new FileReader();
 
@@ -55,11 +44,12 @@ const Posting = (props) => {
       imgWrap.src = dataURL;
     };
 
-    // 미리보기 설정
-    reader.readAsDataURL(postingFile[0]);
-
+    if(!util.isEmpty(postingFile[0])){
+      console.log('postingFile2=>', postingFile);
+      // 미리보기 설정
+      reader.readAsDataURL(postingFile[0]);
+    } 
     sgisMapCreate();
-
   }, [postingFile]);
 
   // data api
@@ -325,21 +315,9 @@ const Posting = (props) => {
               </tbody>
             </table>
           </div>
-          <table>
-            <tr>
-              <td>
-                내용
-              </td>
-              <td>
-                <input type='text'
-                      name='title'
-                      autoFocus
-                      placeholder='내용을 입력하세요...'
-                      onChange={(e) => setContext(e.target.value)}/>
-              </td>
-            </tr>
-          </table>
-          <div id = 'map'style={{height: 500, position: "relative"}} ></div>
+          <div id='map' className='map'>
+            <PostMap/>
+          </div>
           <input type='text' placeholder='#태그' />
           <div className='btn-group mt20'>
             <div className='left'>
