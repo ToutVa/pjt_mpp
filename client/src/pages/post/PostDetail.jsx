@@ -5,6 +5,7 @@ import util from "comm/util";
 import TimeLine from "./TimeLine";
 import { useParams } from "react-router-dom";
 import PostComment from "./PostComment";
+import PostMap from "./PostMap";
 
 const PostDetail = (match) => {
   const param                     = useParams();
@@ -13,8 +14,8 @@ const PostDetail = (match) => {
   const [focusImg , setFocusImg]  = useState();
 
   const commentList = [{id : "kwon", date : "20231027", content:"여기 ㄱㄱ"},
-  {id : "kim", date : "20231231", content:"와...잘찍으신다"},
-  {id : "kasdajsf", date : "20231209", content:"@@@@###히오스 지금 접속 시 캐릭터 지급$ ###@@@"},]
+                       {id : "kim", date : "20231231", content:"와...잘찍으신다"},
+                       {id : "kasdajsf", date : "20231209", content:"@@@@###히오스 지금 접속 시 캐릭터 지급$ ###@@@"},]
 
 
   const getPost = async () => {
@@ -31,16 +32,15 @@ const PostDetail = (match) => {
   
   const changeImg = (e) => {
     setFocusImg(e.location);
+    //TODO 이미지 좌표 이동 넣기
   }
-  const makeMap = () => {
-    const { sop } = window;
-    const map = sop.map("map");
+  const onClickImg = (e) => {
+    setFocusImg();
   }
+
   useEffect(() => {
-    const { sop } = window;
-    const map = sop.map("map");
     getPost();
-  },[]);
+  }, []);
 
   if(util.isEmpty(item)) {
     return(<><div id="map"/></>);
@@ -61,8 +61,8 @@ const PostDetail = (match) => {
                   </div>
               </div>
           </div>
-          <div id="map"/>
-          <div className="content">
+          <PostMap />
+          <div id ="img-cont" className={"content " + (util.isEmpty(focusImg)? "":"active")} onClick={onClickImg}>
             <img src={focusImg} height="400" width="650"></img>
           </div>
           <div className="bottom">
@@ -70,7 +70,7 @@ const PostDetail = (match) => {
               <button className="like" />
             </div>
             <div className="comment-area" id="comment-area">
-              <PostComment commentList={commentList}/>
+              <PostComment commentList={commentList}> </PostComment>
               <div className="more">더보기 +</div>
             </div>
           </div>

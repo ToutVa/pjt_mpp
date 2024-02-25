@@ -38,6 +38,7 @@
 .feed > .center > .item > .content {
     height: 400px;
     background-color: rgb(97, 184, 156);
+    position: relative;
 }
 
 .feed > .center > .item > .bottom { 
@@ -190,10 +191,10 @@
     border-radius: 2px;
     padding: 10px 20px;
     position : absolute;
+    top:50%;
     
-
-    &.left-arrow {transform: rotate(225deg);}
-    &.right-arrow {transform: rotate(45deg);}
+    &.left-arrow {transform: rotate(225deg) translate(15%, 55%);}
+    &.right-arrow {transform: rotate(45deg) translate(-124%, 56%);}
     &:hover{border-color: rgb(100,100,100);}
     &:active{border-color: rgb(66, 66, 66);}
 }
