@@ -4,7 +4,8 @@ import 'css/post.css';
 import { useNavigate } from 'react-router';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { postingFiles, totalfileCntSelector } from 'comm/recoil/FileAtom';
-import util from "comm/util";
+import exifr from 'exifr/dist/full.esm.mjs'; // to use ES Modules
+import util from 'comm/util';
 
 const PostDragDrop = () => {
   const [postingFile, setPostingFile] = useRecoilState(postingFiles);
@@ -25,41 +26,54 @@ const PostDragDrop = () => {
     fileArray.splice(fileNum, 1);
 
     setPostingFile(fileArray);
-    setFileNum(fileNum-1);
+    setFileNum(fileNum - 1);
   };
 
   /* 파일 state 저장이벤트 */
   const addFile = (fileArr) => {
-    console.log('postingFile=>', postingFile);
-    console.log('fileArr=>', fileArr);
+    const fetchData = async () => {
+      console.log('PostDragDrop.jsx, postingFile=>', postingFile);
+      console.log('PostDragDrop.jsx, fileArr=>', fileArr);
 
-    // file length 0 일경우 base URL 설정
-    if (fileArr.length === 0) {
-      // 기존에 선택한 파일 체크 
-      if (postingFile !== undefined) return;
-      const imgWrap = document.getElementById('preview');
-      imgWrap.src = postingFile.url;
-      return;
-    }
+      // file length 0 일경우 base URL 설정
+      if (fileArr.length === 0) {
+        // 기존에 선택한 파일 체크
+        if (postingFile !== undefined) return;
+        const imgWrap = document.getElementById('preview');
+        imgWrap.src = postingFile.url;
+        return;
+      }
 
-    // file length 10> 일경우 alert창 표시 및 초기화
-    if (fileArr.length > maxFileCnt) {
-      alert('첨부파일은 최대 ' + maxFileCnt + '개 까지 첨부 가능합니다.');
-      document.querySelector('input[type=file]').value = ''; // 초기화
-      return;
-    }
+      // file length 10> 일경우 alert창 표시 및 초기화
+      if (fileArr.length > maxFileCnt) {
+        alert('첨부파일은 최대 ' + maxFileCnt + '개 까지 첨부 가능합니다.');
+        document.querySelector('input[type=file]').value = ''; // 초기화
+        return;
+      }
 
-    // file reader 생성 및 초기 이미지 셋팅
-    const reader = new FileReader();
-    reader.onload = function () {
-      let dataURL = reader.result;
-      let imgWrap = document.getElementById('preview');
-      imgWrap.src = dataURL;
+      // 메타데이터 가져오기
+      for (let idx = 0; idx < fileArr.length; idx++) {
+        let { latitude, longitude } = await exifr.gps(fileArr[idx]);
+        console.log('PostDragDrop.jsx, 위도경도', latitude, longitude);
+        fileArr[idx].latitude = latitude;
+        fileArr[idx].longitude = longitude;
+
+        console.log(fileArr[idx]);
+      }
+
+      // file reader 생성 및 초기 이미지 셋팅
+      const reader = new FileReader();
+      reader.onload = function () {
+        let dataURL = reader.result;
+        let imgWrap = document.getElementById('preview');
+        imgWrap.src = dataURL;
+      };
+
+      // file 세팅
+      setPostingFile(fileArr);
+      reader.readAsDataURL(fileArr[fileNum]); // fileNum 초기값  0
     };
-
-    // file 세팅
-    setPostingFile(fileArr);
-    reader.readAsDataURL(fileArr[fileNum]); // fileNum 초기값  0 
+    fetchData();
   };
 
   //File OnChange 이벤트 함수
@@ -105,7 +119,7 @@ const PostDragDrop = () => {
   // setState 비동기 오류로 인해 useEffect 함수 따로 설정하여 로직 추가. file 미리보기로직
   useEffect(() => {
     // file undefined 상태면 return
-    if (postingFile[fileNum] === undefined ) return;
+    if (postingFile[fileNum] === undefined) return;
 
     // file reader 호출
     const reader = new FileReader();
@@ -133,9 +147,23 @@ const PostDragDrop = () => {
         <h4>새 게시물 만들기</h4>
 
         <div className='img-wrap'>
-          {!util.isEmpty(totalfileCnt) ? <button className="left-arrow" onClick={() => onClickImgMove('left')} /> : <div></div>}
+          {!util.isEmpty(totalfileCnt) ? (
+            <button
+              className='left-arrow'
+              onClick={() => onClickImgMove('left')}
+            />
+          ) : (
+            <div></div>
+          )}
           <img id='preview' src={postingFile.url} alt='' />
-          {!util.isEmpty(totalfileCnt) ? <button className="right-arrow" onClick={() => onClickImgMove('right')}/>: <div></div>}
+          {!util.isEmpty(totalfileCnt) ? (
+            <button
+              className='right-arrow'
+              onClick={() => onClickImgMove('right')}
+            />
+          ) : (
+            <div></div>
+          )}
         </div>
         <div>
           <input
@@ -148,27 +176,39 @@ const PostDragDrop = () => {
             onChange={onLoadFile}
           />
           <div>
-              {util.isEmpty(totalfileCnt) ?
-                <p className='preview-msg'>사진을 여기에 끌어다 놓으세요.</p> : 
-                <p className='preview-msg'>총 {totalfileCnt}장이 선택되었습니다.</p>
-              }
-              <div className='btn-group mt20 flex'>
-                <div className='row'>
-                  <button type='submit' className='btn-primary wd150' onClick={handleButtonClick}>
-                    사진추가
-                  </button>
-                  <button type='submit' className='btn-cancel wd150' onClick={cancleButtonClick}>
-                    사진삭제
-                  </button>
-                 </div>
+            {util.isEmpty(totalfileCnt) ? (
+              <p className='preview-msg'>사진을 여기에 끌어다 놓으세요.</p>
+            ) : (
+              <p className='preview-msg'>
+                총 {totalfileCnt}장이 선택되었습니다.
+              </p>
+            )}
+            <div className='btn-group mt20 flex'>
+              <div className='row'>
+                <button
+                  type='submit'
+                  className='btn-primary wd150'
+                  onClick={handleButtonClick}
+                >
+                  사진추가
+                </button>
+                <button
+                  type='submit'
+                  className='btn-cancel wd150'
+                  onClick={cancleButtonClick}
+                >
+                  사진삭제
+                </button>
               </div>
-              <div className='btn-group'>
-                <div className='row medium'>
-                  <button className="btn-primary auto" onClick={handleSubmit}>이미지선택 완료</button>
-                </div>
+            </div>
+            <div className='btn-group'>
+              <div className='row medium'>
+                <button className='btn-primary auto' onClick={handleSubmit}>
+                  이미지선택 완료
+                </button>
               </div>
+            </div>
           </div>
-          
         </div>
       </div>
     </>

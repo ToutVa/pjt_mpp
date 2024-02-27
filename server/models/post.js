@@ -6,21 +6,6 @@ const jwt = require('jsonwebtoken');
 
 const postSchema = new mongoose.Schema({
   // _id 부분은 기본적으로 생략. 알아서 Object.id를 넣어줌
-  title : {
-    type      : String,
-    maxlength : 200,
-    required  : true // null 여부
-  },
-  filmTime : {
-    type      : String,
-    maxlength : 200,
-    required  : true // null 여부
-  },
-  filmLocation: {
-    type      : String,
-    maxlength : 200,
-    required  : true // null 여부
-  },
   filmWeather : {
     type     : String
   },

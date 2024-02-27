@@ -8,11 +8,14 @@ import { useNavigate } from 'react-router';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+
 import PostTimeline from 'pages/post/PostTimeline';
+import util from "comm/util";
 
 import baseImgUrl from 'assets/icon-file.svg';
 import dayjs from 'dayjs';
 import Modal from 'react-modal';
+import PostMap from "./PostMap";
 // import MapController from 'component/MapController';
 
 /*global kakao*/
@@ -22,25 +25,19 @@ const Posting = (props) => {
   const [postingFile] = useRecoilState(postingFiles);
   const navigate = useNavigate();
 
-  const [title, setTitle] = useState();
+  const [context, setContext] = useState();
   const [filmTime, setFilmTime] = useState();
   const [filmLocation, setFilmLocation] = useState();
   const [filmWeather, setFilmWeather] = useState();
   const [filmSeason, setFilmSeason] = useState();
 
+  const [imgIdx = 0, setImgIdx] = useState();
+
+
+
   // 화면 로딩시 실행
   useEffect(() => {
-    //JS IMPORT FOR SGIS API 
-    // if (document.querySelector(`script[src="https://sgisapi.kostat.go.kr/OpenAPI3/auth/javascriptAuth?consumer_key=e69a1611e7a844108336"]`))return;
-    // const script = document.createElement("script");
-    // script.src = "https://sgisapi.kostat.go.kr/OpenAPI3/auth/javascriptAuth?consumer_key=e69a1611e7a844108336";
-    // script.async = true;
-    // document.body.appendChild(script);
-
-    // debugger;
-    // sop.map('map');
-
-    console.log('postingFile=>', postingFile);
+    console.log('Posting.jsx, 파일list =>', postingFile);
     //file reader설정
     const reader = new FileReader();
 
@@ -51,27 +48,13 @@ const Posting = (props) => {
     };
 
     // 미리보기 설정
-    reader.readAsDataURL(postingFile[0]);
+    if(!util.isEmpty(postingFile[0])){
+      console.log('postingFile2=>', postingFile);
+      reader.readAsDataURL(postingFile[0]);
+    } 
 
-    // 카카오맵 API 로딩
-    kakao.maps.load(() => {
-      var container = document.getElementById('map');
-      var options = {
-        center: new kakao.maps.LatLng(37.560003006990776, 126.97530406981836),
-        level: 5,
-      };
+    sgisMapCreate();
 
-      var map = new kakao.maps.Map(container, options);
-      var markerPosition = new kakao.maps.LatLng(
-        37.560003006990776,
-        126.97530406981836
-      );
-      var marker = new kakao.maps.Marker({
-        position: markerPosition,
-      });
-
-      marker.setMap(map);
-    });
   }, [postingFile]);
 
   // data api
@@ -83,7 +66,7 @@ const Posting = (props) => {
     formData.append(
       'fileInfo',
       JSON.stringify({
-        title,
+        context ,
         filmTime,
         filmLocation,
         filmWeather,
@@ -116,6 +99,7 @@ const Posting = (props) => {
   // img변경 로직 callback
   const imgChanger = (e) => {
     const idx = e.target.id.slice(-1);
+    setImgIdx(idx);
 
     // file reader설정
     const reader = new FileReader();
@@ -128,8 +112,37 @@ const Posting = (props) => {
 
     // 미리보기 설정
     reader.readAsDataURL(postingFile[idx]);
+
+    // 사진정보설정 
+    const location = document.getElementById('imgLocation');
+    console.log(postingFile[idx].latitude);
+    location.value = (postingFile[idx].latitude) ? `위도경도 : ${postingFile[idx].longitude},${postingFile[idx].latitude}` : '';
   };
 
+  // sgis map 생성 
+  const sgisMapCreate = () => {
+    const {sop} = window;
+    const map = sop.map('map');
+    
+    // 경도, 위도 
+    const { latitude, longitude } =postingFile[0];
+    // 경도, 위도값 변환 
+    const utmkXY = new sop.LatLng (latitude,longitude);
+    
+    // 지도생성 
+    map.setView(sop.utmk(utmkXY.x, utmkXY.y), 9);
+
+    // marker 생성 
+    const marker = sop.marker([utmkXY.x, utmkXY.y]);
+    marker.addTo(map);
+
+    // 위치설정 
+    const location = document.getElementById('imgLocation');
+    location.value = (postingFile[0].latitude) ? `위도경도 : ${postingFile[0].longitude},${postingFile[0].latitude}` : '';
+  }
+
+
+  // post 생성 
   const CreatePost = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     return (
@@ -142,6 +155,7 @@ const Posting = (props) => {
       </>
     );
   };
+
 
   return (
     <div className='main-frame post'>
@@ -170,18 +184,6 @@ const Posting = (props) => {
                     <button className='btn-primary wd110' onClick={CreatePost}>
                       지도
                     </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>제목</td>
-                  <td>
-                    <input
-                      type='text'
-                      name='title'
-                      autoFocus
-                      placeholder='제목을 입력해주세요'
-                      onChange={(e) => setTitle(e.target.value)}
-                    />
                   </td>
                 </tr>
                 <tr>
@@ -230,9 +232,10 @@ const Posting = (props) => {
                   <td>위치</td>
                   <td>
                     <input
-                      type='text'
-                      placeholder='사진 촬영한 위치를 입력해주세요'
-                      onChange={(e) => setFilmLocation(e.target.value)}
+                      id = 'imgLocation'
+                      type= 'text'
+                      placeholder= '사진 촬영한 위치를 입력해주세요'
+                      onChange={(e) => postingFile[imgIdx].location = e.target.value }
                     />
                   </td>
                 </tr>
@@ -317,9 +320,22 @@ const Posting = (props) => {
               </tbody>
             </table>
           </div>
-          <div id='map' className='map'>
-            지도영역
-          </div>
+          <table>
+            <tr>
+              <td>
+                내용
+              </td>
+              <td>
+                <input type='text'
+                      name='title'
+                      autoFocus
+                      placeholder='내용을 입력하세요...'
+                      onChange={(e) => setContext(e.target.value)}/>
+              </td>
+            </tr>
+          </table>
+          <div id='map' className='map'></div>
+          
           <input type='text' placeholder='#태그' />
           <div className='btn-group mt20'>
             <div className='left'>
