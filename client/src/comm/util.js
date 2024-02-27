@@ -109,5 +109,46 @@ const util = {
             return false;
         }
     },
+
+    /**
+     * makeRaioGroup
+     * 라디오 컨트롤 객체 생성
+     * @param String 라디오의 name
+     * @return class radioGroup
+     */
+    makeRaioGroup : (radioName) => {
+        let radioLst = document.getElementsByName(radioName);
+        const radioGroup = {
+            list        : radioLst,
+            setValue    : (val) => {
+                radioLst.forEach((item, idx)=> {
+                    if(item.value === val) {
+                        item.checked = true;
+                    }else {
+                        item.checked = false;
+                    }
+                });
+            },
+            getValue    : () => {
+                radioLst.forEach((item, idx)=> {
+                    if(item.checked) {
+                        return item.value;
+                    }
+                });
+            },
+            getAllVlaue   : () => {
+                let valueList = []
+                radioLst.forEach((item, idx)=> {
+                    valueList.push(item.value);
+                });
+                return valueList;
+            },
+
+            
+        }
+
+
+        return radioGroup;
+    }
 }
 export default util;
