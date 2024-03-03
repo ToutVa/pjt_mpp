@@ -4,20 +4,18 @@ import { useRecoilValue } from 'recoil';
 import { isLoginSelector } from 'comm/recoil/TokenAtom';
 import commUtil from 'comm/util';
 
-const { default: FeedItem } = require('./FeedItem');
-
-const FeedContent = (props) => {
+const MyFeedContent = (props) => {
   const isLogin = useRecoilValue(isLoginSelector);
   const [itemAry] = useState([]);
-  const [throttle, setThrottle] = useState(false);
+  const [throttle, setThrottle] = useState(true);
 
   const getFeed = async () => {
     if (itemAry.length === 0) commUtil.scrollTop();
-
-    let loadUrl = isLogin ? '/api/post/' : '/api/post/guestFeed';
-    setThrottle(true);
     await axios
-      .post(loadUrl, { lastId: itemAry[itemAry.length - 1]?._id })
+      .post('/api/post/', {
+        lastId: itemAry[itemAry.length - 1]?._id,
+        myFeedYn: isLogin,
+      })
       .then((res) => {
         const data = res.data;
         if (data.success) {
@@ -40,6 +38,7 @@ const FeedContent = (props) => {
     const clientHeight = document.documentElement.clientHeight;
     const scrollHeight = document.documentElement.scrollHeight;
     if (scrollTop + clientHeight >= scrollHeight && !throttle && itemAry.length !== 0) {
+      setThrottle(true);
       await getFeed();
     }
   };
@@ -52,10 +51,18 @@ const FeedContent = (props) => {
 
   let elements = [];
   itemAry.forEach((val, idx) => {
-    elements.push(<FeedItem content={val} key={idx} />);
+    elements.push(
+      <img
+        key={idx}
+        src={val?.imgList[0].location}
+        height='210'
+        width='210'
+        alt=''
+      />
+    );
   });
 
   return elements;
 };
 
-export default FeedContent;
+export default MyFeedContent;

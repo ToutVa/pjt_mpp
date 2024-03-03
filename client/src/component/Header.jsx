@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { TokenUser, isLoginSelector } from 'comm/recoil/TokenAtom';
 import { loginModalState, signupModalState } from 'comm/recoil/PopupAtom';
+import commUtil from 'comm/util';
 
 import axios from 'axios';
 
@@ -28,6 +29,11 @@ const Header = ({ type }) => {
         : 'btn-menu';
     e.currentTarget.className = classNm;
   };
+
+  const fn_refreshFeed = (e) => {
+    commUtil.scrollTop();
+    /** 현재 페이지가 feed일때 feed 초기화후 새로고침 로직 넣어야할듯*/
+  }
 
   if ('cover' === type) {
     return (
@@ -60,7 +66,10 @@ const Header = ({ type }) => {
       <header className={type}>
         <div className='side-menu' />
         <div className='center'>
-          <Link to={isLogin === true ? '/feed' : '/'}>
+          <Link to={isLogin === true ? '/feed' : '/'}
+            onClick={() => {
+              fn_refreshFeed();
+            }}>
             <div className='logo' />
           </Link>
         </div>
@@ -75,10 +84,6 @@ const Header = ({ type }) => {
               <li>
                 {' '}
                 <a href='/mypage'> mypage</a>
-              </li>
-              <li>
-                {' '}
-                <a href='/profile'> profile</a>
               </li>
               <li>
                 {' '}

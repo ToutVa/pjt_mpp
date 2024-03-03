@@ -73,6 +73,7 @@ p.pin::before {
     background: rgba(145, 145, 145, 0);
   }
 }
+
 .my-page > .center > .item > .time-line > .area > .item {
   display: inline-block;
   width: 100px;
@@ -107,6 +108,7 @@ p.pin::before {
     right: 2px;
   }
 }
+
 .my-page > .center > .item > .time-line > .bar > .point {
   position: absolute;
   width: 10px;
@@ -120,4 +122,18 @@ p.pin::before {
     background-color: rgb(231, 66, 66);
     border: 2px solid rgb(20, 20, 20);
   }
+}
+
+.my-feed {
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  /* disp */
+}
+
+.my-feed > .container-three {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  row-gap: 5px;
+  column-gap: 5px;
 }
