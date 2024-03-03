@@ -30,11 +30,12 @@ const Posting = (props) => {
   const [filmLocation, setFilmLocation] = useState();
   const [filmWeather, setFilmWeather] = useState();
   const [filmSeason, setFilmSeason] = useState();
-
   const [imgIdx = 0, setImgIdx] = useState();
 
-
-
+  const [sgisMap, setSgisMap] = useState();
+  const [sgisSop, setSgisSop] = useState();
+  
+  
   // 화면 로딩시 실행
   useEffect(() => {
     console.log('Posting.jsx, 파일list =>', postingFile);
@@ -55,7 +56,7 @@ const Posting = (props) => {
 
     sgisMapCreate();
 
-  }, [postingFile]);
+  }, []);
 
   // data api
   const handleSubmit = async (e) => {
@@ -98,6 +99,7 @@ const Posting = (props) => {
 
   // img변경 로직 callback
   const imgChanger = (e) => {
+    const {sop} = window;
     const idx = e.target.id.slice(-1);
     setImgIdx(idx);
 
@@ -113,16 +115,31 @@ const Posting = (props) => {
     // 미리보기 설정
     reader.readAsDataURL(postingFile[idx]);
 
+    // 경도, 위도 
+    const { latitude, longitude } =postingFile[idx];
+    // 경도, 위도값 변환 
+    const utmkXY = new sop.LatLng (latitude,longitude);
+
+    // marker 생성 
+    // const marker = sop.marker([utmkXY.x, utmkXY.y]);
+    // marker.addTo(sgisMap);
+    debugger;
+    sgisMap.setView(sgisMap.utmk[utmkXY.x, utmkXY.y], 9);
+
     // 사진정보설정 
     const location = document.getElementById('imgLocation');
     console.log(postingFile[idx].latitude);
-    location.value = (postingFile[idx].latitude) ? `위도경도 : ${postingFile[idx].longitude},${postingFile[idx].latitude}` : '';
+    location.value = (postingFile[idx]?.latitude) ? `위도경도 : ${postingFile[idx]?.longitude},${postingFile[idx]?.latitude}` : '';
+
   };
 
   // sgis map 생성 
   const sgisMapCreate = () => {
     const {sop} = window;
     const map = sop.map('map');
+    
+    setSgisMap(map);
+    debugger;
     
     // 경도, 위도 
     const { latitude, longitude } =postingFile[0];
@@ -138,8 +155,9 @@ const Posting = (props) => {
 
     // 위치설정 
     const location = document.getElementById('imgLocation');
-    location.value = (postingFile[0].latitude) ? `위도경도 : ${postingFile[0].longitude},${postingFile[0].latitude}` : '';
+    location.value = (postingFile[0]?.latitude) ? `위도경도 : ${postingFile[0]?.longitude},${postingFile[0]?.latitude}` : '';
   }
+
 
 
   // post 생성 
@@ -334,7 +352,8 @@ const Posting = (props) => {
               </td>
             </tr>
           </table>
-          <div id='map' className='map'></div>
+          <div id='map' className='map'>
+          </div>
           
           <input type='text' placeholder='#태그' />
           <div className='btn-group mt20'>
