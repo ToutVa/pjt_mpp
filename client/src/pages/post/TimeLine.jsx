@@ -4,27 +4,37 @@ import 'css/post.css';
 
 const TimeLine = (props) => {
   const imgList  = props?.imgList;
-  const callback = props?.callback;
+  const changeFn = props?.change;
+  const hoverFn = props?.hover;
 
   //클릭이벤트(이미지, 포인트)
-  const pointOnClick = (e) => {
+  const imageOnClick = (e) => {
     imgList.forEach((item,idx)=> {
       let ele = document.getElementById("timeline"+idx);
       util.removeClass(ele,"active");
       if(e.currentTarget.id == ele.id) {
         util.addClass(ele,"active");
-        callback(item);
+        changeFn(item);
       }
     });
-    
+  }
+
+  //클릭이벤트(이미지, 포인트)
+  const imageOnMouseEnter = (e) => {
+    imgList.forEach((item,idx)=> {
+      let ele = document.getElementById("timeline"+idx);
+      util.removeClass(ele,"active");
+      if(e.currentTarget.id == ele.id) {
+        hoverFn(item);
+      }
+    });
   }
 
   const makePoint = () => {
-    
     let element = [];
     imgList.forEach((item,idx)=> {
       element.push(
-        <li key={idx} onClick={pointOnClick} id ={"timeline"+idx}>
+        <li key={idx} onClick={imageOnClick} onMouseEnter={imageOnMouseEnter} id ={"timeline"+idx}>
           <div className={"point " + idx} />
           <img className='img' src={item.location} />
           <div className='desc'>
