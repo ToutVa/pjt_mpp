@@ -17,7 +17,7 @@ const Profile = () => {
         <div>
           팔로우
           <br />
-          192k
+          192
         </div>
       </div>
       <div>

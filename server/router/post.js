@@ -29,12 +29,18 @@ route.get('/', authValidator, async (req,res) => {
 route.post('/', authValidator, async (req,res) => {
   let postJson;
   let filter = {};
+  let limitCnt = 10;
+
   if(req.body.lastId !== undefined) {
     filter._id = { $lt: req.body.lastId};
   }
 
-  console.log("post");
-  postJson = await Post.find(filter).sort({registDate : -1}).limit(10).catch((err) => {
+  if (req.body.myFeedYn) {
+    limitCnt = 15;
+    filter.userEmail = req.userInfo.email;
+  }
+  console.log('postTest');
+  postJson = await Post.find(filter).sort({registDate : -1}).limit(limitCnt).catch((err) => {
       res.json({success : false, err});
   });
   

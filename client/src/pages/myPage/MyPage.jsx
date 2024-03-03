@@ -1,12 +1,12 @@
 import "css/myPage.css";
+import TabController from "component/TabController";
 import Bookmark from "./BookMark";
 import Profile from "./Profile";
-import TabController from "component/TabController";
-
+import MyFeed from "./MyFeed";
 
 const MyPage = () => {
   //메뉴 목록 Array  header명           ID 값             실제 Content
-  const menuArr = [{menu : "내 게시글", bodyId : "item0", content: <p className="pin">내 게시글</p>},
+  const menuArr = [{menu : "내 게시글", bodyId : "item0", content: <MyFeed />},
                    {menu : "북마크",    bodyId : "item1", content: <Bookmark />},
                    {menu : "테스트",    bodyId : "item2", content: <p className="pin">저장된여행글</p>  },
                   ];
