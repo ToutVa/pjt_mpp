@@ -120,6 +120,11 @@ const util = {
         let radioLst = document.getElementsByName(radioName);
         const radioGroup = {
             list        : radioLst,
+            init        : () => {
+                radioLst.forEach((item, idx)=> {
+                    item.checked = false;
+                });
+            },
             setValue    : (val) => {
                 radioLst.forEach((item, idx)=> {
                     if(item.value === val) {
@@ -136,18 +141,14 @@ const util = {
                     }
                 });
             },
-            getAllVlaue   : () => {
+            getAllVlaue : () => {
                 let valueList = []
                 radioLst.forEach((item, idx)=> {
                     valueList.push(item.value);
                 });
                 return valueList;
             },
-
-            
         }
-
-
         return radioGroup;
     }
 }
