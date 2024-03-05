@@ -473,7 +473,21 @@ ul.vertical > li:first-child {
   overflow: hidden;
 }
 
+.hashTags{
+  width: 100%;
+  height: 100%;
+  display: inline-grid;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #949494;
+}
 
+.hashTags > .tag{
+  padding: 1px;
+  margin-bottom: 1px;
+  border-radius: 10px;
+  border: 1px solid #949494;
+}
 
 
 /*width 공통*/

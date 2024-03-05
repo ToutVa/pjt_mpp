@@ -10,6 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import PostTimeline from 'pages/post/PostTimeline';
+import HashTag from 'component/HashTag';
 import util from "comm/util";
 
 import baseImgUrl from 'assets/icon-file.svg';
@@ -355,7 +356,7 @@ const Posting = (props) => {
           <div id='map' className='map'>
           </div>
           
-          <input type='text' placeholder='#태그' />
+          <HashTag/>
           <div className='btn-group mt20'>
             <div className='left'>
               <Link to='/feed' className='btn-cancel wd70'>
