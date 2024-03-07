@@ -39,7 +39,17 @@ const PostDetail = (match) => {
   }
   const onClickImg = (e) => {
     setFocusImg();
-    console.log();
+  }
+  
+  const mapConfig = {
+    id   : "testMap",       //맵 ID(한화면에 ID 겹치는 맵 생기면 오류남)
+    mode : "point",         //point, view, all     default : all
+    lat : 933820,           //초기경도
+    lng : 1753437,          //초기위도
+    scale : 0,              //지도 줌 레벨
+    clickCallback : (e) => {//맵 클릭 값 반환 함수
+      console.log(e.utmk.x, e.utmk.y);  //좌표반환
+    },  
   }
 
   useEffect(() => {
@@ -65,7 +75,7 @@ const PostDetail = (match) => {
                   </div>
               </div>
           </div>
-          <PostMap ref={postMapComp}/>
+          <PostMap ref={postMapComp} config={mapConfig} />
           <div id ="img-cont" className={"content " + (util.isEmpty(focusImg)? "":"active")} onClick={onClickImg}>
             <img src={focusImg} height="400" width="650"></img>
           </div>
