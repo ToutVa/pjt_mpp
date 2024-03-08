@@ -325,11 +325,12 @@
     font-size: 12px;
 }
 
-.post > .center > .item > #map {
+.post > .center > .item > .sgis-map {
     height: 600px;
     width: 100%;
     z-index: 1;
 }
+
 
 .post > .center > .item > .content {
     opacity: 0;
@@ -457,6 +458,12 @@
     width: 500px;
     height: 500px;
     position: fixed;
+}
+
+.ReactModal__Content > .sgis-map {
+    height: 80%;
+    width: 80%;
+    z-index: 30;
 }
 
 
