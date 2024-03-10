@@ -2,16 +2,16 @@ import { atom, selector } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 import baseImgUrl from 'assets/icon-file.svg';
 
-// const { persistAtom } = recoilPersist({
-//   key     : 'postingFiles',
-//   storage : localStorage,
-// });
+const { persistAtom } = recoilPersist({
+  key     : 'postingFiles',
+  storage : localStorage
+});
 
 export const postingFiles = atom({
   key     : 'postingFiles',
   default : { url : baseImgUrl},
   dangerouslyAllowMutability: true,
-  // effects_UNSTABLE: [],
+  effects_UNSTABLE: [persistAtom]
 });
 
 export const fileSelector = selector({

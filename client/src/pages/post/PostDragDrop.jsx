@@ -97,6 +97,7 @@ const PostDragDrop = () => {
   const handleSubmit = () => {
     if (postingFile === undefined || postingFile.length === 0) {
       alert('선택된 이미지가 존재하지 않습니다.');
+      return;
     }
     // posting 화면으로 이동
     navigate('/posting', { state: { postingFile } });
@@ -190,14 +191,14 @@ const PostDragDrop = () => {
                   className='btn-primary wd150'
                   onClick={handleButtonClick}
                 >
-                  사진추가
+                  {util.isEmpty(totalfileCnt) ? "사진 추가" : "다시 선택"}
                 </button>
                 <button
                   type='submit'
                   className='btn-cancel wd150'
                   onClick={cancleButtonClick}
                 >
-                  사진삭제
+                  사진 삭제
                 </button>
               </div>
             </div>
