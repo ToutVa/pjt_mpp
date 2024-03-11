@@ -32,9 +32,6 @@ const PostDragDrop = () => {
   /* 파일 state 저장이벤트 */
   const addFile = (fileArr) => {
     const fetchData = async () => {
-      console.log('PostDragDrop.jsx, postingFile=>', postingFile);
-      console.log('PostDragDrop.jsx, fileArr=>', fileArr);
-
       // file length 0 일경우 base URL 설정
       if (fileArr.length === 0) {
         // 기존에 선택한 파일 체크
@@ -51,14 +48,16 @@ const PostDragDrop = () => {
         return;
       }
 
-      // 메타데이터 가져오기
-      for (let idx = 0; idx < fileArr.length; idx++) {
-        let { latitude, longitude } = await exifr.gps(fileArr[idx]);
-        console.log('PostDragDrop.jsx, 위도경도', latitude, longitude);
-        fileArr[idx].latitude = latitude;
-        fileArr[idx].longitude = longitude;
+      // 현재위치정보 가져오기
+      const geoInfo =  await getLocation();
 
-        console.log(fileArr[idx]);
+      // 사진 메타데이터 가져오기
+      for (let idx = 0; idx < fileArr.length; idx++) {
+        const imgInfo = await exifr.gps(fileArr[idx]);
+
+        // 사진에 메타데이터 설정, 사진정보의 메타 or 현재위치정보설정 
+        fileArr[idx].latitude = imgInfo?.latitude || geoInfo?.latitude;
+        fileArr[idx].longitude = imgInfo?.longitude || geoInfo?.longitude;
       }
 
       // file reader 생성 및 초기 이미지 셋팅
@@ -138,6 +137,34 @@ const PostDragDrop = () => {
     reader.readAsDataURL(postingFile[fileNum]);
   }, [fileNum]);
 
+  const getLocation = () => {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        const now = new Date();
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            resolve({
+              err: 0,
+              time: now.toLocaleTimeString(),
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          (err) => {
+            resolve({
+              err: -1,
+              latitude: -1,
+              longitude: -1,
+            });
+          },
+          { enableHighAccuracy: true, maximumAge: 2000, timeout: 5000 }
+        );
+      } else {
+        reject({ error: -2, latitude: -1, longitude: -1 });
+      }
+    });
+  };
+
   return (
     <>
       <div
@@ -191,7 +218,7 @@ const PostDragDrop = () => {
                   className='btn-primary wd150'
                   onClick={handleButtonClick}
                 >
-                  {util.isEmpty(totalfileCnt) ? "사진 추가" : "다시 선택"}
+                  {util.isEmpty(totalfileCnt) ? '사진 추가' : '다시 선택'}
                 </button>
                 <button
                   type='submit'

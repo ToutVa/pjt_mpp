@@ -11,15 +11,22 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import PostTimeline from 'pages/post/PostTimeline';
 import HashTag from 'component/HashTag';
-import util from "comm/util";
-
 import baseImgUrl from 'assets/icon-file.svg';
 import dayjs from 'dayjs';
 import Modal from 'react-modal';
-import PostMap from "./PostMap";
-// import MapController from 'component/MapController';
+import PostMap from './PostMap';
 
-/*global kakao*/
+let mapConfig = {
+  id: 'sgisMap', //맵 ID(한화면에 ID 겹치는 맵 생기면 오류남)
+  mode: 'point', //point, view, all     default : all
+  lat: 933820, //초기경도
+  lng: 1753437, //초기위도
+  scale: 0, //지도 줌 레벨
+  clickCallback: (e) => {
+    //맵 클릭 값 반환 함수
+    console.log(e.utmk.x, e.utmk.y); //좌표반환
+  },
+};
 
 const Posting = (props) => {
   // parameter 설정
@@ -32,17 +39,40 @@ const Posting = (props) => {
   const [filmWeather, setFilmWeather] = useState();
   const [filmSeason, setFilmSeason] = useState();
   const [imgIdx = 0, setImgIdx] = useState();
+  const [accessToken, setAccessToken] = useState();
 
-  const [sgisMap, setSgisMap] = useState();
-  const [sgisSop, setSgisSop] = useState();
-  
-  
   // 화면 로딩시 실행
   useEffect(() => {
-    console.log('Posting.jsx, 파일list =>', postingFile);
-    //file reader설정
+    axios
+      .get(
+        `https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json?consumer_key=${process.env.REACT_APP_SGIS_CONSUMER_KEY}&consumer_secret=${process.env.REACT_APP_SGIS_SECRET_KEY}`
+      )
+      .then((res) => {
+        setAccessToken(res.data.result.accessToken);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [imgIdx]);
+
+  // imgIdx변경 시 사진변환 이벤트 발생
+  useEffect(() => {
+    setImgInfo(imgIdx);
+  }, [imgIdx, accessToken]);
+
+  // img변경 로직 callback
+  const imgChanger = (e) => {
+    const idx = e.target.id.slice(-1);
+    setImgIdx(idx);
+  };
+
+  const setImgInfo = (idx) => {
+    const { sop } = window;
+
+    //file reader 생성
     const reader = new FileReader();
 
+    // file reader 설정
     reader.onload = function () {
       let dataURL = reader.result;
       let imgWrap = document.getElementById('preview');
@@ -50,14 +80,37 @@ const Posting = (props) => {
     };
 
     // 미리보기 설정
-    if(!util.isEmpty(postingFile[0])){
-      console.log('postingFile2=>', postingFile);
-      reader.readAsDataURL(postingFile[0]);
-    } 
+    reader.readAsDataURL(postingFile[idx]);
 
-    sgisMapCreate();
+    // 경도, 위도
+    const latitude = postingFile[idx]?.latitude;
+    const longitude = postingFile[idx]?.longitude;
 
-  }, []);
+    // 위도경도값이 존재할 경우
+    if (latitude && longitude) {
+
+      // 모달 위도경도값 반환
+      const utmkXY = new sop.LatLng(latitude, longitude);
+
+      // sgis 모달 경도위도 설정
+      mapConfig.lat = utmkXY.x;
+      mapConfig.lng = utmkXY.y;
+
+      axios
+        .get(
+          `https://sgisapi.kostat.go.kr/OpenAPI3/personal/findcodeinsmallarea.json?x_coor=${utmkXY.x}&y_coor=${utmkXY.y}&accessToken=${accessToken}`
+        )
+        .then((res) => {
+          const addr = res.data.result;
+          // 사진정보설정
+          const location = document.getElementById('imgLocation');
+          location.value = `${addr.sido_nm} ${addr.sgg_nm} ${addr.emdong_nm}`;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   // data api
   const handleSubmit = async (e) => {
@@ -68,7 +121,7 @@ const Posting = (props) => {
     formData.append(
       'fileInfo',
       JSON.stringify({
-        context ,
+        context,
         filmTime,
         filmLocation,
         filmWeather,
@@ -98,89 +151,41 @@ const Posting = (props) => {
     }
   };
 
-  // img변경 로직 callback
-  const imgChanger = (e) => {
-    const {sop} = window;
-    const idx = e.target.id.slice(-1);
-    setImgIdx(idx);
-
-    // file reader설정
-    const reader = new FileReader();
-
-    reader.onload = function () {
-      let dataURL = reader.result;
-      let imgWrap = document.getElementById('preview');
-      imgWrap.src = dataURL;
-    };
-
-    // 미리보기 설정
-    reader.readAsDataURL(postingFile[idx]);
-
-    // 경도, 위도 
-    const { latitude, longitude } =postingFile[idx];
-    // 경도, 위도값 변환 
-    const utmkXY = new sop.LatLng (latitude,longitude);
-
-    // marker 생성 
-    // const marker = sop.marker([utmkXY.x, utmkXY.y]);
-    // marker.addTo(sgisMap);
-    debugger;
-    sgisMap.setView(sgisMap.utmk[utmkXY.x, utmkXY.y], 9);
-
-    // 사진정보설정 
-    const location = document.getElementById('imgLocation');
-    console.log(postingFile[idx].latitude);
-    location.value = (postingFile[idx]?.latitude) ? `위도경도 : ${postingFile[idx]?.longitude},${postingFile[idx]?.latitude}` : '';
-
-  };
-
-  // sgis map 생성 
-  const sgisMapCreate = () => {
-    const {sop} = window;
-    const map = sop.map('map');
-    
-    setSgisMap(map);
-    debugger;
-    
-    // 경도, 위도 
-    const { latitude, longitude } =postingFile[0];
-    // 경도, 위도값 변환 
-    const utmkXY = new sop.LatLng (latitude,longitude);
-    
-    // 지도생성 
-    map.setView(sop.utmk(utmkXY.x, utmkXY.y), 9);
-
-    // marker 생성 
-    const marker = sop.marker([utmkXY.x, utmkXY.y]);
-    marker.addTo(map);
-
-    // 위치설정 
-    const location = document.getElementById('imgLocation');
-    location.value = (postingFile[0]?.latitude) ? `위도경도 : ${postingFile[0]?.longitude},${postingFile[0]?.latitude}` : '';
-  }
-
-
-
-  // post 생성 
-  const CreatePost = () => {
+  // Sgis Map 생성
+  const MapMordalButton = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     return (
       <>
-        <Link className="btn-create-post" onClick={() => {setModalIsOpen(true)}} />
-        <Modal className="test" 
-               isOpen={modalIsOpen} 
-               onRequestClose={() => setModalIsOpen(false)} ariaHideApp={false}>
+        <button
+          type='button'
+          className='btn-primary wd110'
+          onClick={() => {
+            setModalIsOpen(true);
+          }}
+        >
+          {props.label}
+        </button>
+        <Modal
+          className='test'
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)}
+          ariaHideApp={false}
+        >
+          <PostMap config={mapConfig} />
         </Modal>
       </>
     );
   };
 
-
   return (
     <div className='main-frame post'>
       <div className='left'></div>
       <div className='center'>
-        <PostTimeline files={postingFile} propsFunction={imgChanger} type='horizon'/>
+        <PostTimeline
+          files={postingFile}
+          propsFunction={imgChanger}
+          type='horizon'
+        />
         <form
           className='img-contain'
           encType='multipart/form-data'
@@ -198,13 +203,8 @@ const Posting = (props) => {
             <table>
               <thead></thead>
               <tbody>
-                <tr>
-                  <td>
-                    <button className='btn-primary wd110' onClick={CreatePost}>
-                      지도
-                    </button>
-                  </td>
-                </tr>
+                <MapMordalButton label={'지도'} />
+
                 <tr>
                   <td>촬영시간</td>
                   <td>
@@ -251,10 +251,12 @@ const Posting = (props) => {
                   <td>위치</td>
                   <td>
                     <input
-                      id = 'imgLocation'
-                      type= 'text'
-                      placeholder= '사진 촬영한 위치를 입력해주세요'
-                      onChange={(e) => postingFile[imgIdx].location = e.target.value }
+                      id='imgLocation'
+                      type='text'
+                      placeholder='사진 촬영한 위치를 입력해주세요'
+                      onChange={(e) =>
+                        (postingFile[imgIdx].location = e.target.value)
+                      }
                     />
                   </td>
                 </tr>
@@ -339,24 +341,16 @@ const Posting = (props) => {
               </tbody>
             </table>
           </div>
-          <table>
-            <tr>
-              <td>
-                내용
-              </td>
-              <td>
-                <input type='text'
-                      name='title'
-                      autoFocus
-                      placeholder='내용을 입력하세요...'
-                      onChange={(e) => setContext(e.target.value)}/>
-              </td>
-            </tr>
-          </table>
-          <div id='map' className='map'>
-          </div>
-          
-          <HashTag/>
+          <input
+                  type='text'
+                  name='title'
+                  autoFocus
+                  placeholder='내용을 입력하세요...'
+                  onChange={(e) => setContext(e.target.value)}
+                />
+          <div id='map' className='map'></div>
+
+          <HashTag />
           <div className='btn-group mt20'>
             <div className='left'>
               <Link to='/feed' className='btn-cancel wd70'>
