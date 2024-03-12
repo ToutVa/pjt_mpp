@@ -42,8 +42,10 @@ const PostMap = forwardRef((props, ref) => {
   }));
 
   useEffect(() => {
+    
     const { sop } = window;
     const map = sop.map(id, controllConfig[mode]);
+    console.log('modal => ', lat,lng)
     map.setView(sop.utmk(lat, lng), 10);
     setStateMap(map);
     setStateSop(sop);
@@ -51,6 +53,13 @@ const PostMap = forwardRef((props, ref) => {
     if(mode === "view") {
       map.scrollWheelZoom.disable();
       map.dragging.disable();
+    } else if (mode === 'point') {
+      let marker = sop.marker([lat, lng]);
+
+      markerList.pop()?.remove();
+      markerList.push(marker);
+      
+      marker.addTo(map);
     }
 
     map.on("click",(e) => {
@@ -71,6 +80,10 @@ const PostMap = forwardRef((props, ref) => {
         }
       }, 50);
     });
+
+    map.on("ondblclick", (e) => {
+      console.log('db');
+    })
   
   },[]);
 
