@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'css/post.css';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { postingFiles } from 'comm/recoil/FileAtom';
 import { useNavigate } from 'react-router';
@@ -31,8 +32,10 @@ let mapConfig = {
 const Posting = (props) => {
   // parameter 설정
   const [postingFile] = useRecoilState(postingFiles);
+  const { state } = useLocation();
   const navigate = useNavigate();
 
+  const [imgMetaAry, setImgMetaAry] = useState(state.imgMetaAry);
   const [context, setContext] = useState();
   const [filmTime, setFilmTime] = useState();
   const [filmLocation, setFilmLocation] = useState();
@@ -53,12 +56,17 @@ const Posting = (props) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [imgIdx]);
+  }, [imgMetaAry]);
 
   // imgIdx변경 시 사진변환 이벤트 발생
   useEffect(() => {
-    setImgInfo(imgIdx);
-  }, [imgIdx, accessToken]);
+    setImgMeta();
+  }, [accessToken]);
+
+  // imgIdx변경 시 사진변환 이벤트 발생
+  useEffect(() => {
+    setImgPrev(imgIdx);
+  }, [imgIdx]);
 
   // img변경 로직 callback
   const imgChanger = (e) => {
@@ -66,9 +74,7 @@ const Posting = (props) => {
     setImgIdx(idx);
   };
 
-  const setImgInfo = (idx) => {
-    const { sop } = window;
-
+  const setImgPrev = (idx) => {
     //file reader 생성
     const reader = new FileReader();
 
@@ -82,34 +88,51 @@ const Posting = (props) => {
     // 미리보기 설정
     reader.readAsDataURL(postingFile[idx]);
 
-    // 경도, 위도
-    const latitude = postingFile[idx]?.latitude;
-    const longitude = postingFile[idx]?.longitude;
+    console.log(imgMetaAry);
 
-    // 위도경도값이 존재할 경우
-    if (latitude && longitude) {
+    // 사진정보설정
+    const location = document.getElementById('imgLocation');
+    location.value = imgMetaAry[idx]?.addr;
+  };
 
-      // 모달 위도경도값 반환
-      const utmkXY = new sop.LatLng(latitude, longitude);
+  const setImgMeta = (e) => {
+    const { sop } = window;
+    // imgMetaAry 값 추가
+    // imgMetaAry[0].uymkX = utmkXY.x;
 
-      // sgis 모달 경도위도 설정
-      mapConfig.lat = utmkXY.x;
-      mapConfig.lng = utmkXY.y;
+    imgMetaAry.forEach((val, idx) => {
+      // 경도, 위도;
+      const latitude = val?.latitude;
+      const longitude = val?.longitude;
 
-      axios
-        .get(
-          `https://sgisapi.kostat.go.kr/OpenAPI3/personal/findcodeinsmallarea.json?x_coor=${utmkXY.x}&y_coor=${utmkXY.y}&accessToken=${accessToken}`
-        )
-        .then((res) => {
-          const addr = res.data.result;
-          // 사진정보설정
-          const location = document.getElementById('imgLocation');
-          location.value = `${addr.sido_nm} ${addr.sgg_nm} ${addr.emdong_nm}`;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+      // 위도경도값이 존재할 경우
+      if (latitude && longitude) {
+        // 모달 위도경도값 반환
+        const utmkXY = new sop.LatLng(latitude, longitude);
+
+        // sgis 모달 경도위도 설정
+        mapConfig.lat = utmkXY.x;
+        mapConfig.lng = utmkXY.y;
+
+        // imgMeta에 경도위도 설정
+        imgMetaAry[idx].uymkX = utmkXY.x;
+        imgMetaAry[idx].uymkY = utmkXY.y;
+
+        axios
+          .get(
+            `https://sgisapi.kostat.go.kr/OpenAPI3/personal/findcodeinsmallarea.json?x_coor=${utmkXY.x}&y_coor=${utmkXY.y}&accessToken=${accessToken}`
+          )
+          .then((res) => {
+            const addr = res.data.result;
+            imgMetaAry[
+              idx
+            ].addr = `${addr.sido_nm} ${addr.sgg_nm} ${addr.emdong_nm}`;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
   };
 
   // data api
@@ -128,6 +151,20 @@ const Posting = (props) => {
         filmSeason,
       })
     );
+
+    for (let j = 0; j < imgMetaAry.length; j++) {
+      formData.append(
+        'imgMeta',
+        JSON.stringify({
+          addr: imgMetaAry[j]?.addr,
+          fileName: imgMetaAry[j]?.fileName,
+          latitude: imgMetaAry[j]?.latitude,
+          longitude: imgMetaAry[j]?.longitude,
+          uymkX: imgMetaAry[j]?.uymkX,
+          uymkY: imgMetaAry[j]?.uymkY,
+        })
+      );
+    }
 
     // postingFile은 이미 fileArray 상태인데, image 에 해당 방식으로 추가해야 multer에서 처리해줌;
     for (let key = 0; key < postingFile.length; key++) {
@@ -208,21 +245,6 @@ const Posting = (props) => {
                 <tr>
                   <td>촬영시간</td>
                   <td>
-                    {/* <DatePicker
-                      dateFormat='yyyy년 MM월 dd일 a hh시'
-                      dateFormatCalendar='yyyy년 MM월'
-                      showTimeSelect
-                      timeFormat='HH:mm'
-                      timeIntervals={1}
-                      timeCaption='촬영시간'
-                      placeholderText='사진 촬영한 시간을 입력해주세요'
-                      houldCloseOnSelect // 날짜를 선택하면 datepicker가 자동으로 닫힘
-                      formatWeekDay={(nameOfDay) => nameOfDay.substring(0, 1)}
-                      minDate={new Date('2000-01-01')} // minDate 이전 날짜 선택 불가
-                      maxDate={new Date()} // maxDate 이후 날짜 선택 불가
-                      selected={filmTime}
-                      onChange={(data) => setFilmTime(data)}
-                    /> */}
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DateTimePicker
                         viewRenderers={{
@@ -255,7 +277,7 @@ const Posting = (props) => {
                       type='text'
                       placeholder='사진 촬영한 위치를 입력해주세요'
                       onChange={(e) =>
-                        (postingFile[imgIdx].location = e.target.value)
+                        (imgMetaAry[imgIdx].location = e.target.value)
                       }
                     />
                   </td>
@@ -342,12 +364,12 @@ const Posting = (props) => {
             </table>
           </div>
           <input
-                  type='text'
-                  name='title'
-                  autoFocus
-                  placeholder='내용을 입력하세요...'
-                  onChange={(e) => setContext(e.target.value)}
-                />
+            type='text'
+            name='title'
+            autoFocus
+            placeholder='내용을 입력하세요...'
+            onChange={(e) => setContext(e.target.value)}
+          />
           <div id='map' className='map'></div>
 
           <HashTag />
