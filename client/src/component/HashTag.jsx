@@ -53,13 +53,26 @@ const HashTag = (props) => {
         }
     };
 
+    //해시태그 삭제이벤트
+    const deleteHashTag = (e) => {
+        let idx = e.currentTarget.id.substr(3); //idx 추출
+        setHashTags((prevHashTags) => {
+            let itemArr = [];
+            prevHashTags.forEach((item, index)=> {
+                if(index != idx) itemArr.push(item);
+            })
+            return itemArr;
+        });
+    }
+    
     return (
       <>
         <div className='hashTags'>
-            {hashTags.length > 0 && hashTags.map((hashTag) => {
+            {hashTags.length > 0 && hashTags.map((hashTag, idx) => {
                                                     return (
-                                                        <div key={hashTag} className='tag'>
-                                                        {hashTag}
+                                                        <div key={hashTag} className="tag">
+                                                            <span className="tag-nm">{hashTag}</span>
+                                                            <span className="close" id={"tag"+idx} onClick={deleteHashTag}>X</span>
                                                         </div>
                                                     );
                                                 })
