@@ -169,9 +169,18 @@ const Posting = (props) => {
           className='test'
           isOpen={modalIsOpen}
           onRequestClose={() => setModalIsOpen(false)}
-          ariaHideApp={false}
-        >
+          ariaHideApp={false}>
+          <div className="header">
+            <div/>
+            <div className='title ml20'>위치선택</div>
+            <div className="close" onClick={()=> {setModalIsOpen(false)}} />
+          </div>
           <PostMap config={mapConfig} />
+          <div className='btn-group mt10'>
+            <div className='right mr10'>
+              <button type='submit' className='btn-primary wd110'>선택</button>
+            </div>
+          </div>
         </Modal>
       </>
     );
@@ -302,8 +311,7 @@ const Posting = (props) => {
                 <tr>
                   <td>계절</td>
                   <td>
-                    <input
-                      type='radio'
+                    <input type='radio'
                       id='spring'
                       name='seasons'
                       value='spring'
