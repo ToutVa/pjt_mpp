@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import axios from 'axios';
 import 'css/post.css';
 import { Link } from 'react-router-dom';
@@ -29,13 +29,15 @@ let mapConfig = {
   },
 };
 
-const Posting = (props) => {
+const Posting = forwardRef((props) => {
   // parameter 설정
   const [postingFile] = useRecoilState(postingFiles);
-  const { state } = useLocation();
+  // const { state } = useLocation();
   const navigate = useNavigate();
 
-  const [imgMetaAry, setImgMetaAry] = useState(state.imgMetaAry);
+  console.log('props', props.props);
+
+  const [imgMetaAry, setImgMetaAry] = useState(props.props);
   const [context, setContext] = useState();
   const [filmTime, setFilmTime] = useState();
   const [filmLocation, setFilmLocation] = useState();
@@ -44,6 +46,8 @@ const Posting = (props) => {
   const [imgIdx = 0, setImgIdx] = useState();
   const [accessToken, setAccessToken] = useState();
 
+  console.log('imgMetaAry', imgMetaAry);
+  console.log('accessToken', accessToken);
   // 화면 로딩시 실행
   useEffect(() => {
     axios
@@ -249,8 +253,11 @@ const Posting = (props) => {
             <table>
               <thead></thead>
               <tbody>
-                <MapMordalButton label={'지도'} />
-
+                <tr>
+                  <td>  
+                    <MapMordalButton label={'지도'} />
+                  </td>
+                </tr>
                 <tr>
                   <td>촬영시간</td>
                   <td>
@@ -398,6 +405,6 @@ const Posting = (props) => {
       <div className='right'></div>
     </div>
   );
-};
+});
 
 export default Posting;
