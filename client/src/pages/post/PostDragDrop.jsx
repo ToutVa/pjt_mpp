@@ -9,9 +9,10 @@ import util from 'comm/util';
 
 const PostDragDrop = () => {
   const [postingFile, setPostingFile] = useRecoilState(postingFiles);
-  const [maxFileCnt] = useState(10);
-  const [fileNum = 0, setFileNum] = useState();
   const totalfileCnt = useRecoilValue(totalfileCntSelector);
+  const [maxFileCnt] = useState(10);
+
+  const [fileNum = 0, setFileNum] = useState();
   const fileInput = React.createRef();
   const navigate = useNavigate();
 
@@ -31,48 +32,33 @@ const PostDragDrop = () => {
 
   /* 파일 state 저장이벤트 */
   const addFile = (fileArr) => {
-    const fetchData = async () => {
-      // file length 0 일경우 base URL 설정
-      if (fileArr.length === 0) {
-        // 기존에 선택한 파일 체크
-        if (postingFile !== undefined) return;
-        const imgWrap = document.getElementById('preview');
-        imgWrap.src = postingFile.url;
-        return;
-      }
+    // file length 0 일경우 base URL 설정
+    if (fileArr.length === 0) {
+      // 기존에 선택한 파일 체크
+      if (postingFile !== undefined) return;
+      const imgWrap = document.getElementById('preview');
+      imgWrap.src = postingFile.url;
+      return;
+    }
 
-      // file length 10> 일경우 alert창 표시 및 초기화
-      if (fileArr.length > maxFileCnt) {
-        alert('첨부파일은 최대 ' + maxFileCnt + '개 까지 첨부 가능합니다.');
-        document.querySelector('input[type=file]').value = ''; // 초기화
-        return;
-      }
+    // file length 10> 일경우 alert창 표시 및 초기화
+    if (fileArr.length > maxFileCnt) {
+      alert('첨부파일은 최대 ' + maxFileCnt + '개 까지 첨부 가능합니다.');
+      document.querySelector('input[type=file]').value = ''; // 초기화
+      return;
+    }
 
-      // 현재위치정보 가져오기
-      const geoInfo =  await getLocation();
-
-      // 사진 메타데이터 가져오기
-      for (let idx = 0; idx < fileArr.length; idx++) {
-        const imgInfo = await exifr.gps(fileArr[idx]);
-
-        // 사진에 메타데이터 설정, 사진정보의 메타 or 현재위치정보설정 
-        fileArr[idx].latitude = imgInfo?.latitude || geoInfo?.latitude;
-        fileArr[idx].longitude = imgInfo?.longitude || geoInfo?.longitude;
-      }
-
-      // file reader 생성 및 초기 이미지 셋팅
-      const reader = new FileReader();
-      reader.onload = function () {
-        let dataURL = reader.result;
-        let imgWrap = document.getElementById('preview');
-        imgWrap.src = dataURL;
-      };
-
-      // file 세팅
-      setPostingFile(fileArr);
-      reader.readAsDataURL(fileArr[fileNum]); // fileNum 초기값  0
+    // file reader 생성 및 초기 이미지 셋팅
+    const reader = new FileReader();
+    reader.onload = function () {
+      let dataURL = reader.result;
+      let imgWrap = document.getElementById('preview');
+      imgWrap.src = dataURL;
     };
-    fetchData();
+
+    // file 세팅
+    setPostingFile(fileArr);
+    reader.readAsDataURL(fileArr[fileNum]); // fileNum 초기값  0
   };
 
   //File OnChange 이벤트 함수
@@ -94,12 +80,32 @@ const PostDragDrop = () => {
 
   // file 확인 이벤트
   const handleSubmit = () => {
-    if (postingFile === undefined || postingFile.length === 0) {
-      alert('선택된 이미지가 존재하지 않습니다.');
-      return;
-    }
-    // posting 화면으로 이동
-    navigate('/posting', { state: { postingFile } });
+    const fetchData = async () => {
+      if (postingFile === undefined || postingFile.length === 0) {
+        alert('선택된 이미지가 존재하지 않습니다.');
+        return;
+      }
+
+      // 현재위치정보 가져오기
+      const geoInfo = await getLocation();
+
+      // 사진 메타데이터 가져오기
+      const imgMetaAry = [];
+      for (let idx = 0; idx < postingFile.length; idx++) {
+        const imgInfo = await exifr.gps(postingFile[idx]);
+
+        // 사진에 메타데이터 설정, 사진정보의 메타 or 현재위치정보설정
+        imgMetaAry.push({
+          'fileName': postingFile[idx].name,
+          'latitude': imgInfo?.latitude || geoInfo?.latitude,
+          'longitude': imgInfo?.longitude || geoInfo?.longitude,
+        });
+      }
+
+      // posting 화면으로 이동
+      navigate('/posting', { state: { postingFile, imgMetaAry } });
+    };
+    fetchData();
   };
 
   // file 이미지 move 함수, fileNum만 설정한다. 이후 useEffect설정 .

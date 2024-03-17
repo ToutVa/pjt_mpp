@@ -27,7 +27,6 @@ const storage = multerS3({
   bucket : S3_BUCKET_NAME,
   contentType : multerS3.AUTO_CONTENT_TYPE,
   key: (req, file, cb) => {
-    console.log('s3test=>>>', Date.now().toString());
     const uid = uuid();
     const day = new Date();
     const dayPath = day.getFullYear()
