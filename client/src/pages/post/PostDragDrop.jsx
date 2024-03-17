@@ -174,12 +174,10 @@ const PostDragDrop = () => {
   return (
     <>
       <div
-        className='post-drag-drop'
+        className='post-drag-drop mt60'
         onDrop={onDropFile}
         onDragOver={onDragOver}
       >
-        <h4>새 게시물 만들기</h4>
-
         <div className='img-wrap'>
           {!util.isEmpty(totalfileCnt) ? (
             <button
