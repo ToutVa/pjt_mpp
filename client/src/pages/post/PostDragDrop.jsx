@@ -7,27 +7,58 @@ import { postingFiles, totalfileCntSelector } from 'comm/recoil/FileAtom';
 import exifr from 'exifr/dist/full.esm.mjs'; // to use ES Modules
 import util from 'comm/util';
 
+import Modal from 'react-modal';
+import Posting from './Posting';
+
 const PostDragDrop = () => {
   const [postingFile, setPostingFile] = useRecoilState(postingFiles);
   const totalfileCnt = useRecoilValue(totalfileCntSelector);
   const [maxFileCnt] = useState(10);
 
   const [fileNum = 0, setFileNum] = useState();
+  const [imgMetaAry, setImgMetaAry] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const fileInput = React.createRef();
   const navigate = useNavigate();
 
-  /* 컴퓨터에서 선택 버튼 클릭이벤트 */
+  /* 사진추가 버튼 클릭이벤트 */
   const handleButtonClick = (e) => {
     fileInput.current.click();
   };
 
-  /* 컴퓨터에서 파일삭제 버튼 클릭이벤트 */
+  /* 사진삭제 버튼 클릭이벤트 */
   const cancleButtonClick = (e) => {
     let fileArray = Array.from(postingFile);
     fileArray.splice(fileNum, 1);
 
     setPostingFile(fileArray);
     setFileNum(fileNum - 1);
+  };
+
+  /* 포스팅 버튼 클릭이벤트 */
+  const PostingModalButton = (props) => {
+    console.log('modalIsOpen', modalIsOpen);
+    return (
+      <>
+        <button
+          type='button'
+          className='btn-primary auto'
+          onClick={() => {
+            handleSubmit();
+          }}
+        >
+          {props.label}
+        </button>
+        <Modal
+          className='test'
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)}
+          ariaHideApp={false}
+        >
+          <Posting props = {imgMetaAry}/>
+        </Modal>
+      </>
+    );
   };
 
   /* 파일 state 저장이벤트 */
@@ -81,7 +112,8 @@ const PostDragDrop = () => {
   // file 확인 이벤트
   const handleSubmit = () => {
     const fetchData = async () => {
-      if (postingFile === undefined || postingFile.length === 0) {
+      console.log('postingFile', postingFile[0], postingFile.length);
+      if (postingFile[0] === undefined || postingFile.length === 0) {
         alert('선택된 이미지가 존재하지 않습니다.');
         return;
       }
@@ -90,12 +122,12 @@ const PostDragDrop = () => {
       const geoInfo = await getLocation();
 
       // 사진 메타데이터 가져오기
-      const imgMetaAry = [];
+      const metaAry = [];
       for (let idx = 0; idx < postingFile.length; idx++) {
         const imgInfo = await exifr.gps(postingFile[idx]);
 
         // 사진에 메타데이터 설정, 사진정보의 메타 or 현재위치정보설정
-        imgMetaAry.push({
+        metaAry.push({
           'fileName': postingFile[idx].name,
           'latitude': imgInfo?.latitude || geoInfo?.latitude,
           'longitude': imgInfo?.longitude || geoInfo?.longitude,
@@ -103,7 +135,11 @@ const PostDragDrop = () => {
       }
 
       // posting 화면으로 이동
-      navigate('/posting', { state: { postingFile, imgMetaAry } });
+      // navigate('/posting', { state: { postingFile, imgMetaAry } });
+
+      console.log('MetaAry',metaAry);
+      setImgMetaAry(metaAry);
+      setModalIsOpen(true);
     };
     fetchData();
   };
@@ -235,9 +271,7 @@ const PostDragDrop = () => {
             </div>
             <div className='btn-group'>
               <div className='row medium'>
-                <button className='btn-primary auto' onClick={handleSubmit}>
-                  이미지선택 완료
-                </button>
+                <PostingModalButton label={'포스팅'} />
               </div>
             </div>
           </div>
