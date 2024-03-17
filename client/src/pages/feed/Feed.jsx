@@ -14,8 +14,12 @@ const CreatePost = () => {
       <Modal className="test" 
              isOpen={modalIsOpen} 
              onRequestClose={() => setModalIsOpen(false)} ariaHideApp={false}>
+        <div className="header">
+          <div/>
+          <div className='title ml20'>새 게시물 만들기</div>
+          <div className="close" onClick={()=> {setModalIsOpen(false)}} />
+        </div>
         <PostDragDrop />
-
       </Modal>
     </>
   );

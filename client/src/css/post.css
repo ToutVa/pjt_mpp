@@ -460,9 +460,31 @@
     position: fixed;
 }
 
+.ReactModal__Content > .header {
+    width: calc(100% - 30px);
+    height: 40px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px 0 15px;
+    border-bottom: 1px rgb(185, 185, 185) solid;
+}
+.ReactModal__Content > .header > .title {
+    font-weight: bold;
+}
+.ReactModal__Content > .header > .close {
+    float: right;
+    width: 20px;
+    height: 20px;
+}
+
 .ReactModal__Content > .sgis-map {
-    height: 80%;
-    width: 80%;
+    height: 83%;
+    width: 100%;
     z-index: 30;
 }
 
