@@ -3,11 +3,12 @@ import React, { forwardRef, useEffect, useState, useImperativeHandle} from "reac
 const PostMap = forwardRef((props, ref) => {
   const config = props?.config;
   /*초기 셋팅값*/
-  const lat   = config?.lat     || 953820;    //경도
-  const lng   = config?.lng     || 1953437;   //위도
-  const mode  = config?.mode    || "all";     //모드
-  const id    = config?.id      || mode+"Map";//맵ID
-
+  const lat    = config?.lat     || 953820;    //경도
+  const lng    = config?.lng     || 1953437;   //위도
+  const mode   = config?.mode    || "all";     //모드
+  const id     = config?.id      || mode+"Map";//맵ID
+  const points = config?.points  || [];//맵ID
+  const scale  = config?.scale   || 8;
 
   const scaleDef = 11;     //화면 이동시 스케일 기본값
   const [stateMap , setStateMap] = useState();
@@ -46,20 +47,51 @@ const PostMap = forwardRef((props, ref) => {
     const { sop } = window;
     const map = sop.map(id, controllConfig[mode]);
     console.log('modal => ', lat,lng)
-    map.setView(sop.utmk(lat, lng), 10);
+    map.setView(sop.utmk(lat, lng), scale);
     setStateMap(map);
     setStateSop(sop);
 
     if(mode === "view") {
-      map.scrollWheelZoom.disable();
-      map.dragging.disable();
+      map.scrollWheelZoom.disable();  //휠줌 금지
+      map.dragging.disable();         //드래그 금지
     } else if (mode === 'point') {
-      let marker = sop.marker([lat, lng]);
+      if(points.length > 0) {         //point JsonArray가 존재하는 경우
+        let lineArr =[];
+        
+        markerList.pop()?.remove();
 
-      markerList.pop()?.remove();
-      markerList.push(marker);
-      
-      marker.addTo(map);
+        
+        //마커 배열생성
+        points.forEach((item, idx) => {
+          let marker = sop.marker([item.uymkX, item.uymkY]);
+          markerList.push(marker);
+          marker.addTo(map);
+
+          //선 연결 사용여부
+          if(config.useLine) lineArr.push([item.uymkX, item.uymkY]);
+        });
+
+        if(config.useLine) {
+          var polyline = sop.polyline(lineArr, {
+            stroke: true,
+            color: '#245A5A',
+            weight : 3,
+            opacity: 1,
+            fill: false,
+            fillColor:'#245A5A',
+            fillOpacity: 0.2,
+           });
+           
+          //  polyline.bindInfoWindow("폴리라인 입니다.");
+           polyline.addTo(map);
+           map.fitBounds(polyline);
+        }
+      }else {//없으면 기본값 사용
+        markerList.pop()?.remove();
+        let marker = sop.marker([lat, lng]);
+        markerList.push(marker);
+        marker.addTo(map);
+      }
     }
 
     map.on("click",(e) => {
@@ -88,8 +120,7 @@ const PostMap = forwardRef((props, ref) => {
   },[]);
 
   const moveMap = (posX, posY, scale) => {
-    debugger;
-    stateMap.setView(stateSop.utmk(posX, posY), scale?scale:scaleDef);
+    stateMap.setView(stateSop.utmk(posX, posY));
   }
 
   return(

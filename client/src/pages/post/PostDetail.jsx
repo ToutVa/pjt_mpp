@@ -34,19 +34,20 @@ const PostDetail = (match) => {
     setFocusImg(item.location);
   }
   const hoverImg = (item) => {
-    console.log("item >> 위치정보 가져오기", item);
-    postMapComp.current.moveMap(953825, 1953437);
+    postMapComp.current.moveMap(item.uymkX, item.uymkY);
   }
   const onClickImg = (e) => {
     setFocusImg();
   }
-  
+
   const mapConfig = {
     id   : "testMap",       //맵 ID(한화면에 ID 겹치는 맵 생기면 오류남)
     mode : "point",         //point, view, all     default : all
-    lat : 933820,           //초기경도
-    lng : 1753437,          //초기위도
-    scale : 0,              //지도 줌 레벨
+    lat : imgList ? imgList[0].uymkX : "" ,           //초기경도
+    lng : imgList ? imgList[0].uymkY : "" ,          //초기위도
+    scale : 8,                                      //지도 줌 레벨
+    points : imgList,
+    useLine : true,                           //point가 있을경우에만 사용 가능, 마커를 선으로 연결
     clickCallback : (e) => {//맵 클릭 값 반환 함수
       console.log(e.utmk.x, e.utmk.y);  //좌표반환
     },  
