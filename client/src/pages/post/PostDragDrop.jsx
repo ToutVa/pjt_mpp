@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import 'css/post.css';
 import { useNavigate } from 'react-router';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { postingFiles, totalfileCntSelector } from 'comm/recoil/FileAtom';
 import exifr from 'exifr/dist/full.esm.mjs'; // to use ES Modules
 import util from 'comm/util';
@@ -12,6 +12,7 @@ import Posting from './Posting';
 
 const PostDragDrop = () => {
   const [postingFile, setPostingFile] = useRecoilState(postingFiles);
+  const resetPostingFile = useResetRecoilState(postingFiles);
   const totalfileCnt = useRecoilValue(totalfileCntSelector);
   const [maxFileCnt] = useState(10);
 
@@ -63,6 +64,9 @@ const PostDragDrop = () => {
 
   /* 파일 state 저장이벤트 */
   const addFile = (fileArr) => {
+    // file Atom 한번 초기화
+    resetPostingFile(postingFile);
+    
     // file length 0 일경우 base URL 설정
     if (fileArr.length === 0) {
       // 기존에 선택한 파일 체크
