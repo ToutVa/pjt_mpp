@@ -63,13 +63,14 @@ const Posting = forwardRef((props) => {
   };
 
   const setImgPrev = (idx) => {
+    console.log("setImgPrev idx : " + idx);
     //file reader 생성
     const reader = new FileReader();
 
     // file reader 설정
     reader.onload = function () {
       let dataURL = reader.result;
-      let imgWrap = document.getElementById('preview');
+      let imgWrap = document.getElementById('thumbnail');
       imgWrap.src = dataURL;
     };
 
@@ -226,10 +227,10 @@ const Posting = forwardRef((props) => {
         >
           <div className='img-wrap'>
             <img
-              id='preview'
+              id='thumbnail'
               src={baseImgUrl}
               alt='이미지'
-              className='img-box'
+              className='img-box no-img-drag'
             />
           </div>
           <div className='img-info'>
