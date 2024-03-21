@@ -1,5 +1,4 @@
 import { atom, selector } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
 import baseImgUrl from 'assets/icon-file.svg';
 
 // const { persistAtom } = recoilPersist({

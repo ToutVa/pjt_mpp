@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import 'css/post.css';
 import { useNavigate } from 'react-router';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { postingFiles, totalfileCntSelector } from 'comm/recoil/FileAtom';
+import { sgisToken } from 'comm/recoil/SgisTokenAtom';
 import exifr from 'exifr/dist/full.esm.mjs'; // to use ES Modules
 import util from 'comm/util';
 
@@ -12,6 +14,7 @@ import Posting from './Posting';
 
 const PostDragDrop = () => {
   const [postingFile, setPostingFile] = useRecoilState(postingFiles);
+  const [accessToken, setAccessToken] = useRecoilState(sgisToken);
   const resetPostingFile = useResetRecoilState(postingFiles);
   const totalfileCnt = useRecoilValue(totalfileCntSelector);
   const [maxFileCnt] = useState(10);
@@ -21,6 +24,21 @@ const PostDragDrop = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const fileInput = React.createRef();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!accessToken) {
+      axios
+        .get(
+          `https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json?consumer_key=${process.env.REACT_APP_SGIS_CONSUMER_KEY}&consumer_secret=${process.env.REACT_APP_SGIS_SECRET_KEY}`
+        )
+        .then((res) => {
+          setAccessToken(res.data.result.accessToken);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  });
 
   /* 사진추가 버튼 클릭이벤트 */
   const handleButtonClick = (e) => {
@@ -56,7 +74,7 @@ const PostDragDrop = () => {
           onRequestClose={() => setModalIsOpen(false)}
           ariaHideApp={false}
         >
-          <Posting props = {imgMetaAry}/>
+          <Posting props={imgMetaAry} />
         </Modal>
       </>
     );
@@ -66,7 +84,7 @@ const PostDragDrop = () => {
   const addFile = (fileArr) => {
     // file Atom 한번 초기화
     resetPostingFile(postingFile);
-    
+
     // file length 0 일경우 base URL 설정
     if (fileArr.length === 0) {
       // 기존에 선택한 파일 체크
@@ -116,19 +134,23 @@ const PostDragDrop = () => {
   // file 확인 이벤트
   const handleSubmit = () => {
     const fetchData = async () => {
-      console.log('postingFile', postingFile[0], postingFile.length);
+      const { sop } = window;
+
       if (postingFile[0] === undefined || postingFile.length === 0) {
         alert('선택된 이미지가 존재하지 않습니다.');
         return;
       }
 
       // 현재위치정보 가져오기
-      const geoInfo = await getLocation();
+      const geoInfo = await util.getLocation();
 
       // 사진 메타데이터 가져오기
       const metaAry = [];
       for (let idx = 0; idx < postingFile.length; idx++) {
         const imgInfo = await exifr.gps(postingFile[idx]);
+
+        const latitude = imgInfo?.latitude || geoInfo?.latitude;
+        const longitude = imgInfo?.longitude || geoInfo?.longitude;
 
         // 사진에 메타데이터 설정, 사진정보의 메타 or 현재위치정보설정
         metaAry.push({
@@ -136,12 +158,31 @@ const PostDragDrop = () => {
           'latitude': imgInfo?.latitude || geoInfo?.latitude,
           'longitude': imgInfo?.longitude || geoInfo?.longitude,
         });
-      }
+        
+        if (latitude && longitude) {
+          // 모달 위도경도값 반환
+          const utmkXY = new sop.LatLng(latitude, longitude);
 
+          metaAry[idx].utmkX = utmkXY.x;
+          metaAry[idx].utmkY = utmkXY.y;
+
+          axios.get(
+            `https://sgisapi.kostat.go.kr/OpenAPI3/personal/findcodeinsmallarea.json?x_coor=${utmkXY.x}&y_coor=${utmkXY.y}&accessToken=${accessToken}`
+          ).then((res)=> {
+            const addr = res.data.result;
+            metaAry[idx].sido_nm = addr.sido_nm;
+            metaAry[idx].sgg_nm = addr.sgg_nm;
+            metaAry[idx].emdong_nm = addr.emdong_nm;
+          })
+          ;        
+        }
+
+        
+      }
       // posting 화면으로 이동
       // navigate('/posting', { state: { postingFile, imgMetaAry } });
 
-      console.log('MetaAry',metaAry);
+      console.log('MetaAry', metaAry);
       setImgMetaAry(metaAry);
       setModalIsOpen(true);
     };
@@ -182,34 +223,6 @@ const PostDragDrop = () => {
 
     reader.readAsDataURL(postingFile[fileNum]);
   }, [fileNum]);
-
-  const getLocation = () => {
-    return new Promise((resolve, reject) => {
-      if (navigator.geolocation) {
-        const now = new Date();
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            resolve({
-              err: 0,
-              time: now.toLocaleTimeString(),
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            });
-          },
-          (err) => {
-            resolve({
-              err: -1,
-              latitude: -1,
-              longitude: -1,
-            });
-          },
-          { enableHighAccuracy: true, maximumAge: 2000, timeout: 5000 }
-        );
-      } else {
-        reject({ error: -2, latitude: -1, longitude: -1 });
-      }
-    });
-  };
 
   return (
     <>
