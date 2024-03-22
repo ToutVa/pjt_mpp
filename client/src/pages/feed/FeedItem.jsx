@@ -5,22 +5,14 @@ import 'css/post.css';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { isLoginSelector } from 'comm/recoil/TokenAtom';
 import { alertModalState } from 'comm/recoil/PopupAtom';
+import util from 'comm/util';
 const FeedItem = (props) => {
   const isLogin = useRecoilValue(isLoginSelector);
   const setAlertModalState = useSetRecoilState(alertModalState);
   const [comment, setComment] = useState([]);
   const [imgAry] = useState(props.content?.imgList);
-  const [imgSrc, setImgSrc] = useState();
   const [fileNum = 0, setFileNum] = useState();
 
-  const fnChangeLike = () => {
-    if (!isLogin) {
-      setAlertModalState({ msg: '로그인을 해주세요.' });
-    }
-  };
-
-  console.log(props.content?.imgList?.[0]?.location);
-  if (props.content._id === 'eod') debugger;
   const fnLoadComment = () => {
     let commentList = [];
 
@@ -36,7 +28,6 @@ const FeedItem = (props) => {
         },
       ];
     }
-
     setComment(commentList);
   };
 
@@ -45,21 +36,46 @@ const FeedItem = (props) => {
     // 이미지 파일 없으면 return
     if (imgAry === undefined) return;
     // 이미지 src 경로 설정
-    setImgSrc(imgAry[fileNum]?.location);
   }, [fileNum, imgAry]);
 
   // file 이미지 move 함수, fileNum만 설정한다. 이후 useEffect설정 .
-  const onClickImgMove = (val) => {
+  const onClickImgMove = (e, val) => {
+    //네비게이션 Array
+    let naviArr = e.currentTarget.parentNode.getElementsByClassName("point");
+    let newIdx;
     // left 값일 경우 fileNum 0 이면 그대로
     if (val === 'left' && fileNum > 0) {
       setFileNum(fileNum - 1);
+      newIdx = fileNum - 1;
+    }
+    // right일 때, max값 설정
+    else if (val === 'right' && fileNum < imgAry.length - 1) {
+      setFileNum(fileNum + 1);
+      newIdx = fileNum + 1;
+    }else {
       return;
     }
-
-    // right일 때, max값 설정
-    if (val === 'right' && fileNum < imgAry.length - 1) {
-      setFileNum(fileNum + 1);
+    for(let i=0; i<naviArr.length; i ++) {
+      if(i === newIdx) util.addClass(naviArr[i], "active");
+      else             util.removeClass(naviArr[i], "active");
     }
+  };
+
+  //네비게이션 클릭이벤트
+  const onNaviClickImgMove = (e, val) => {
+    //네비게이션 Array
+    let naviArr = e.target.parentNode.getElementsByTagName("div");
+    for(let i=0; i<naviArr.length; i ++) {
+      if(i === val) util.addClass(naviArr[i], "active");
+      else          util.removeClass(naviArr[i], "active");
+    }
+
+    setFileNum(val);
+  };
+
+  //좋아요 클릭
+  const fnChangeLike = () => {
+    if (!isLogin) setAlertModalState({ msg: '로그인을 해주세요.' });
   };
 
   if (props.content._id === null) {
@@ -77,24 +93,33 @@ const FeedItem = (props) => {
           </div>
         </div>
         <div className='content'>
+          <div className='img-list' style={{transform: "translateX("+(-100*fileNum)+ "%)" }}>
+            {imgAry.map((item, idx)=> {
+              return (
+                <div className='img' key={idx}>
+                  <img src={item?.location}></img>
+                </div>
+              );
+            })}
+          </div>
           {imgAry.length > 1 ? (
-            <button
-              className='left-arrow'
-              onClick={() => onClickImgMove('left')}
-            />
+            <>
+              <button className='left-arrow' onClick={(e) => onClickImgMove(e,'left')}/>
+              <button className='right-arrow' onClick={(e) => onClickImgMove(e,'right')}/>
+            </>
           ) : (
             <div></div>
-          )}
-          <img src={imgSrc} height='400' width='650' alt=''></img>
-          {imgAry.length > 1 ? (
-            <button
-              className='right-arrow'
-              onClick={() => onClickImgMove('right')}
-            />
-          ) : (
-            <div></div>
-          )}
+          )}         
           {props.content.content}
+          <div className='navigation'>
+            {imgAry.length > 1 ? 
+              imgAry.map((item, idx) => {
+                return(<div className={'point' + (idx===0? " active":"")} key={idx} onClick={(e)=>{onNaviClickImgMove(e, idx)}} />);
+              }) 
+              : 
+              <></>
+            }
+          </div>
         </div>
         <div className='bottom'>
           <div className='icon-group'>
