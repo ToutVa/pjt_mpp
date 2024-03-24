@@ -41,6 +41,7 @@ const Posting = forwardRef((props) => {
   const [filmLocation, setFilmLocation] = useState();
   const [filmWeather, setFilmWeather] = useState();
   const [filmSeason, setFilmSeason] = useState();
+  const [hashTags, setHashTags] = useState([]);
   const [imgIdx, setImgIdx] = useState(0);
 
   const rdoWeather = util.makeRaioGroup("weather"); 
@@ -114,6 +115,7 @@ const Posting = forwardRef((props) => {
         filmLocation,
         filmWeather,
         filmSeason,
+        hashTags
       })
     );
 
@@ -367,7 +369,7 @@ const Posting = forwardRef((props) => {
             placeholder='내용을 입력하세요...'
             onChange={(e) => setContext(e.target.value)}
           />
-          <HashTag />
+          <HashTag hashTags = {hashTags} setHashTags = {setHashTags}/>
           <div className='btn-group mt20'>
             <div className='left'>
               <Link to='/feed' className='btn-cancel wd70'>
