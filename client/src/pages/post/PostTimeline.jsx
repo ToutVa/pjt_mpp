@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import 'css/post.css';
+import '../../css/component.css';
 import { useRecoilState } from 'recoil';
 import { postingFiles } from 'comm/recoil/FileAtom';
 
@@ -30,6 +31,7 @@ const PostTimeline = (props) => {
           id={'preview' + key}
           src={files[key].name}
           alt=''
+          className='no-img-drag'
           style={{ width: 100, height: 100, marginLeft: 10, marginRight: 10}}
           onClick={(e) => { props.propsFunction(e)}}
         />

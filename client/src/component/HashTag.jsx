@@ -4,7 +4,6 @@ import util from "comm/util";
 
 const HashTag = (props) => {
     const [inputHashTag, setInputHashTag] = useState('');
-    const [hashTags, setHashTags] = useState([]);
 
     // onChange 이벤트
     const changeHashTagInput = (e) => {
@@ -34,7 +33,7 @@ const HashTag = (props) => {
 
         if (util.isEmpty(newHashTag)) return;
 
-        setHashTags((prevHashTags) => {
+        props.setHashTags((prevHashTags) => {
             return [...new Set([...prevHashTags, newHashTag])];
         });
 
@@ -56,7 +55,7 @@ const HashTag = (props) => {
     //해시태그 삭제이벤트
     const deleteHashTag = (e) => {
         let idx = e.currentTarget.id.substr(3); //idx 추출
-        setHashTags((prevHashTags) => {
+        props.setHashTags((prevHashTags) => {
             let itemArr = [];
             prevHashTags.forEach((item, index)=> {
                 if(index != idx) itemArr.push(item);
@@ -68,7 +67,7 @@ const HashTag = (props) => {
     return (
       <>
         <div className='hashTags'>
-            {hashTags.length > 0 && hashTags.map((hashTag, idx) => {
+            {props.hashTags.length > 0 && props.hashTags.map((hashTag, idx) => {
                                                     return (
                                                         <div key={hashTag} className="tag">
                                                             <span className="tag-nm">{hashTag}</span>

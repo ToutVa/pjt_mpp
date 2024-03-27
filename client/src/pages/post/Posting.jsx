@@ -16,6 +16,7 @@ import baseImgUrl from 'assets/icon-file.svg';
 import dayjs from 'dayjs';
 import Modal from 'react-modal';
 import PostMap from './PostMap';
+import util from 'comm/util';
 
 let mapConfig = {
   id: 'sgisMap', //맵 ID(한화면에 ID 겹치는 맵 생기면 오류남)
@@ -32,10 +33,7 @@ let mapConfig = {
 const Posting = forwardRef((props) => {
   // parameter 설정
   const [postingFile] = useRecoilState(postingFiles);
-  // const { state } = useLocation();
   const navigate = useNavigate();
-
-  console.log('props', props.props);
 
   const [imgMetaAry, setImgMetaAry] = useState(props.props);
   const [context, setContext] = useState();
@@ -43,29 +41,16 @@ const Posting = forwardRef((props) => {
   const [filmLocation, setFilmLocation] = useState();
   const [filmWeather, setFilmWeather] = useState();
   const [filmSeason, setFilmSeason] = useState();
-  const [imgIdx = 0, setImgIdx] = useState();
-  const [accessToken, setAccessToken] = useState();
+  const [hashTags, setHashTags] = useState([]);
+  const [imgIdx, setImgIdx] = useState(0);
 
-  console.log('imgMetaAry', imgMetaAry);
-  console.log('accessToken', accessToken);
+  const rdoWeather = util.makeRaioGroup("weather"); 
+  const rdoSeason = util.makeRaioGroup("seasons"); 
+
   // 화면 로딩시 실행
   useEffect(() => {
-    axios
-      .get(
-        `https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json?consumer_key=${process.env.REACT_APP_SGIS_CONSUMER_KEY}&consumer_secret=${process.env.REACT_APP_SGIS_SECRET_KEY}`
-      )
-      .then((res) => {
-        setAccessToken(res.data.result.accessToken);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [imgMetaAry]);
-
-  // imgIdx변경 시 사진변환 이벤트 발생
-  useEffect(() => {
-    setImgMeta();
-  }, [accessToken]);
+    setImgIdx(0);
+  }, [postingFile]);
 
   // imgIdx변경 시 사진변환 이벤트 발생
   useEffect(() => {
@@ -79,65 +64,42 @@ const Posting = forwardRef((props) => {
   };
 
   const setImgPrev = (idx) => {
+    console.log("setImgPrev idx : " + idx);
     //file reader 생성
     const reader = new FileReader();
 
     // file reader 설정
     reader.onload = function () {
       let dataURL = reader.result;
-      let imgWrap = document.getElementById('preview');
+      let imgWrap = document.getElementById('thumbnail');
       imgWrap.src = dataURL;
     };
 
     // 미리보기 설정
     reader.readAsDataURL(postingFile[idx]);
 
-    console.log(imgMetaAry);
-
     // 사진정보설정
     const location = document.getElementById('imgLocation');
-    location.value = imgMetaAry[idx]?.addr;
+    location.value = `${imgMetaAry[idx]?.sido_nm} ${imgMetaAry[idx]?.sgg_nm} ${imgMetaAry[idx]?.emdong_nm}`;
+
+    // 계절, 날씨 정보 설정
+    const weather = imgMetaAry[idx].weather;
+    const seasons = imgMetaAry[idx].seasons;
+    rdoWeather.setValue(weather);
+    rdoSeason.setValue(seasons);
   };
 
-  const setImgMeta = (e) => {
-    const { sop } = window;
-    // imgMetaAry 값 추가
-    // imgMetaAry[0].uymkX = utmkXY.x;
 
-    imgMetaAry.forEach((val, idx) => {
-      // 경도, 위도;
-      const latitude = val?.latitude;
-      const longitude = val?.longitude;
+  // 라디오버튼 
+  const weatherClick = (e) => {
+    const val = e.target.value;
+    imgMetaAry[imgIdx].weather = val;
+  }
 
-      // 위도경도값이 존재할 경우
-      if (latitude && longitude) {
-        // 모달 위도경도값 반환
-        const utmkXY = new sop.LatLng(latitude, longitude);
-
-        // sgis 모달 경도위도 설정
-        mapConfig.lat = utmkXY.x;
-        mapConfig.lng = utmkXY.y;
-
-        // imgMeta에 경도위도 설정
-        imgMetaAry[idx].uymkX = utmkXY.x;
-        imgMetaAry[idx].uymkY = utmkXY.y;
-
-        axios
-          .get(
-            `https://sgisapi.kostat.go.kr/OpenAPI3/personal/findcodeinsmallarea.json?x_coor=${utmkXY.x}&y_coor=${utmkXY.y}&accessToken=${accessToken}`
-          )
-          .then((res) => {
-            const addr = res.data.result;
-            imgMetaAry[
-              idx
-            ].addr = `${addr.sido_nm} ${addr.sgg_nm} ${addr.emdong_nm}`;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    });
-  };
+  const seasonsClick = (e) => {
+    const val = e.target.value;
+    imgMetaAry[imgIdx].seasons = val;
+}
 
   // data api
   const handleSubmit = async (e) => {
@@ -153,6 +115,7 @@ const Posting = forwardRef((props) => {
         filmLocation,
         filmWeather,
         filmSeason,
+        hashTags
       })
     );
 
@@ -162,6 +125,8 @@ const Posting = forwardRef((props) => {
         JSON.stringify({
           addr: imgMetaAry[j]?.addr,
           fileName: imgMetaAry[j]?.fileName,
+          weather : imgMetaAry[j]?.weather,
+          seasons : imgMetaAry[j]?.seasons,
           latitude: imgMetaAry[j]?.latitude,
           longitude: imgMetaAry[j]?.longitude,
           uymkX: imgMetaAry[j]?.uymkX,
@@ -210,22 +175,43 @@ const Posting = forwardRef((props) => {
           className='test'
           isOpen={modalIsOpen}
           onRequestClose={() => setModalIsOpen(false)}
-          ariaHideApp={false}>
-          <div className="header">
-            <div/>
+          ariaHideApp={false}
+        >
+          <div className='header'>
+            <div />
             <div className='title ml20'>위치선택</div>
-            <div className="close" onClick={()=> {setModalIsOpen(false)}} />
+            <div
+              className='close'
+              onClick={() => {
+                setModalIsOpen(false);
+              }}
+            />
           </div>
-          <PostMap config={mapConfig} />
+          <PostMap config={mapConfig}  />
           <div className='btn-group mt10'>
             <div className='right mr10'>
-              <button type='submit' className='btn-primary wd110'>선택</button>
+              <button
+                type='submit'
+                className='btn-primary wd110'
+                onClick={(param) => {
+                  const sgisMap = JSON.parse(localStorage.getItem('sgisMap'));
+                  console.log(sgisMap);
+                  imgMetaAry[imgIdx] = Object.assign(imgMetaAry[imgIdx], sgisMap);
+                  // 사진정보설정
+                  const location = document.getElementById('imgLocation');
+                  location.value = `${imgMetaAry[imgIdx]?.sido_nm} ${imgMetaAry[imgIdx]?.sgg_nm} ${imgMetaAry[imgIdx]?.emdong_nm}`;
+                  setModalIsOpen(false);
+                }}
+              >
+                선택
+              </button>
             </div>
           </div>
         </Modal>
       </>
     );
   };
+
 
   return (
     <div className='post'>
@@ -242,10 +228,10 @@ const Posting = forwardRef((props) => {
         >
           <div className='img-wrap'>
             <img
-              id='preview'
+              id='thumbnail'
               src={baseImgUrl}
               alt='이미지'
-              className='img-box'
+              className='img-box no-img-drag'
             />
           </div>
           <div className='img-info'>
@@ -253,7 +239,7 @@ const Posting = forwardRef((props) => {
               <thead></thead>
               <tbody>
                 <tr>
-                  <td>  
+                  <td>
                     <MapMordalButton label={'지도'} />
                   </td>
                 </tr>
@@ -291,9 +277,6 @@ const Posting = forwardRef((props) => {
                       id='imgLocation'
                       type='text'
                       placeholder='사진 촬영한 위치를 입력해주세요'
-                      onChange={(e) =>
-                        (imgMetaAry[imgIdx].location = e.target.value)
-                      }
                     />
                   </td>
                 </tr>
@@ -305,7 +288,7 @@ const Posting = forwardRef((props) => {
                       id='sun'
                       name='weather'
                       value='sun'
-                      onChange={(e) => setFilmWeather(e.target.value)}
+                      onChange={weatherClick}
                     />
                     <label htmlFor='sun' className='icon'></label>
                     <input
@@ -313,7 +296,7 @@ const Posting = forwardRef((props) => {
                       id='cloud'
                       name='weather'
                       value='cloud'
-                      onChange={(e) => setFilmWeather(e.target.value)}
+                      onChange={weatherClick}
                     />
                     <label htmlFor='cloud' className='icon'></label>
                     <input
@@ -321,7 +304,7 @@ const Posting = forwardRef((props) => {
                       id='rain'
                       name='weather'
                       value='rain'
-                      onChange={(e) => setFilmWeather(e.target.value)}
+                      onChange={weatherClick}
                     />
                     <label htmlFor='rain' className='icon'></label>
                     <input
@@ -329,7 +312,7 @@ const Posting = forwardRef((props) => {
                       id='thunder'
                       name='weather'
                       value='thunder'
-                      onChange={(e) => setFilmWeather(e.target.value)}
+                      onChange={weatherClick}
                     />
                     <label htmlFor='thunder' className='icon'>
                       {' '}
@@ -339,11 +322,12 @@ const Posting = forwardRef((props) => {
                 <tr>
                   <td>계절</td>
                   <td>
-                    <input type='radio'
+                    <input
+                      type='radio'
                       id='spring'
                       name='seasons'
                       value='spring'
-                      onChange={(e) => setFilmSeason(e.target.value)}
+                      onChange={seasonsClick}
                     />
                     <label htmlFor='spring' className='icon'></label>
                     <input
@@ -351,7 +335,7 @@ const Posting = forwardRef((props) => {
                       id='summer'
                       name='seasons'
                       value='summer'
-                      onChange={(e) => setFilmSeason(e.target.value)}
+                      onChange={seasonsClick}
                     />
                     <label htmlFor='summer' className='icon'></label>
                     <input
@@ -359,7 +343,7 @@ const Posting = forwardRef((props) => {
                       id='fall'
                       name='seasons'
                       value='fall'
-                      onChange={(e) => setFilmSeason(e.target.value)}
+                      onChange={seasonsClick}
                     />
                     <label htmlFor='fall' className='icon'></label>
                     <input
@@ -367,7 +351,7 @@ const Posting = forwardRef((props) => {
                       id='winter'
                       name='seasons'
                       value='winter'
-                      onChange={(e) => setFilmSeason(e.target.value)}
+                      onChange={seasonsClick}
                     />
                     <label htmlFor='winter' className='icon'>
                       {' '}
@@ -384,9 +368,7 @@ const Posting = forwardRef((props) => {
             placeholder='내용을 입력하세요...'
             onChange={(e) => setContext(e.target.value)}
           />
-          <div id='map' className='map'></div>
-
-          <HashTag />
+          <HashTag hashTags = {hashTags} setHashTags = {setHashTags}/>
           <div className='btn-group mt20'>
             <div className='left'>
               <Link to='/feed' className='btn-cancel wd70'>
