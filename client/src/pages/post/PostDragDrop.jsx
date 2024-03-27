@@ -50,12 +50,24 @@ const PostDragDrop = () => {
           {props.label}
         </button>
         <Modal
-          className='test'
+          className='modal-frame'
           isOpen={modalIsOpen}
+          style={{
+            content: {
+              width: '800px',
+              height: '700px',
+              left: 'calc(50% - 400px)',
+              top: 'calc(50% - 350px)',
+              padding: '0px',
+              borderRadius: '20px',
+            }
+          }}
           onRequestClose={() => setModalIsOpen(false)}
           ariaHideApp={false}
         >
-          <Posting props = {imgMetaAry}/>
+          <div className="modal">
+            <Posting props = {imgMetaAry}/>
+          </div>
         </Modal>
       </>
     );
