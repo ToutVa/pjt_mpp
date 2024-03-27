@@ -129,6 +129,19 @@ footer .center {
   }
 }
 
+img {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
 .main-frame {
   width: 100%;
   min-height: calc(100vh - 40px) ;
@@ -140,13 +153,24 @@ footer .center {
   grid-template-columns: 280px 650px 280px;
   /* margin-top: 40px; */
   padding-bottom: 60px;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 30%;
+    background: #8a8a8a;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(145, 145, 145, 0.1);
+  }
 }
 
-.main-frame > .center,
-.main-frame > .right {
-  width: 100%;
+.modal-frame > .main-frame {
+  width: 600px;
 }
-
 
 footer > p {
   margin: 0;
@@ -460,6 +484,29 @@ ul.vertical > li:first-child {
   left: calc(50% - 300px);
   top: calc(50% - 260px);
   border-radius: 20px;
+  padding : 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.ReactModalPortal > .ReactModal__Overlay > .ReactModal__Content > .modal {
+  width: calc(100% - 10px);
+  height: calc(100% - 20px);
+  overflow-y: auto;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 30%;
+    background: #8a8a8a;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(145, 145, 145, 0.1);
+  }
 }
 
 .message-main {
@@ -474,7 +521,7 @@ ul.vertical > li:first-child {
 }
 
 .hashTags{
-  width: 100%;
+  width: calc(100% - 10px);
   height: 100%;
   display: inline-block;
   padding: 5px;
@@ -496,6 +543,7 @@ ul.vertical > li:first-child {
 .hashTags > .tag > .tag-nm {
   color: #5c4848e8;
   padding: 1px;
+  font-size: 13px;
 }
 
 .hashTags > .tag > .close {
