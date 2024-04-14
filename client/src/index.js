@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import ReactModal from 'react-modal';
 import App from './App';
+import ModalsProvider from './comm/ModalsProvider';
 import { RecoilRoot } from 'recoil';
 import reportWebVitals from './reportWebVitals';
 
@@ -10,10 +12,14 @@ import reportWebVitals from './reportWebVitals';
  * @description :
  */
 
+ReactModal.setAppElement('#root');
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <RecoilRoot>
-    <App />
+    <ModalsProvider>
+      <App />
+    </ModalsProvider>
   </RecoilRoot>
 );
 

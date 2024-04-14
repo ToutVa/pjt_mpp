@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { TokenUser, isLoginSelector } from 'comm/recoil/TokenAtom';
+
 import { loginModalState, signupModalState } from 'comm/recoil/PopupAtom';
 import commUtil from 'comm/util';
 
@@ -8,12 +9,12 @@ import axios from 'axios';
 
 // navMenu login정보에 맞게 활성화
 const Header = ({ type }) => {
-  const setLoginModalState = useSetRecoilState(loginModalState);
-  const setSignupModalState = useSetRecoilState(signupModalState);
   const isLogin = useRecoilValue(isLoginSelector);
   const setAccessToken = useSetRecoilState(TokenUser);
+  const setLoginModalState = useSetRecoilState(loginModalState);
+  const setSignupModalState = useSetRecoilState(signupModalState);
 
-  const fn_logout = () => {
+  const fnLogout = () => {
     // token undefined 설정
     setAccessToken(undefined);
     // logout api 실행
@@ -22,7 +23,7 @@ const Header = ({ type }) => {
     });
   };
 
-  const fn_clickMenu = (e) => {
+  const fnClickMenu = (e) => {
     let classNm =
       e.currentTarget.className.indexOf('active') < 0
         ? 'btn-menu active'
@@ -30,7 +31,7 @@ const Header = ({ type }) => {
     e.currentTarget.className = classNm;
   };
 
-  const fn_refreshFeed = (e) => {
+  const fnRefreshFeed = (e) => {
     commUtil.scrollTop();
     /** 현재 페이지가 feed일때 feed 초기화후 새로고침 로직 넣어야할듯*/
   }
@@ -68,17 +69,17 @@ const Header = ({ type }) => {
         <div className='center'>
           <Link to={isLogin === true ? '/feed' : '/'}
             onClick={() => {
-              fn_refreshFeed();
+              fnRefreshFeed();
             }}>
             <div className='logo' />
           </Link>
         </div>
         <div className={isLogin ? 'side-menu right' : 'side-menu'}>
-          <a className='btn-menu' onClick={fn_clickMenu}>
+          <div className='btn-menu' onClick={fnClickMenu}>
             <span></span>
             <span></span>
             <span></span>
-          </a>
+          </div>
           <nav>
             <ul>
               <li>
@@ -91,7 +92,7 @@ const Header = ({ type }) => {
               </li>
               <li>
                 {' '}
-                <a href='' onClick={fn_logout}>
+                <a href='/' onClick={fnLogout}>
                   {' '}
                   logOut
                 </a>

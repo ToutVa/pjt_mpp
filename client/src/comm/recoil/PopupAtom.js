@@ -1,4 +1,13 @@
 import { atom } from 'recoil';
+import { createContext } from 'react';
+
+export const ModalsDispatchContext = createContext({
+  open: () => {},
+  close: () => {},
+  msg: String,
+});
+
+export const ModalsStateContext = createContext([]);
 
 export const modalState = atom({
   key: 'modalState',
@@ -13,14 +22,4 @@ export const loginModalState = atom({
 export const signupModalState = atom({
   key: 'signupModalState',
   default: false,
-});
-
-export const alertModalState = atom({
-  key: 'alertModalState',
-  default: {msg: ''},
-});
-
-export const confirmModalState = atom({
-  key: 'confirmModalState',
-  default: {msg: ''},
 });
