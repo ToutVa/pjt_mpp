@@ -1,33 +1,33 @@
 import React from 'react';
 import Modal from 'react-modal';
 import '../css/layout.css';
-import { useRecoilState } from 'recoil';
-import { confirmModalState } from 'comm/recoil/PopupAtom';
 
-const ConfirmModal = () => {
-  const [modalState, setModalState] = useRecoilState(confirmModalState);
+const ConfirmModal = ({ onSubmit, onClose, msg, wid, hei }) => {
+  const handleClickSubmit = () => {
+    onSubmit();
+  };
+
+  const handleClickCancel = () => {
+    onClose();
+  };
+
   return (
     <Modal
+      isOpen
       style={{
         content: {
-          width: modalState.width || 400 + 'px',
-          height: modalState.height || 200 + 'px',
-          left: 'calc(50% - ' + (modalState.width || 400) / 2 + 'px)',
-          top: 'calc(50% - ' + (modalState.height || 200) / 2 + 'px)',
+          width: wid || 400 + 'px',
+          height: hei || 200 + 'px',
+          left: 'calc(50% - ' + (wid || 400) / 2 + 'px)',
+          top: 'calc(50% - ' + (hei || 200) / 2 + 'px)',
           padding: '0px',
           borderRadius: '20px',
         },
       }}
-      isOpen={modalState.msg !== '' ? true : false}
-      onRequestClose={() =>
-        setModalState({
-          msg: '',
-        })
-      }
-      ariaHideApp={false}
+      onRequestClose={handleClickCancel}
     >
       <div className='message-main'>
-        {modalState.msg}
+        {msg}
         <div className='mt20' style={{ display: 'flex' }}>
           <button
             className='button submit-button'
@@ -35,9 +35,7 @@ const ConfirmModal = () => {
               width: '70px',
               height: '30px',
             }}
-            onClick={() => {
-              setModalState(true);
-            }}
+            onClick={handleClickSubmit}
           >
             <div className='button-text'>예</div>
           </button>
@@ -47,7 +45,7 @@ const ConfirmModal = () => {
               width: '70px',
               height: '30px',
             }}
-            onClick={() => setModalState({ msg: '' })}
+            onClick={handleClickCancel}
           >
             <div className='button-text'>아니오</div>
           </button>

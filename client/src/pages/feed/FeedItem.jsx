@@ -2,18 +2,29 @@ import React, { useEffect, useState } from 'react';
 import FeedComment from './FeedComment';
 import { Link } from 'react-router-dom';
 import 'css/post.css';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { isLoginSelector } from 'comm/recoil/TokenAtom';
-import { alertModalState } from 'comm/recoil/PopupAtom';
+
+import useModals from '../../hooks/useModals';
+import { modals } from '../../comm/Modals';
+
 import util from 'comm/util';
 const FeedItem = (props) => {
+  const { openModal } = useModals();
+
+  const alertModal = (msg) => {
+    openModal(modals.alertModal, {
+      msg: msg,
+    });
+  };
+
   const isLogin = useRecoilValue(isLoginSelector);
-  const setAlertModalState = useSetRecoilState(alertModalState);
   const [comment, setComment] = useState([]);
   const [imgAry] = useState(props.content?.imgList);
   const [fileNum = 0, setFileNum] = useState();
 
   const fnLoadComment = () => {
+
     let commentList = [];
 
     if (comment.length === 0) {
@@ -75,7 +86,7 @@ const FeedItem = (props) => {
 
   //좋아요 클릭
   const fnChangeLike = () => {
-    if (!isLogin) setAlertModalState({ msg: '로그인을 해주세요.' });
+    if (!isLogin) alertModal('로그인을 해주세요.');
   };
 
   if (props.content._id === null) {

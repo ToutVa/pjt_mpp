@@ -1,44 +1,44 @@
 import React from 'react';
 import Modal from 'react-modal';
 import '../css/layout.css';
-import { useRecoilState } from 'recoil';
-import { alertModalState } from 'comm/recoil/PopupAtom';
 
-const AlertModal = () => {
-  const [modalState, setModalState] = useRecoilState(alertModalState);
+const AlertModal = ({ onSubmit, onClose, msg, wid, hei }) => {
+  const handleClickSubmit = () => {
+    if (onSubmit === undefined) {
+      onClose();
+    } else {
+      onSubmit();
+    }
+  };
+
+  const handleClickCancel = () => {
+    onClose();
+  };
+
   return (
     <Modal
+      isOpen
       style={{
         content: {
-          width: modalState.width || 400 + 'px',
-          height: modalState.height || 200 + 'px',
-          left: 'calc(50% - ' + (modalState.width || 400) / 2 + 'px)',
-          top: 'calc(50% - ' + (modalState.height || 200) / 2 + 'px)',
+          width: wid || 400 + 'px',
+          height: hei || 200 + 'px',
+          left: 'calc(50% - ' + (wid || 400) / 2 + 'px)',
+          top: 'calc(50% - ' + (hei || 200) / 2 + 'px)',
           padding: '0px',
           borderRadius: '20px',
         },
       }}
-      isOpen={modalState.msg !== '' ? true : false}
-      onRequestClose={() =>
-        setModalState({
-          msg: '',
-        })
-      }
-      ariaHideApp={false}
+      onRequestClose={handleClickCancel}
     >
       <div className='message-main'>
-        {modalState.msg}
+        {msg}
         <button
           className='button submit-button mt20'
           style={{
             width: '70px',
             height: '30px',
           }}
-          onClick={() =>
-            setModalState({
-              msg: '',
-            })
-          }
+          onClick={handleClickSubmit}
         >
           <div className='button-text'>확인</div>
         </button>

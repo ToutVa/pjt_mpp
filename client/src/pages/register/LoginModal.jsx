@@ -4,23 +4,40 @@ import { useLocation, useNavigate } from 'react-router';
 import Modal from 'react-modal';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { TokenUser } from 'comm/recoil/TokenAtom';
+
+import useModals from '../../hooks/useModals';
+import { modals } from '../../comm/Modals';
+
 import {
   loginModalState,
   signupModalState,
-  alertModalState,
-  confirmModalState,
 } from 'comm/recoil/PopupAtom';
+
 import '../../css/register.css';
 import TextBox from './TextBox';
 import SubmitButton from './SubmitButton';
 import LinkButton from './LinkButton';
 
 const LoginModal = () => {
+  const { openModal } = useModals();
+
+  const alertModal = (msg) => {
+    openModal(modals.alertModal, {
+      msg: msg,
+    });
+  };
+
+  const confirmModal = (msg) => {
+    openModal(modals.confirmModal, {
+      onSubmit: () => {
+        fnCallback();
+      },
+      msg: msg,
+    });
+  };
+
   const [modalState, setModalState] = useRecoilState(loginModalState);
   const setSignupModalState = useSetRecoilState(signupModalState);
-  const setAlertModalState = useSetRecoilState(alertModalState);
-  const [confirmState, setConfirmModalState] =
-    useRecoilState(confirmModalState);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const setAccessToken = useSetRecoilState(TokenUser);
@@ -41,9 +58,7 @@ const LoginModal = () => {
           setModalState(false);
           navigate(from);
         } else {
-          setAlertModalState({
-            msg: data.message,
-          });
+          alertModal(data.message);
         }
       })
       .catch((err) => {
@@ -53,17 +68,14 @@ const LoginModal = () => {
   };
 
   const fnCallback = () => {
-    setConfirmModalState({ msg: '' });
     setSignupModalState(true);
   };
 
   return (
-    <>
       <Modal
         className='register-popup'
         isOpen={modalState}
         onRequestClose={() => setModalState(false)}
-        ariaHideApp={false}
       >
         <form className='login-main' onSubmit={handleSubmit}>
           <div className='login-logo' />
@@ -86,14 +98,11 @@ const LoginModal = () => {
           <SubmitButton label='L O G I N' type='submit' />
           <LinkButton
             label='S I G N　U P'
-            onClick={() => {
-              setConfirmModalState({ msg: '회원가입 하시겠습니까?' });
+            onClick={() => {confirmModal('회원가입 하시겠습니까?');
             }}
           />
-          {confirmState === true ? fnCallback() : null}
         </form>
       </Modal>
-    </>
   );
 };
 

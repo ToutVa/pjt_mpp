@@ -18,8 +18,6 @@ import PostDetail from 'pages/post/PostDetail';
 import Posting from 'pages/post/Posting';
 import Feed from 'pages/feed/Feed';
 import GuestFeed from 'pages/feed/GuestFeed'
-import AlertModal from 'component/AlertModal';
-import ConfirmModal from 'component/ConfirmModal';
 import LoginModal from 'pages/register/LoginModal';
 import SignupModal from 'pages/register/SignupModal';
 
@@ -30,8 +28,6 @@ function App() {
         <BrowserRouter>
           <LoginModal />
           <SignupModal />
-          <ConfirmModal />
-          <AlertModal />
           <div className='contentWrapper'>
             <Routes>
               <Route element={<CoverLayout />}>
