@@ -214,8 +214,7 @@ const Posting = forwardRef((props) => {
 
 
   return (
-    <div className='main-frame post'>
-      <div className='left'></div>
+    <div className='post'>
       <div className='center'>
         <PostTimeline
           files={postingFile}
@@ -384,7 +383,6 @@ const Posting = forwardRef((props) => {
           </div>
         </form>
       </div>
-      <div className='right'></div>
     </div>
   );
 });

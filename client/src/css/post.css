@@ -74,6 +74,7 @@
 }
 
 .post > .center {
+    width: calc(100% - 25px);
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 5px;
@@ -258,8 +259,8 @@
 
 
 .post > .center > .img-contain > .img-info {
-    width : 345px;
-    height: 215px;
+    width : calc(100% - 315px);
+    height: 206px;
     display: inline-block;
     padding: 16px;
     border: 1px solid #eee;
@@ -272,8 +273,8 @@
 
 .post > .center > .img-contain > .img-wrap > .img-box {
     align-items: center;
-    width : 250px;
-    height: 250px;
+    width : 260px;
+    height: 240px;
     object-fit: cover;
     border-radius: 4px;
     background-position: 50%;
@@ -281,6 +282,12 @@
     background-size: cover;
     background-color: grey;
     cursor: pointer;
+
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 /**
