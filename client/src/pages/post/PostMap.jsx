@@ -9,6 +9,8 @@ const PostMap = forwardRef((props, ref) => {
   const id     = config?.id      || mode+"Map";//맵ID
   const points = config?.points  || [];//맵ID
   const scale  = config?.scale   || 8;
+  
+  const clickEvent  = config?.clickEvent   || "point";
 
   const scaleDef = 11;     //화면 이동시 스케일 기본값
   const [stateMap , setStateMap] = useState();
@@ -100,15 +102,22 @@ const PostMap = forwardRef((props, ref) => {
           config.clickCallback(e);
         }
         if(mode==="point") {
-          /*마커 생성*/
-          let marker = sop.marker([e.utmk.x, e.utmk.y]);
-
-          markerList.pop()?.remove();
-          markerList.push(marker);
-
-          /*마커 렌더링 및 화면이동*/
-          marker.addTo(map);
-          map.setView(sop.utmk(e.utmk.x, e.utmk.y));
+          if(clickEvent === "point") {
+            /*마커 생성*/
+            let marker = sop.marker([e.utmk.x, e.utmk.y]);
+  
+            markerList.pop()?.remove();
+            markerList.push(marker);
+  
+            /*마커 렌더링 및 화면이동*/
+            marker.addTo(map);
+            map.setView(sop.utmk(e.utmk.x, e.utmk.y));
+          }else if(clickEvent ==="move") {
+            /*화면이동*/
+            map.setView(sop.utmk(e.utmk.x, e.utmk.y));
+          }else {
+            return;
+          }
         }
       }, 50);
     });

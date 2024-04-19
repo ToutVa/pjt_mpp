@@ -100,16 +100,16 @@ const FeedItem = (props) => {
             <Link to={'/post/' + props.content._id} className='title'>
               {props.content.title}
             </Link>
-            <div className='user-id'>ec_asd</div>
+            <div className='user-id'>{props.content.userEmail}</div>
           </div>
         </div>
         <div className='content'>
           <div className='img-list' style={{transform: "translateX("+(-100*fileNum)+ "%)" }}>
             {imgAry.map((item, idx)=> {
               return (
-                <div className='img' key={idx}>
+                <Link to={'/post/' + props.content._id} className='img' key={idx}>
                   <img src={item?.location}></img>
-                </div>
+                </Link>
               );
             })}
           </div>
