@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import 'css/post.css';
 import { useRecoilValue } from 'recoil';
 import { isLoginSelector } from 'comm/recoil/TokenAtom';
+import axios from 'axios';
 
 import useModals from '../../hooks/useModals';
 import { modals } from '../../comm/Modals';
@@ -24,22 +25,24 @@ const FeedItem = (props) => {
   const [fileNum = 0, setFileNum] = useState();
 
   const fnLoadComment = () => {
+    const _postId = props.content._id;
+    axios.get('/api/comment/',{ _postId : _postId})
+      .then ((res) => {
+        let data = res.data;
 
-    let commentList = [];
-
-    if (comment.length === 0) {
-      //통신 함수 호출
-      commentList = [
-        { id: 'kwon', date: '20231027', content: '여기 ㄱㄱ' },
-        { id: 'kim', date: '20231231', content: '와...잘찍으신다' },
-        {
-          id: 'kasdajsf',
-          date: '20231209',
-          content: '@@@@###히오스 지금 접속 시 캐릭터 지급$ ###@@@',
-        },
-      ];
-    }
-    setComment(commentList);
+        if (data.length === 0) {
+          data = [
+            { id: 'kwon', date: '20231027', content: '여기 ㄱㄱ' },
+            { id: 'kim', date: '20231231', content: '와...잘찍으신다' },
+            {
+              id: 'kasdajsf',
+              date: '20231209',
+              content: '@@@@###히오스 지금 접속 시 캐릭터 지급$ ###@@@',
+            },
+          ];
+        }
+        setComment(data);
+      })
   };
 
   // setState 비동기 오류로 인해 useEffect 함수 따로 설정하여 로직 추가. file 미리보기로직
@@ -88,6 +91,36 @@ const FeedItem = (props) => {
   const fnChangeLike = () => {
     if (!isLogin) alertModal('로그인을 해주세요.');
   };
+
+  // 댓글 등록 
+  const createComment = (e) => {
+    if (!isLogin) alertModal('로그인을 해주세요.');
+
+    const _postId = props.content._id;
+    const content = document.getElementById('commnetContent').value;
+
+    const data = {
+      _postId : _postId, 
+      content : content
+    }
+
+    debugger;
+
+    try {
+      axios
+        .post('/api/comment/create', data)
+        .then((res) => {
+          console.log(res);
+          alert(res.data.message);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      alert(err.response.data.message);
+    }    
+
+  }
 
   if (props.content._id === null) {
     return <div>더 이상 데이터가 없습니다.</div>;
@@ -142,6 +175,7 @@ const FeedItem = (props) => {
               <FeedComment commentList={comment} />
               <div>
                 <input
+                  id ='commnetContent'
                   readOnly={!isLogin}
                   className='mb15 mt15'
                   type='text'
@@ -149,6 +183,7 @@ const FeedItem = (props) => {
                     isLogin ? '댓글을 입력해 주세요' : '로그인을 해주세요.'
                   }
                 />
+                <button id = 'commentC' onClick={createComment}>등록</button>
               </div>
               <div className='more'>더보기 +</div>
             </div>

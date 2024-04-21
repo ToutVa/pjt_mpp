@@ -11,6 +11,7 @@ const config = require('./config/key');
 const auth = require('./router/auth');
 const user = require('./router/user');
 const post = require('./router/post');
+const comment = require('./router/comment');
 
 // CONST 설정 
 const PORT = 5000 // port 5000;
@@ -33,6 +34,7 @@ app.use(cookieParser());
 app.use('/api/auth', auth);
 app.use('/api/user', user);
 app.use('/api/post', post);
+app.use('/api/comment', comment);
 
 
 /****************************************************************************
