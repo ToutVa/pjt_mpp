@@ -47,6 +47,7 @@ const PostDetail = (match) => {
     lng : imgList ? imgList[0].uymkY : "" ,          //초기위도
     scale : 8,                                      //지도 줌 레벨
     points : imgList,
+    clickEvent : "move",                      //클릭이벤트 (def: point, move)
     useLine : true,                           //point가 있을경우에만 사용 가능, 마커를 선으로 연결
     clickCallback : (e) => {//맵 클릭 값 반환 함수
       console.log(e.utmk.x, e.utmk.y);  //좌표반환
@@ -72,7 +73,7 @@ const PostDetail = (match) => {
                     {item.title}
                   </div>
                   <div className="user-id">
-                    ec_asd
+                    {item.userEmail}
                   </div>
               </div>
           </div>
@@ -90,7 +91,6 @@ const PostDetail = (match) => {
             </div>
           </div>
         </div>
-        <img />
         </div>
         <div className='right'>
         {util.isEmpty(imgList) ? <></>  : <TimeLine imgList = {imgList} change={changeImg} hover={hoverImg}/>}
