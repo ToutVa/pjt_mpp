@@ -24,25 +24,36 @@ const FeedItem = (props) => {
   const [imgAry] = useState(props.content?.imgList);
   const [fileNum = 0, setFileNum] = useState();
 
+  const [writeComment, setWriteComment] = useState([]);
+
   const fnLoadComment = () => {
     const _postId = props.content._id;
-    axios.get('/api/comment/',{ _postId : _postId})
+    try {
+      axios.post('/api/comment/getComment',{ _postId : _postId})
       .then ((res) => {
-        let data = res.data;
+        debugger;
+        let data = res.data.comments;
+        console.log(data);
 
         if (data.length === 0) {
           data = [
-            { id: 'kwon', date: '20231027', content: '여기 ㄱㄱ' },
-            { id: 'kim', date: '20231231', content: '와...잘찍으신다' },
+            { id: 'kwon', registDate: '20231027', content: '여기 ㄱㄱ' },
+            { id: 'kim', registDate: '20231231', content: '와...잘찍으신다' },
             {
               id: 'kasdajsf',
-              date: '20231209',
+              registDate: '20231209',
               content: '@@@@###히오스 지금 접속 시 캐릭터 지급$ ###@@@',
             },
           ];
         }
         setComment(data);
+      }).catch((err) => {
+        console.log(err);
       })
+    } catch (err) {
+      alert(err.response.data.message);
+    }   
+    
   };
 
   // setState 비동기 오류로 인해 useEffect 함수 따로 설정하여 로직 추가. file 미리보기로직
@@ -97,21 +108,20 @@ const FeedItem = (props) => {
     if (!isLogin) alertModal('로그인을 해주세요.');
 
     const _postId = props.content._id;
-    const content = document.getElementById('commnetContent').value;
+    const content = writeComment;
 
     const data = {
       _postId : _postId, 
       content : content
     }
 
-    debugger;
-
     try {
       axios
         .post('/api/comment/create', data)
         .then((res) => {
-          console.log(res);
-          alert(res.data.message);
+          // alert(res.data.message);
+          fnLoadComment();
+          document.getElementById('commnetContent' + props.content._id).value = '';
         })
         .catch((err) => {
           console.log(err);
@@ -119,7 +129,10 @@ const FeedItem = (props) => {
     } catch (err) {
       alert(err.response.data.message);
     }    
+  }
 
+  const  fnOnchangeComment = (e) => {
+    setWriteComment(e.target.value);
   }
 
   if (props.content._id === null) {
@@ -175,13 +188,14 @@ const FeedItem = (props) => {
               <FeedComment commentList={comment} />
               <div>
                 <input
-                  id ='commnetContent'
+                  id = {'commnetContent' + props.content._id}
                   readOnly={!isLogin}
                   className='mb15 mt15'
                   type='text'
                   placeholder={
                     isLogin ? '댓글을 입력해 주세요' : '로그인을 해주세요.'
                   }
+                  onChange={fnOnchangeComment}
                 />
                 <button id = 'commentC' onClick={createComment}>등록</button>
               </div>
