@@ -5,6 +5,7 @@ import 'css/post.css';
 import { useNavigate } from 'react-router';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { postingFiles, totalfileCntSelector } from 'comm/recoil/FileAtom';
+import baseImgUrl from 'assets/icon-file.svg';
 import { sgisToken } from 'comm/recoil/SgisTokenAtom';
 import exifr from 'exifr/dist/full.esm.mjs'; // to use ES Modules
 import util from 'comm/util';
@@ -49,9 +50,18 @@ const PostDragDrop = () => {
   const cancleButtonClick = (e) => {
     let fileArray = Array.from(postingFile);
     fileArray.splice(fileNum, 1);
+    setPostingFile(fileArray);    
 
-    setPostingFile(fileArray);
-    setFileNum(fileNum - 1);
+    if(totalfileCnt-1 === 0){ // 1장
+      resetPostingFile(postingFile);
+
+      const imgWrap = document.getElementById('preview');
+      imgWrap.src = baseImgUrl;
+    }else if(totalfileCnt-1 > fileNum){
+      setFileNum(fileNum + 1);
+    }else {
+      setFileNum(fileNum - 1);
+    }
   };
 
   /* 포스팅 버튼 클릭이벤트 */
@@ -203,6 +213,7 @@ const PostDragDrop = () => {
 
   // file 이미지 move 함수, fileNum만 설정한다. 이후 useEffect설정 .
   const onClickImgMove = (val) => {
+    console.log('fileNum',fileNum);
     // left 값일 경우 fileNum 0 이면 그대로
     if (val === 'left' && fileNum > 0) {
       setFileNum(fileNum - 1);
