@@ -10,6 +10,7 @@ import useModals from '../../hooks/useModals';
 import { modals } from '../../comm/Modals';
 
 import util from 'comm/util';
+import ConfirmModal from 'component/ConfirmModal';
 const FeedItem = (props) => {
   const { openModal } = useModals();
 
@@ -22,7 +23,13 @@ const FeedItem = (props) => {
   const isLogin = useRecoilValue(isLoginSelector);
   const [comment, setComment] = useState([]);
   const [imgAry] = useState(props.content?.imgList);
-  const [fileNum = 0, setFileNum] = useState();
+
+  const [fileNum, setFileNum] = useState(0);
+
+  // const [imgXpos, setImgXpos] = useState();
+  const [leftPos, setLeftPos] = useState(0);
+  let imgXpos;
+  let leftPosTmp = 0;
 
   const fnLoadComment = () => {
     const _postId = props.content._id;
@@ -32,15 +39,15 @@ const FeedItem = (props) => {
 
         if (data.length === 0) {
           data = [
-            { id: 'kwon', date: '20231027', content: '여기 ㄱㄱ' },
-            { id: 'kim', date: '20231231', content: '와...잘찍으신다' },
-            {
-              id: 'kasdajsf',
-              date: '20231209',
-              content: '@@@@###히오스 지금 접속 시 캐릭터 지급$ ###@@@',
-            },
-          ];
-        }
+        { id: 'kwon', date: '20231027', content: '여기 ㄱㄱ' },
+        { id: 'kim', date: '20231231', content: '와...잘찍으신다' },
+        {
+          id: 'kasdajsf',
+          date: '20231209',
+          content: '@@@@###히오스 지금 접속 시 캐릭터 지급$ ###@@@',
+        },
+      ];
+    }
         setComment(data);
       })
   };
@@ -54,38 +61,76 @@ const FeedItem = (props) => {
 
   // file 이미지 move 함수, fileNum만 설정한다. 이후 useEffect설정 .
   const onClickImgMove = (e, val) => {
-    //네비게이션 Array
-    let naviArr = e.currentTarget.parentNode.getElementsByClassName("point");
-    let newIdx;
     // left 값일 경우 fileNum 0 이면 그대로
     if (val === 'left' && fileNum > 0) {
       setFileNum(fileNum - 1);
-      newIdx = fileNum - 1;
     }
     // right일 때, max값 설정
     else if (val === 'right' && fileNum < imgAry.length - 1) {
       setFileNum(fileNum + 1);
-      newIdx = fileNum + 1;
     }else {
       return;
-    }
-    for(let i=0; i<naviArr.length; i ++) {
-      if(i === newIdx) util.addClass(naviArr[i], "active");
-      else             util.removeClass(naviArr[i], "active");
     }
   };
 
   //네비게이션 클릭이벤트
   const onNaviClickImgMove = (e, val) => {
-    //네비게이션 Array
-    let naviArr = e.target.parentNode.getElementsByTagName("div");
-    for(let i=0; i<naviArr.length; i ++) {
-      if(i === val) util.addClass(naviArr[i], "active");
-      else          util.removeClass(naviArr[i], "active");
-    }
-
     setFileNum(val);
   };
+
+  //드래그 중 이벤트
+  const moveDrag =(e)=> {
+    let dmvx = imgXpos - e.clientX;
+    if(dmvx < 1 && dmvx < -(fileNum*650)) {
+        setLeftPos(0);
+        leftPosTmp = dmvx
+    }else if(dmvx > ((imgAry.length-(fileNum+1)))*650) {
+      setLeftPos(((imgAry.length-(fileNum+1)))*650);
+      leftPosTmp = dmvx
+    }else {
+      setLeftPos(dmvx);
+      leftPosTmp = dmvx
+    }
+    return false;
+  }
+
+  //드래그 중단 이벤트
+  const stopDrag = (e) => {
+    e.preventDefault();
+    let moveCnt = Math.floor(leftPosTmp/650);
+    if(leftPosTmp%650 > 340) moveCnt ++;
+    
+    document.getElementById("imgList").style.transition = `all 0.3s`;
+    if(fileNum + moveCnt < 0) {
+      setFileNum(0);
+    }else if(fileNum + moveCnt > imgAry.length - 1) {
+      setFileNum(imgAry.length - 1);
+    }else {
+      setFileNum(fileNum + moveCnt);
+    }
+    setLeftPos(0);
+    
+    //이벤트 제거
+    document.onmousemove = null;
+    document.onmouseup = null;
+    return false;
+  }
+
+  //최초 드래그 시작
+  const onImageDragStart = (e) => {
+    let obj = e.currentTarget;
+
+    //최초 좌표값
+    imgXpos = e.clientX;
+
+    obj.style.transition = `all 0.0s`;  //드래그하는동안 애니메이션 제거
+    document.onmousemove = moveDrag;
+    document.onmouseup = stopDrag;
+  }
+
+  const tset = () => {
+    // return(<ConfirmModal onSubmit={()=>{ }}, onClose={}, msg={""}, wid="500px", hei="600"/>)
+  }
 
   //좋아요 클릭
   const fnChangeLike = () => {
@@ -103,8 +148,6 @@ const FeedItem = (props) => {
       _postId : _postId, 
       content : content
     }
-
-    debugger;
 
     try {
       axios
@@ -137,7 +180,7 @@ const FeedItem = (props) => {
           </div>
         </div>
         <div className='content'>
-          <div className='img-list' style={{transform: "translateX("+(-100*fileNum)+ "%)" }}>
+          <div id="imgList" className='img-list' style={{left: -leftPos+"px", transform: "translateX("+(-100*fileNum)+ "%)"}} onMouseDown={onImageDragStart}>
             {imgAry.map((item, idx)=> {
               return (
                 <Link to={'/post/' + props.content._id} className='img' key={idx}>
@@ -158,7 +201,7 @@ const FeedItem = (props) => {
           <div className='navigation'>
             {imgAry.length > 1 ? 
               imgAry.map((item, idx) => {
-                return(<div className={'point' + (idx===0? " active":"")} key={idx} onClick={(e)=>{onNaviClickImgMove(e, idx)}} />);
+                return(<div className={'point' + (fileNum===idx? " active":"")} key={idx} onClick={(e)=>{onNaviClickImgMove(e, idx)}} />);
               }) 
               : 
               <></>
@@ -185,7 +228,7 @@ const FeedItem = (props) => {
                 />
                 <button id = 'commentC' onClick={createComment}>등록</button>
               </div>
-              <div className='more'>더보기 +</div>
+              <div className='more' onClick={tset}>더보기 +</div>
             </div>
           ) : (
             <></>
