@@ -1,5 +1,6 @@
 const express = require("express");
 const route = express.Router();
+const dayjs = require("dayjs");
 
 const { authValidator } = require("../middleware/auth");
 
@@ -13,17 +14,20 @@ const { Comment } = require("../models/comment");
  * return : 게시글 목록
  */
 
-route.get("/", async(req,res) => {
+route.post("/getComment", async(req,res) => {
 
     const _postId = req.body._postId;
+    console.log(req.body._postId)
 
     const commentJson = await Comment.find({_postId : _postId})
         .catch((err) => {
             res.json({result : false, message : err});
     });
 
-
-
+    res.status(200).json({
+        success : true,
+        comments : commentJson
+    });
 });
 
 /**
@@ -34,8 +38,11 @@ route.get("/", async(req,res) => {
 route.post("/create", authValidator, async(req, res) => {
 
     const data = req?.body;
+    const email = req.userInfo.email;
+    const date = dayjs().format("YYYY/MM/DD HH:mm:ss");
 
-    console.log(req.body);
+    data.userEmail = email;
+    data.registDate = date;
 
     const comment = new Comment(data);
 

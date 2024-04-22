@@ -4,10 +4,11 @@
     let elements =[];
 
     commentList.forEach((val, idx) => {
+      debugger;
       elements.push(<div key={idx} className="content">
         <div className="profile mr10 ml5"/>
         <div className="detail">
-          <span className="id">{val.id}</span><span className="id ml15">{val.date}</span>
+          <span className="id">{val.userEmail}</span><span className="id ml15">{val.registDate}</span>
           <p className="id">{val.content}</p>
         </div>
       </div>);
