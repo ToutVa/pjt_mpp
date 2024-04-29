@@ -20,6 +20,7 @@ import Feed from 'pages/feed/Feed';
 import GuestFeed from 'pages/feed/GuestFeed'
 import LoginModal from 'pages/register/LoginModal';
 import SignupModal from 'pages/register/SignupModal';
+import Setting from 'pages/register/Setting';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
                     <Route path='/post' element={<PostDragDrop />} />
                     <Route path='/post/:postId' element={<PostDetail />} />
                     <Route path='/posting' element={<Posting />} />
+                    <Route path='/setting' element={<Setting />} />
                 </Route>
                 <Route path='/guestFeed' element={<GuestFeed />} />
               </Route>

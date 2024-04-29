@@ -56,6 +56,22 @@ const util = {
     },
     
     /**
+     * hasClass 
+     * @param ele element 객체
+     * @param classNm 확인할 class명
+     * @returns boolean
+     */
+    hasClass : (ele, classNm) => {
+        if(ele.className.indexOf(classNm) < 0) {
+            return false;
+        }else {
+            return true;
+        }
+    },
+        
+
+
+    /**
      * addClass 
      * @param ele element 객체
      * @param classNm 추가할 class
