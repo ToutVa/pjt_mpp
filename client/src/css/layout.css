@@ -168,6 +168,9 @@ img {
   }
 }
 
+.main-frame {
+  width: 100%;
+}
 .modal-frame > .main-frame {
   width: 600px;
 }

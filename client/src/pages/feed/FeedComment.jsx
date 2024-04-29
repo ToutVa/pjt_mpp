@@ -4,7 +4,6 @@
     let elements =[];
 
     commentList.forEach((val, idx) => {
-      debugger;
       elements.push(<div key={idx} className="content">
         <div className="profile mr10 ml5"/>
         <div className="detail">

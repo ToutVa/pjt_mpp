@@ -38,7 +38,6 @@ const FeedItem = (props) => {
     try {
       axios.post('/api/comment/getComment',{ _postId : _postId})
       .then ((res) => {
-        debugger;
         let data = res.data.comments;
         console.log(data);
 
@@ -111,7 +110,6 @@ const FeedItem = (props) => {
     let moveCnt = Math.floor(leftPosTmp/650);
     if(leftPosTmp%650 > 340) moveCnt ++;
     
-    document.getElementById("imgList").style.transition = `all 0.3s`;
     if(fileNum + moveCnt < 0) {
       setFileNum(0);
     }else if(fileNum + moveCnt > imgAry.length - 1) {
@@ -119,6 +117,7 @@ const FeedItem = (props) => {
     }else {
       setFileNum(fileNum + moveCnt);
     }
+    document.getElementById("imgList").style.transition = `all 0.3s ease 0s`;
     setLeftPos(0);
     
     //이벤트 제거
@@ -231,18 +230,21 @@ const FeedItem = (props) => {
           {comment.length > 0 ? (
             <div className='comment-area' id='comment-area'>
               <FeedComment commentList={comment} />
-              <div>
-                <input
-                  id = {'commnetContent' + props.content._id}
-                  readOnly={!isLogin}
-                  className='mb15 mt15'
-                  type='text'
-                  placeholder={
-                    isLogin ? '댓글을 입력해 주세요' : '로그인을 해주세요.'
-                  }
-                  onChange={fnOnchangeComment}
-                />
-                <button id = 'commentC' onClick={createComment}>등록</button>
+              <div className='bottom mb15 mt15' > 
+                <div className='user mr10 ml5'/>
+                <div className='input-area '>
+                  <textarea
+                    id = {'commnetContent' + props.content._id}
+                    readOnly={!isLogin}
+                    type='text'
+                    placeholder={
+                      isLogin ? '댓글을 입력해 주세요' : '로그인을 해주세요.'
+                    }
+                    disabled = {isLogin?"" : "disabled"}
+                    onChange={fnOnchangeComment}
+                  />
+                  <button id = 'commentC' className='submit' onClick={createComment}>등록</button>
+                  </div>
               </div>
               <div className='more' onClick={tset}>더보기 +</div>
             </div>
