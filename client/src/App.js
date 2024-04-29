@@ -13,6 +13,7 @@ import ProtectedRoute from 'comm/routes/ProtectedRoute';
 // main 화면구성
 import Home from 'pages/Home';
 import MyPage from 'pages/myPage/MyPage';
+import Setting from 'pages/setting/SettingMain';
 import PostDragDrop from 'pages/post/PostDragDrop';
 import PostDetail from 'pages/post/PostDetail';
 import Posting from 'pages/post/Posting';
@@ -38,6 +39,7 @@ function App() {
                 <Route element={<ProtectedRoute />}>
                     <Route path='/feed' element={<Feed />} />
                     <Route path='/myPage' element={<MyPage />} />
+                    <Route path='/setting' element={<Setting />} />
                     <Route path='/post' element={<PostDragDrop />} />
                     <Route path='/post/:postId' element={<PostDetail />} />
                     <Route path='/posting' element={<Posting />} />
