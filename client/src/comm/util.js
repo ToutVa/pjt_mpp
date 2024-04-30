@@ -69,8 +69,6 @@ const util = {
         }
     },
         
-
-
     /**
      * addClass 
      * @param ele element 객체
@@ -124,6 +122,26 @@ const util = {
         }else {
             return false;
         }
+    },
+
+    /**
+     * getByte
+     * 문자열의 바이트 수 체크
+     * @param str 체크할 문자열
+     * @returns int 바이트의 정수값
+     */
+    getByte : (str="") => {
+        let totalByte =0;
+        for(var i =0; i < str.length; i++) {
+            var currentByte = str.charCodeAt(i);
+            if(currentByte > 128){
+            	totalByte += 2;
+            }else {
+            	totalByte++;
+            }
+        }
+
+        return totalByte;
     },
 
     /**

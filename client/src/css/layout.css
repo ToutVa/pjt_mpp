@@ -331,6 +331,9 @@ input {
   &[type=radio] {
     width: 0px;
   }
+  &[type=radio].toggle {
+    width: 10px;
+  }
 }
 
 
@@ -427,7 +430,6 @@ input:checked + label.icon {
   filter: drop-shadow(0px 0px 3px #84978e);
 }
 
-
 ul.vertical > li {
   margin-left: 10px;
   display: inline-block;
@@ -435,6 +437,16 @@ ul.vertical > li {
 ul.vertical > li:first-child {
   margin-left: 0px;
 }
+
+
+textarea {
+  resize: none;
+  border: 0;
+  border-radius: 20px;
+  padding: 10px;
+  outline: none;
+}
+
 
 .flex {
   display: flex;
@@ -558,6 +570,7 @@ ul.vertical > li:first-child {
 .w10p {width: 10%;}
 .w50p {width: 50%;}
 .w100p {width: 100%;}
+.w-auto {width: auto;}
 
 /*margin*/
 .m10  {margin : 10px}
@@ -586,3 +599,16 @@ ul.vertical > li:first-child {
 .mb10 {margin-bottom:10px}
 .mb15 {margin-bottom:15px}
 .mb20 {margin-bottom:20px}
+
+/*텍스트 공통*/
+.h1{font-size: 32px; font-weight: bold;}
+.h2{font-size: 24px; font-weight: bold;}
+.h3{font-size: 18px; font-weight: bold;}
+.h4{font-size: 16px; font-weight: bold;}
+.h5{font-size: 13px; font-weight: bold;}
+
+
+/*float*/
+
+.fr{float: right;}
+.fl{float: left;}

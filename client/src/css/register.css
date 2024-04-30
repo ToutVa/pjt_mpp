@@ -99,19 +99,18 @@
 }
 
 .setting .user-info {
-  width: 630px;
-  border: 1px solid black;
-  border-radius: 15px;
-  padding: 20px 10px;
+  width: 610px;
+  background-color: #dadada;
+  border-radius: 20px;
+  padding: 20px;
   display: flex;
   align-items: center;
 }
 
-
 .setting .user-info > .icon {
-  width: 40px;
-  height: 40px;
-  background-color: #c5c5c5;
+  width: 80px;
+  height: 80px;
+  background-color: #ffffff;
   border-radius: 100%;
   display: inline-block;
   margin-right: 10px;
@@ -137,6 +136,8 @@ ul.drop-down > li > .title{
   padding: 10px 10px;
   border-bottom: 1px solid rgb(145 145 145);
   cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
 
   &:after{
     transition: all 0.2s;
@@ -158,15 +159,14 @@ ul.drop-down > li > .title{
   }
 }
 
-
-
 ul.drop-down > li > .title+.content { 
   background-color: #E1E1E1;
+  display: block;
   height: 0px;
   padding: 0px 10px;
   overflow-y: hidden;
-  transition: all 0.3s;
-  border-bottom: 0px solid black;
+  transition: all 0.5s;
+  border-bottom: 0px solid rgb(145 145 145);
 }
 
 ul.drop-down > li > .title.active+.content { 
@@ -175,6 +175,13 @@ ul.drop-down > li > .title.active+.content {
   border-bottom: 1px solid rgb(145 145 145);
 }
 ul.drop-down > li > .content { 
+  display: flex;
+  justify-content: space-between;
   padding: 10px 10px;
   border-bottom: 1px solid rgb(145 145 145);
+}
+
+.introSetting {
+  width: calc(100% - 20px);
+  height: 90px;
 }
