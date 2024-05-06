@@ -13,6 +13,7 @@ import util from 'comm/util';
 import ConfirmModal from 'component/ConfirmModal';
 const FeedItem = (props) => {
   const { openModal } = useModals();
+  console.log(props);
 
   const alertModal = (msg) => {
     openModal(modals.alertModal, {
@@ -22,6 +23,7 @@ const FeedItem = (props) => {
 
   const isLogin = useRecoilValue(isLoginSelector);
   const [comment, setComment] = useState([]);
+  const [likes, setLikes] = useState([props.content.likes.length]);
   const [imgAry] = useState(props.content?.imgList);
 
   const [fileNum, setFileNum] = useState(0);
@@ -148,7 +150,7 @@ const FeedItem = (props) => {
 
     const btnId = `btnLike${props.content._id}`;
     const btnRes = document.getElementById(btnId);
-    debugger;
+    
 
     let likeUrl = '';
 
@@ -167,7 +169,16 @@ const FeedItem = (props) => {
       axios
         .post(likeUrl, data)
         .then((res) => {
+          console.log(res);
           alert(res.data.message);
+
+          if (btnRes.className === 'like') {
+            btnRes.className = 'unlike';
+            setLikes(Number(likes) - 1);
+          } else {
+            btnRes.className = 'like';
+            setLikes(Number(likes) + 1);
+          }
           
         })
         .catch((err) => {
@@ -255,8 +266,8 @@ const FeedItem = (props) => {
         </div>
         <div className='bottom'>
           <div className='icon-group'>
-            <text>{props.content.likes.length} 명이 좋아합니다.</text>
-            <button id = {'btnLike' + props.content._id} className= { (props.content.likes.length > 0) ? 'like' : 'unlike'} onClick={fnChangeLike} />
+            <div>{likes} 명이 좋아합니다.</div>
+            <button id = {'btnLike' + props.content._id} className= { (props.content.likeChk.length > 0) ? 'like' : 'unlike'} onClick={fnChangeLike} />
             <button className='comment' onClick={fnLoadComment} />
           </div>
           {comment.length > 0 ? (
