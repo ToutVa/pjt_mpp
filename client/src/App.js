@@ -13,7 +13,7 @@ import ProtectedRoute from 'comm/routes/ProtectedRoute';
 // main 화면구성
 import Home from 'pages/Home';
 import MyPage from 'pages/myPage/MyPage';
-import Setting from 'pages/setting/SettingMain';
+// import Setting from 'pages/setting/SettingMain';
 import PostDragDrop from 'pages/post/PostDragDrop';
 import PostDetail from 'pages/post/PostDetail';
 import Posting from 'pages/post/Posting';

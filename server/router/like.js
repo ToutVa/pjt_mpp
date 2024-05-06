@@ -6,11 +6,11 @@ const ObjectId = require("mongoose").Types.ObjectId;
 const { authValidator } = require("../middleware/auth");
 
 // data Model
-const { Comment } = require("../models/comment");
+const { Like } = require("../models/like");
 
 
 /**
- * 게시글 comment 조회
+ * 게시글 like 조회
  * param  : 게시글 id
  * return : 게시글 목록
  */
@@ -20,7 +20,7 @@ route.post("/getComment", async(req,res) => {
     const _postId = req.body._postId;
     console.log(req.body._postId)
 
-    const commentJson = await Comment.find({_postId : _postId})
+    const commentJson = await Like.find({_postId : _postId})
         .catch((err) => {
             res.json({result : false, message : err});
     });
@@ -32,7 +32,7 @@ route.post("/getComment", async(req,res) => {
 });
 
 /**
- * 게시글 comment 생성 api
+ * 게시글 like 생성 api
  * param  : 게시글 id
  * return : 게시글 목록
  */
@@ -47,9 +47,9 @@ route.post("/create", authValidator, async(req, res) => {
     data._postId = new ObjectId(data._postId);
     console.log(data);
 
-    const comment = new Comment(data);
+    const like = new Like(data);
 
-    const result = await comment.save().then(() => {
+    const result = await like.save().then(() => {
         res.status(200).json({
             result : true,
             message : "댓글이 등록되었습니다."
@@ -58,6 +58,31 @@ route.post("/create", authValidator, async(req, res) => {
         res.json({result : false
                 , message : err});
     })
+});
+
+/**
+ * 게시글 like 삭제 api
+ * param  : 게시글 id
+ * return : 게시글 목록
+ */
+route.post("/delete", authValidator, async(req, res) => {
+
+    const data = req?.body;
+    const email = req.userInfo.email;
+
+    data.userEmail = email;
+
+    Like.deleteOne(data).then((e) => {
+        console.log('좋아요 삭제 : ', e);
+        res.status(200).json({
+            result : true,
+            message : "댓글이 삭제되었습니다."
+        });
+    }).catch((err) => {
+        res.json({result : false
+                , message : err});
+    });
+
 });
 
 

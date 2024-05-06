@@ -143,8 +143,39 @@ const FeedItem = (props) => {
   }
 
   //좋아요 클릭
-  const fnChangeLike = () => {
+  const fnChangeLike = (e) => {
     if (!isLogin) alertModal('로그인을 해주세요.');
+
+    const btnId = `btnLike${props.content._id}`;
+    const btnRes = document.getElementById(btnId);
+    debugger;
+
+    let likeUrl = '';
+
+    if (btnRes.className === 'like') {
+      likeUrl = '/api/like/delete';
+    } else {
+      likeUrl = '/api/like/create';
+    }
+
+    const _postId = props.content._id;
+    const data = {
+      _postId : _postId,
+    }
+
+    try {
+      axios
+        .post(likeUrl, data)
+        .then((res) => {
+          alert(res.data.message);
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      alert(err.response.data.message);
+    } 
   };
 
   // 댓글 등록 
@@ -224,7 +255,8 @@ const FeedItem = (props) => {
         </div>
         <div className='bottom'>
           <div className='icon-group'>
-            <button className='like' onClick={fnChangeLike} />
+            <text>{props.content.likes.length} 명이 좋아합니다.</text>
+            <button id = {'btnLike' + props.content._id} className= { (props.content.likes.length > 0) ? 'like' : 'unlike'} onClick={fnChangeLike} />
             <button className='comment' onClick={fnLoadComment} />
           </div>
           {comment.length > 0 ? (
