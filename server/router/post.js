@@ -37,10 +37,29 @@ route.post("/", authValidator, async (req, res) => {
 
   if (req.body.myFeedYn) {
     limitCnt = 15;
-    filter.userEmail = req.userInfo.  email;
+    filter.userEmail = req.userInfo.email;
   }
 
   postJson = await Post.aggregate([
+    {
+      $lookup: {
+        from: "likes",
+        let : {usr_likes : '$_id'},
+        pipeline: [
+          {
+            $match : {
+              "$expr" : {
+                $and :[
+                  {$eq : ["$$usr_likes", "$_postId"]},
+                  {$eq : ["$userEmail", req.userInfo.email]}
+                ]
+              }
+            }
+          }
+        ],
+        as: "likeChk",
+      },
+    },
     {
       $lookup: {
         from: "likes",
@@ -50,7 +69,7 @@ route.post("/", authValidator, async (req, res) => {
       },
     },
     { $sort: { registDate: -1 } },
-    { $limit: limitCnt },
+    { $limit: limitCnt},
   ]);
 
   res.status(200).json({

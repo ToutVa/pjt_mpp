@@ -49,10 +49,11 @@ route.post("/create", authValidator, async(req, res) => {
 
     const like = new Like(data);
 
-    const result = await like.save().then(() => {
+    const result = await like.save().then((e) => {
         res.status(200).json({
             result : true,
-            message : "댓글이 등록되었습니다."
+            message : "좋아요 등록되었습니다.",
+            data : e
         });
     }).catch((err) => {
         res.json({result : false
