@@ -35,9 +35,10 @@ const FeedItem = (props) => {
 
   const [writeComment, setWriteComment] = useState([]);
 
+  //댓글 로딩이벤트
   const fnLoadComment = () => {
     const _postId = props.content._id;
-    try {
+      try {
       axios.post('/api/comment/getComment',{ _postId : _postId})
       .then ((res) => {
         let data = res.data.comments;
@@ -63,6 +64,12 @@ const FeedItem = (props) => {
     }   
     
   };
+
+  //댓글 닫기이벤트
+  const fnCloseComment = () => {
+    setComment([]);
+  };
+
 
   // setState 비동기 오류로 인해 useEffect 함수 따로 설정하여 로직 추가. file 미리보기로직
   useEffect(() => {
@@ -266,10 +273,13 @@ const FeedItem = (props) => {
         </div>
         <div className='bottom'>
           <div className='icon-group'>
-            <div>{likes} 명이 좋아합니다.</div>
             <button id = {'btnLike' + props.content._id} className= { (props.content.likeChk.length > 0) ? 'like' : 'unlike'} onClick={fnChangeLike} />
-            <button className='comment' onClick={fnLoadComment} />
+            {comment.length > 0 ?
+             <button className='comment active' onClick={fnCloseComment} />
+             : <button className='comment' onClick={fnLoadComment} />
+            }
           </div>
+          <div className='like-count ml5 mb5 mt5'>{likes} 명이 좋아합니다.</div>
           {comment.length > 0 ? (
             <div className='comment-area' id='comment-area'>
               <FeedComment commentList={comment} />
