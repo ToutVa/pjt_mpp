@@ -79,7 +79,7 @@ const PostDetail = (match) => {
           </div>
           <PostMap ref={postMapComp} config={mapConfig} />
           <div id ="img-cont" className={"content " + (util.isEmpty(focusImg)? "":"active")} onClick={onClickImg}>
-            <img src={focusImg} height="400" width="650"></img>
+            <img src={focusImg} height="400" width="625"></img>
           </div>
           <div className="bottom">
             <div className="icon-group">
