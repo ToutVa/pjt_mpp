@@ -22,8 +22,11 @@ import GuestFeed from 'pages/feed/GuestFeed'
 import LoginModal from 'pages/register/LoginModal';
 import SignupModal from 'pages/register/SignupModal';
 import Setting from 'pages/register/Setting';
+import { useState } from 'react';
+import AlertModal from 'component/AlertModal';
 
 function App() {
+  const [alertModal, setAlertModal] = useState(false);
   return (
     <RecoilRoot>
       <div className='App'>
@@ -52,6 +55,7 @@ function App() {
           </div>
         </BrowserRouter>
       </div>
+      {alertModal? <AlertModal />: <></>}
     </RecoilRoot>
   );
 }

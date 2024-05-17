@@ -573,6 +573,7 @@ textarea {
 .w-auto {width: auto;}
 
 /*margin*/
+.m0  {margin : 0px}
 .m10  {margin : 10px}
 .m20  {margin : 20px}
 .mr5  {margin-right:5px}
@@ -600,6 +601,36 @@ textarea {
 .mb15 {margin-bottom:15px}
 .mb20 {margin-bottom:20px}
 
+/*padding*/
+.p0  {padding : 0px}
+.p10  {padding : 10px}
+.p20  {padding : 20px}
+.pr5  {padding-right:5px}
+.pr10 {padding-right:10px}
+.pr15 {padding-right:15px}
+.pr20 {padding-right:20px}
+.pt5  {padding-top:5px}
+.pt10 {padding-top:10px}
+.pt15 {padding-top:15px}
+.pt20 {padding-top:20px}
+.pt30 {padding-top:30px}
+.pt40 {padding-top:40px}
+.pt50 {padding-top:50px}
+.pt60 {padding-top:60px}
+.pt70 {padding-top:70px}
+.pt80 {padding-top:80px}
+.pt90 {padding-top:90px}
+.pt100 {padding-top:100px}
+.pl5  {padding-left:5px}
+.pl10 {padding-left:10px}
+.pl15 {padding-left:15px}
+.pl20 {padding-left:20px}
+.pb5  {padding-bottom:5px}
+.pb10 {padding-bottom:10px}
+.pb15 {padding-bottom:15px}
+.pb20 {padding-bottom:20px}
+
+
 /*텍스트 공통*/
 .h1{font-size: 32px; font-weight: bold;}
 .h2{font-size: 24px; font-weight: bold;}
@@ -609,6 +640,5 @@ textarea {
 
 
 /*float*/
-
 .fr{float: right;}
 .fl{float: left;}
