@@ -39,13 +39,38 @@ route.post("/", authValidator, async (req, res) => {
     limitCnt = 15;
     filter.userEmail = req.userInfo.email;
   }
-  console.log("postTest");
-  postJson = await Post.find(filter)
-    .sort({ registDate: -1 })
-    .limit(limitCnt)
-    .catch((err) => {
-      res.json({ success: false, err });
-    });
+
+  postJson = await Post.aggregate([
+    {
+      $lookup: {
+        from: "likes",
+        let : {usr_likes : '$_id'},
+        pipeline: [
+          {
+            $match : {
+              "$expr" : {
+                $and :[
+                  {$eq : ["$$usr_likes", "$_postId"]},
+                  {$eq : ["$userEmail", req.userInfo.email]}
+                ]
+              }
+            }
+          }
+        ],
+        as: "likeChk",
+      },
+    },
+    {
+      $lookup: {
+        from: "likes",
+        localField: "_id",
+        foreignField: "_postId",
+        as: "likes",
+      },
+    },
+    { $sort: { registDate: -1 } },
+    { $limit: limitCnt},
+  ]);
 
   res.status(200).json({
     success: true,
@@ -130,9 +155,9 @@ route.post(
     const metaAry = req.body.imgMeta;
     const fileAry = req.files;
 
-    for ( let i =0; i < fileAry.length; i++) {
+    for (let i = 0; i < fileAry.length; i++) {
       const meta = JSON.parse(metaAry[i]);
-      if (meta.fileName = fileAry[i]?.originalname) {
+      if ((meta.fileName = fileAry[i]?.originalname)) {
         fileAry[i] = Object.assign(fileAry[i], meta);
       }
     }

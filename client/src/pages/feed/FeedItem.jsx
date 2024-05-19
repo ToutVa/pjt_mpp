@@ -13,6 +13,7 @@ import util from 'comm/util';
 import ConfirmModal from 'component/ConfirmModal';
 const FeedItem = (props) => {
   const { openModal } = useModals();
+  console.log(props);
 
   const alertModal = (msg) => {
     openModal(modals.alertModal, {
@@ -22,6 +23,7 @@ const FeedItem = (props) => {
 
   const isLogin = useRecoilValue(isLoginSelector);
   const [comment, setComment] = useState([]);
+  const [likes, setLikes] = useState([props.content.likes.length]);
   const [imgAry] = useState(props.content?.imgList);
 
   const [fileNum, setFileNum] = useState(0);
@@ -33,9 +35,10 @@ const FeedItem = (props) => {
 
   const [writeComment, setWriteComment] = useState([]);
 
+  //댓글 로딩이벤트
   const fnLoadComment = () => {
     const _postId = props.content._id;
-    try {
+      try {
       axios.post('/api/comment/getComment',{ _postId : _postId})
       .then ((res) => {
         let data = res.data.comments;
@@ -61,6 +64,12 @@ const FeedItem = (props) => {
     }   
     
   };
+
+  //댓글 닫기이벤트
+  const fnCloseComment = () => {
+    setComment([]);
+  };
+
 
   // setState 비동기 오류로 인해 useEffect 함수 따로 설정하여 로직 추가. file 미리보기로직
   useEffect(() => {
@@ -143,8 +152,48 @@ const FeedItem = (props) => {
   }
 
   //좋아요 클릭
-  const fnChangeLike = () => {
+  const fnChangeLike = (e) => {
     if (!isLogin) alertModal('로그인을 해주세요.');
+
+    const btnId = `btnLike${props.content._id}`;
+    const btnRes = document.getElementById(btnId);
+    
+
+    let likeUrl = '';
+
+    if (btnRes.className === 'like') {
+      likeUrl = '/api/like/delete';
+    } else {
+      likeUrl = '/api/like/create';
+    }
+
+    const _postId = props.content._id;
+    const data = {
+      _postId : _postId,
+    }
+
+    try {
+      axios
+        .post(likeUrl, data)
+        .then((res) => {
+          console.log(res);
+          alert(res.data.message);
+
+          if (btnRes.className === 'like') {
+            btnRes.className = 'unlike';
+            setLikes(Number(likes) - 1);
+          } else {
+            btnRes.className = 'like';
+            setLikes(Number(likes) + 1);
+          }
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      alert(err.response.data.message);
+    } 
   };
 
   // 댓글 등록 
@@ -224,9 +273,13 @@ const FeedItem = (props) => {
         </div>
         <div className='bottom'>
           <div className='icon-group'>
-            <button className='like' onClick={fnChangeLike} />
-            <button className='comment' onClick={fnLoadComment} />
+            <button id = {'btnLike' + props.content._id} className= { (props.content.likeChk.length > 0) ? 'like' : 'unlike'} onClick={fnChangeLike} />
+            {comment.length > 0 ?
+             <button className='comment active' onClick={fnCloseComment} />
+             : <button className='comment' onClick={fnLoadComment} />
+            }
           </div>
+          <div className='like-count ml5 mb5 mt5'>{likes} 명이 좋아합니다.</div>
           {comment.length > 0 ? (
             <div className='comment-area' id='comment-area'>
               <FeedComment commentList={comment} />

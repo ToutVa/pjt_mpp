@@ -115,6 +115,12 @@
     padding: 0 10px;
 }
 
+.feed > .center > .item > .bottom > .like-count {
+    font-size: 14px;
+    font-weight: 500;
+    color: #535353;
+}
+
 .feed > .center > .item > .bottom > .icon-group {
     margin-top: 5px;
     padding-bottom: 2px;
@@ -132,17 +138,26 @@
     cursor: pointer;
 }
 
-.feed > .center > .item > .bottom > .icon-group > .like { 
+.feed > .center > .item > .bottom > .icon-group > .unlike { 
     background-image: url("../assets/icon-like-small.svg");
     &:hover {
         filter: invert(31%) sepia(31%) saturate(6029%) hue-rotate(346deg) brightness(92%) contrast(90%);
     }
 }
 
+.feed > .center > .item > .bottom > .icon-group > .like { 
+    background-image: url("../assets/icon-like-small.svg");
+    filter: invert(31%) sepia(31%) saturate(6029%) hue-rotate(346deg) brightness(92%) contrast(90%);
+}
+
 .feed > .center > .item > .bottom > .icon-group > .comment { 
     background-image: url("../assets/icon-comment-small.svg");
     &:hover {
         filter: invert(29%) sepia(3%) saturate(3151%) hue-rotate(314deg) brightness(114%) contrast(86%);
+    }
+
+    &.active {
+        filter: invert(0%) sepia(156%) saturate(344%) contrast(319%) hue-rotate(314deg) brightness(96%) contrast(32%)
     }
 }
 
@@ -183,12 +198,11 @@
     font-size : 13px;
 }
 
-
 .feed > .center > .item > .bottom > .comment-area > .bottom > .input-area > input,
 .feed > .center > .item > .bottom > .comment-area > .bottom > .input-area > textarea {
     display: inline-block;
     width: calc(100% - 55px);
-    height: calc(100% - 10px);
+    height: calc(100% - 25px);
     border: 0px solid #c9c9c9;
     border-radius: 0;
     border-right: 1px solid #c9c9c9;
