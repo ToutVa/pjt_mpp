@@ -1,3 +1,5 @@
+import AlertModal from "component/AlertModal";
+
 /**
  * 공통함수 JS
  * 
@@ -147,7 +149,7 @@ const util = {
     /**
      * makeRaioGroup
      * 라디오 컨트롤 객체 생성
-     * @param String 라디오의 name
+     * @param radioName 라디오의 name
      * @return class radioGroup
      */
     makeRaioGroup : (radioName) => {
@@ -188,30 +190,44 @@ const util = {
 
     getLocation : () => {
         return new Promise((resolve, reject) => {
-          if (navigator.geolocation) {
-            const now = new Date();
-            navigator.geolocation.getCurrentPosition(
-              (position) => {
-                resolve({
-                  err: 0,
-                  time: now.toLocaleTimeString(),
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude,
-                });
-              },
-              (err) => {
-                resolve({
-                  err: -1,
-                  latitude: -1,
-                  longitude: -1,
-                });
-              },
-              { enableHighAccuracy: true, maximumAge: 2000, timeout: 5000 }
-            );
-          } else {
-            reject({ error: -2, latitude: -1, longitude: -1 });
-          }
+            if (navigator.geolocation) {
+                const now = new Date();
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                    resolve({
+                        err: 0,
+                        time: now.toLocaleTimeString(),
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        });
+                    },
+                    (err) => {
+                    resolve({
+                        err: -1,
+                        latitude: -1,
+                        longitude: -1,
+                    });
+                },
+                { enableHighAccuracy: true, maximumAge: 2000, timeout: 5000 }
+                );
+            } else {
+                reject({ error: -2, latitude: -1, longitude: -1 });
+            }
         });
-      },
+    },
+
+    /**
+     * alert
+     * 알림창을 모달로 출력
+     * @param opt 옵션으로 사용될 값
+     * @return html
+     */
+    alert : (opt) => {
+        debugger;
+
+
+         // const AlertModal = ({ onSubmit, onClose, msg, wid, hei })
+         return(<AlertModal msg="res.data.message" />);
+    }
 }
 export default util;

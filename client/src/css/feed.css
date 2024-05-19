@@ -1,3 +1,40 @@
+
+.feed > .left > .search-box {
+    padding: 20px 5px 50px 5px;
+    box-shadow: 2px 2px 5px #00000036;
+    border-radius: 15px;
+}
+
+.feed > .left > .search-box > .search-word {
+    display: flex;
+}
+
+.feed > .left > .search-box > .search-word > input[type="text"] {
+    height: 25px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-right: 0;
+    width: calc(100% - 35px);
+}
+
+.feed > .left > .search-box > .search-word > button {
+    width: 30px;
+    height: 29px;
+    background-color: white;
+    border: 1px solid #c9c9c9;
+    border-radius: 10px;
+    padding-left: 5px;
+    font-size: 12px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left: 0;
+    background-image: url("../assets/icon-search.svg");
+}
+
+
+
+
+
 .feed .item{
     box-shadow: 2px 2px 5px #00000036;
     border-radius: 15px;
