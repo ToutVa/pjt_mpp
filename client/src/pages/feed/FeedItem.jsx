@@ -11,6 +11,7 @@ import { modals } from '../../comm/Modals';
 
 import util from 'comm/util';
 import ConfirmModal from 'component/ConfirmModal';
+import AlertModal from 'component/AlertModal';
 const FeedItem = (props) => {
   const { openModal } = useModals();
   console.log(props);
@@ -177,8 +178,9 @@ const FeedItem = (props) => {
         .post(likeUrl, data)
         .then((res) => {
           console.log(res);
-          alert(res.data.message);
+          // alert(res.data.message);
 
+          
           if (btnRes.className === 'like') {
             btnRes.className = 'unlike';
             setLikes(Number(likes) - 1);
@@ -187,6 +189,13 @@ const FeedItem = (props) => {
             setLikes(Number(likes) + 1);
           }
           
+          // const AlertModal = ({ onSubmit, onClose, msg, wid, hei })
+          const opt = {
+            msg : "res.data.message"
+          }
+
+          util.alert(opt);
+          // return(<AlertModal msg="res.data.message" />);
         })
         .catch((err) => {
           console.log(err);

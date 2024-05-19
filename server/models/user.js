@@ -36,9 +36,15 @@ const userSchema = new mongoose.Schema({
     required: true,
     maxlength: 11,
   },
-  level : {
-    type : Number,
-    require : true
+  profilePicture: {
+    type: Object,
+  },
+  profileIntro: {
+    type: String,
+  },
+  level: {
+    type: Number,
+    require: true,
   },
   token: {
     type: String,
@@ -67,7 +73,7 @@ userSchema.pre("save", function (next) {
   }
 });
 
-// 비밀번호 비교 
+// 비밀번호 비교
 userSchema.method("comparePassword", function (plainPassword, callback) {
   bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
     if (err) return callback(err);
@@ -82,10 +88,10 @@ userSchema.method("getAccessToken", function () {
   // jwt accessToken 생성
   const accessToken = jwt.sign(
     {
-      _id : user._id,
+      _id: user._id,
       name: user.name,
       email: user.email,
-      level : user.level
+      level: user.level,
     },
     ACCESS_TOKEN_SECRET,
     { expiresIn: "30m", issuer: "pjtMpp" }
@@ -101,10 +107,10 @@ userSchema.method("getRefreshToken", function () {
   // jwt accessToken 생성
   const refreshToken = jwt.sign(
     {
-      _id : user._id,
+      _id: user._id,
       name: user.name,
       email: user.email,
-      level : user.level
+      level: user.level,
     },
     REFRESH_TOKEN_SECRET,
     { expiresIn: "24h", issuer: "pjtMpp" }
@@ -115,10 +121,10 @@ userSchema.method("getRefreshToken", function () {
 
 // userId 가져오기
 userSchema.method("getUserId", function (token) {
-  console.log("this token", token)
+  console.log("this token", token);
   const userInfo = jwt.decode(this.token, ACCESS_TOKEN_SECRET);
 
-  console.log("userinfo ;:", userInfo)
+  console.log("userinfo ;:", userInfo);
 
   return userInfo;
 });

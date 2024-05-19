@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import "css/feed.css";
 import { useState } from "react";
 import PostDragDrop from "pages/post/PostDragDrop";
+import SearchBox from "./SearchBox";
 
 const CreatePost = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -30,7 +31,7 @@ const Feed = () => {
     <>
       <div className="feed main-frame"> 
         <div className="left">
-          left Side
+          <SearchBox />
         </div>
         <div className="center" id="feed">
           <FeedContent setIsEod={setIsEod}/>
