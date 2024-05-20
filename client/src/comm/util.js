@@ -119,7 +119,8 @@ const util = {
         if(object === undefined
         || object === null
         || object === ""
-        || object.length === 0) {
+        || object.length === 0
+        || Object.keys(object).length === 0) {
             return true;
         }else {
             return false;
