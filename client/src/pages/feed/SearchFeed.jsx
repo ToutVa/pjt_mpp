@@ -1,5 +1,5 @@
 
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Modal from 'react-modal';
 
@@ -27,29 +27,29 @@ const CreatePost = () => {
     </>
   );
 }
-const Feed = (props) => {
+const SearchFeed = (props) => {
   const [isEod, setIsEod] = useState(false);
-  const test = useLocation();
   const param     = useParams();
   const searchOpt = {};
   
   useEffect(()=>{
     if(!util.isEmpty(param)) {
-      const paramArr = param.search.split("&");
-      paramArr.forEach((e, idx) => {
+      const params = param.search.split("&");
+      params.forEach((e, idx) => {
         let tmp = e.split("=");
         if(tmp[0] === "word")   {searchOpt.searchWord = tmp[1]}
         else if(tmp[0] === "w") {searchOpt.weather = tmp[1]}
         else if(tmp[0] === "s") {searchOpt.season = tmp[1]}
       });
     }
-  },[param]);
+
+  },[])
   
   return (
     <>
       <div className="feed main-frame"> 
         <div className="left">
-          <SearchBox />
+          <SearchBox search={searchOpt}/>
         </div>
         <div className="center" id="feed">
           <FeedContent setIsEod={setIsEod} search={searchOpt}/>
@@ -64,4 +64,4 @@ const Feed = (props) => {
     </>
   );
 };
-export default Feed;
+export default SearchFeed;
