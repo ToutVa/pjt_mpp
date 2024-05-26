@@ -1,0 +1,31 @@
+.follow > .item {
+    display: flex;
+    padding: 10px;
+    border-bottom: 1px solid #F2F3F5;
+}
+
+.follow > .item > .intro {
+   width: 80%;
+   margin-top: 5px;
+   margin-left: 10px;
+}
+
+.follow > .item > .intro > .id {
+    font-weight: bold;
+}
+
+.follow > .item > .btn-grp > .btn-cancel {
+    width: 60px;
+    height: 32px;
+    background-color: #F2F3F5;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+    justify-content: flex-end;
+    &:active {
+        border: 2px solid #838383;
+    }
+    &:hover {
+        background-color: #c2c2c2;
+    }
+}
