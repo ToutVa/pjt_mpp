@@ -1,6 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Modal from 'react-modal';
+import { Link } from "react-router-dom";
 import 'css/myPage.css';
+import Follower from "pages/follow/Follower";
+
+const SelectFollow = (props) => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  return(
+    <>
+      <Link className='txt-underline' onClick={() => {setModalIsOpen(true)}}>
+        {props.followCnt}
+      </Link>
+      <Modal className="test" 
+             isOpen={modalIsOpen} 
+             onRequestClose={() => setModalIsOpen(false)} ariaHideApp={false}>
+        <div className="header">
+          <div/>
+          <div className='title ml20'>{props.popupName}</div>
+          <div className="close" onClick={()=> {setModalIsOpen(false)}} />
+        </div>
+        <Follower />
+      </Modal>
+    </>
+  );
+};
 
 const Profile = () => {
   const [info, setInfo] = useState();
@@ -41,15 +65,15 @@ const Profile = () => {
           <br />
           {info?.postCnt || 4}
         </div>
-        <div>
+        <div className='follow'>
           팔로워
           <br />
-          {info?.follower || '33.4k'}
+          {info?.follower || <SelectFollow popupName ={'팔로워'} followCnt = {'100명'}/>}
         </div>
-        <div>
+        <div className='follow'>
           팔로우
           <br />
-          {info?.follow || 192}
+          {info?.follow || <SelectFollow popupName ={'팔로우'} followCnt = {'10명'}/>}
         </div>
       </div>
       <div>
