@@ -27,7 +27,6 @@ route.get("/", authValidator, async (req, res) => {
  * return : 게시글 목록
  */
 route.post("/", authValidator, async (req, res) => {
-  let postJson;
   let filter = {};
   let limitCnt = 10;
 
@@ -39,8 +38,8 @@ route.post("/", authValidator, async (req, res) => {
     limitCnt = 15;
     filter.userEmail = req.userInfo.email;
   }
-
-  postJson = await Post.aggregate([
+  
+  let searchOpt = [
     {
       $lookup: {
         from: "likes",
@@ -70,8 +69,27 @@ route.post("/", authValidator, async (req, res) => {
     },
     { $sort: { registDate: -1 } },
     { $limit: limitCnt},
-  ]);
+  ];
 
+  let matchFlag = false;
+  let matchJson = { 
+    $match : {}
+  }
+
+  if(req.body.weather) {
+    matchJson.$match.filmWeather = req.body.weather;
+    matchFlag= !matchFlag;
+  }
+  if(req.body.season) {
+    matchJson.$match.filmSeason = req.body.season;
+    matchFlag= !matchFlag;
+  }
+  
+  if(matchFlag) {
+    searchOpt.unshift(matchJson);
+  }
+  
+  let postJson = await Post.aggregate(searchOpt);
   res.status(200).json({
     success: true,
     post: postJson,
