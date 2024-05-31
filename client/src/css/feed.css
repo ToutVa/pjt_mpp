@@ -188,6 +188,22 @@
     filter: invert(31%) sepia(31%) saturate(6029%) hue-rotate(346deg) brightness(92%) contrast(90%);
 }
 
+.feed > .center > .item > .bottom > .icon-group > .unbookmark { 
+    background-image: url("../assets/icon-bookmark-empty.svg");
+    float : right;
+    &:hover {
+        filter: invert(31%) sepia(31%) saturate(6029%) hue-rotate(346deg) brightness(92%) contrast(90%);
+    }
+}
+
+.feed > .center > .item > .bottom > .icon-group > .bookmark { 
+    background-image: url("../assets/icon-bookmark-fill.svg");
+    float : right;
+    filter: invert(31%) sepia(31%) saturate(6029%) hue-rotate(346deg) brightness(92%) contrast(90%);
+}
+
+
+
 .feed > .center > .item > .bottom > .icon-group > .comment { 
     background-image: url("../assets/icon-comment-small.svg");
     &:hover {

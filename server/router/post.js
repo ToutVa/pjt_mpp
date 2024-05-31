@@ -67,6 +67,25 @@ route.post("/", authValidator, async (req, res) => {
         as: "likes",
       },
     },
+    {
+      $lookup: {
+        from: "bookmarks",
+        let : {usr_bookmark : '$_id'},
+        pipeline: [
+          {
+            $match : {
+              "$expr" : {
+                $and :[
+                  {$eq : ["$$usr_bookmark", "$_postId"]},
+                  {$eq : ["$userEmail", req.userInfo.email]}
+                ]
+              }
+            }
+          }
+        ],
+        as: "bookmarkchk",
+      },
+    },
     { $sort: { registDate: -1 } },
     { $limit: limitCnt},
   ];
