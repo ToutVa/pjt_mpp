@@ -15,20 +15,51 @@ const { Bookmark } = require("../models/bookmark");
  * return : 게시글 목록
  */
 
-route.post("/getComment", async(req,res) => {
-
-    const _postId = req.body._postId;
-    console.log(req.body._postId)
-
-    const commentJson = await Bookmark.find({_postId : _postId})
+route.post("/getUsrBookmark", authValidator, async(req,res) => {
+    console.log('북마크 조회')
+    const email = req.userInfo.email;
+    const bookmarkJson = await Bookmark.find({userEmail : email, bookmarkType : '1'})
         .catch((err) => {
             res.json({result : false, message : err});
     });
 
+
+    console.log(bookmarkJson);
     res.status(200).json({
         success : true,
-        comments : commentJson
+        bookmark : bookmarkJson
     });
+});
+
+/**
+ * 게시글 bookmark 목록 생성 api
+ * param  : 게시글 id
+ * return : 게시글 목록
+ */
+route.post("/createBookMarkType", authValidator, async(req, res) => {
+
+    const data = req?.body;
+    const email = req.userInfo.email;
+    const date = dayjs().format("YYYY/MM/DD HH:mm:ss");
+
+    data.userEmail = email;
+    data.registDate = date;
+    data.bookmarkType = '1';
+
+
+    const bookmark = new Bookmark(data);
+
+    const result = await bookmark.save().then((e) => {
+        console.log('북마크 타입 등록 : ', e);
+        res.status(200).json({
+            result : true,
+            message : "북마크 타입 등록되었습니다.",
+            data : e
+        });
+    }).catch((err) => {
+        res.json({result : false
+                , message : err});
+    })
 });
 
 /**
@@ -44,12 +75,13 @@ route.post("/create", authValidator, async(req, res) => {
 
     data.userEmail = email;
     data.registDate = date;
+    data.bookmarkType = '2';
     data._postId = new ObjectId(data._postId);
-    console.log(data);
 
     const bookmark = new Bookmark(data);
 
     const result = await bookmark.save().then((e) => {
+        console.log('북마크  등록 : ', e);
         res.status(200).json({
             result : true,
             message : "북마크 등록되었습니다.",

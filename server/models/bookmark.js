@@ -9,6 +9,15 @@ const LikeSchema = new mongoose.Schema({
   userEmail : {
     type     : String
   },
+  _bookmarkTypeId : {
+    type     : Schema.Types.ObjectId
+  },
+  bookmarkType : {
+    type     : String
+  },
+  bookmarkTitle : {
+    type     : String
+  },
   registDate : {
     type     : String
   }
