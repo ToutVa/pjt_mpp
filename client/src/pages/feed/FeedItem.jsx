@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Modal from 'react-modal';
+import util from 'comm/util';
+
 import FeedComment from './FeedComment';
 import { Link } from 'react-router-dom';
 import 'css/post.css';
 import { useRecoilValue } from 'recoil';
 import { isLoginSelector } from 'comm/recoil/TokenAtom';
-import axios from 'axios';
+
 import useModals from '../../hooks/useModals';
 import { modals } from '../../comm/Modals';
-import Modal from 'react-modal';
 import BookMarkPopup from '../myPage/BookMarkPopup';
-import util from 'comm/util';
 import ConfirmModal from 'component/ConfirmModal';
 import AlertModal from 'component/AlertModal';
 
 const FeedItem = (props) => {
   const { openModal } = useModals();
   const [bookmarIsOpen, setBookmarIsOpen] = useState(false);
-
 
   const alertModal = (msg) => {
     openModal(modals.alertModal, {
@@ -28,14 +29,12 @@ const FeedItem = (props) => {
   const [comment, setComment] = useState([]);
   const [likes, setLikes] = useState([props.content.likes.length]);
   const [imgAry] = useState(props.content?.imgList);
-
   const [fileNum, setFileNum] = useState(0);
-
-  // const [imgXpos, setImgXpos] = useState();
   const [leftPos, setLeftPos] = useState(0);
+
   let imgXpos;
   let leftPosTmp = 0;
-
+  
   const [writeComment, setWriteComment] = useState([]);
 
   //댓글 로딩이벤트
@@ -45,7 +44,6 @@ const FeedItem = (props) => {
       axios.post('/api/comment/getComment',{ _postId : _postId})
       .then ((res) => {
         let data = res.data.comments;
-        console.log(data);
 
         if (data.length === 0) {
           data = [
@@ -65,14 +63,12 @@ const FeedItem = (props) => {
     } catch (err) {
       alert(err.response.data.message);
     }   
-    
   };
 
   //댓글 닫기이벤트
   const fnCloseComment = () => {
     setComment([]);
   };
-
 
   // setState 비동기 오류로 인해 useEffect 함수 따로 설정하여 로직 추가. file 미리보기로직
   useEffect(() => {
@@ -150,10 +146,6 @@ const FeedItem = (props) => {
     document.onmouseup = stopDrag;
   }
 
-  const tset = () => {
-    // return(<ConfirmModal onSubmit={()=>{ }}, onClose={}, msg={""}, wid="500px", hei="600"/>)
-  }
-
   //좋아요 클릭
   const fnChangeLike = (e) => {
     if (!isLogin) alertModal('로그인을 해주세요.');
@@ -161,7 +153,6 @@ const FeedItem = (props) => {
     const btnId = `btnLike${props.content._id}`;
     const btnRes = document.getElementById(btnId);
     
-
     let likeUrl = '';
 
     if (btnRes.className === 'like') {
@@ -234,22 +225,11 @@ const FeedItem = (props) => {
           </div>
           <BookMarkPopup props={props}  />
           <div className='btn-group mt10'>
-            <div className='right mr10'>
-              {/* <button
-                type='submit'
-                className='btn-primary wd110'
-                onClick={(param) => {
-                  setModalIsOpen(false);
-                }}
-              >
-                저장
-              </button> */}
-            </div>
+            <div className='right mr10' />
           </div>
         </Modal>
       </>
     );
-
   };
 
   // 댓글 등록 
