@@ -14,8 +14,6 @@ import ConfirmModal from 'component/ConfirmModal';
 import AlertModal from 'component/AlertModal';
 const FeedItem = (props) => {
   const { openModal } = useModals();
-  console.log(props);
-
   const alertModal = (msg) => {
     openModal(modals.alertModal, {
       msg: msg,
@@ -177,7 +175,6 @@ const FeedItem = (props) => {
       axios
         .post(likeUrl, data)
         .then((res) => {
-          
           if (btnRes.className === 'like') {
             btnRes.className = 'unlike';
           } else {

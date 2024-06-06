@@ -1,5 +1,6 @@
 
 .feed > .left > .search-box {
+    position: fixed;
     padding: 20px 5px 50px 5px;
     box-shadow: 2px 2px 5px #00000036;
     border-radius: 15px;
@@ -17,9 +18,9 @@
     width: calc(100% - 35px);
 }
 
-.feed > .left > .search-box > .search-word > button {
-    width: 30px;
-    height: 29px;
+.feed > .left > .search-box > .search-word > .search {
+    width: 24px;
+    height: 27px;
     background-color: white;
     border: 1px solid #c9c9c9;
     border-radius: 10px;
@@ -381,3 +382,10 @@
     justify-content: center;
 }
 
+.bookmark-list {
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 10px 10px 40px 10px;
+    height: 350px;
+}

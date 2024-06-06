@@ -24,6 +24,7 @@ import SignupModal from 'pages/register/SignupModal';
 import Setting from 'pages/register/Setting';
 import { useState } from 'react';
 import AlertModal from 'component/AlertModal';
+import SearchFeed from 'pages/feed/SearchFeed';
 
 function App() {
   const [alertModal, setAlertModal] = useState(false);
@@ -41,6 +42,7 @@ function App() {
               <Route element={<Layout />}>
                 <Route element={<ProtectedRoute />}>
                     <Route path='/feed' element={<Feed />} />
+                    <Route path='/feed/:search' element={<SearchFeed />} />
                     <Route path='/myPage' element={<MyPage />} />
                     <Route path='/setting' element={<Setting />} />
                     <Route path='/post' element={<PostDragDrop />} />

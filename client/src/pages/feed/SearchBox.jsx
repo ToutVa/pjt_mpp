@@ -1,9 +1,13 @@
+import { isLoginSelector } from 'comm/recoil/TokenAtom';
+import { useEffect, useState } from "react";
+
 import util from "comm/util";
-import { useState } from "react";
+import { useRecoilValue } from 'recoil';
+import { Link, useParams } from 'react-router-dom';
 
-const SearchBox = ()=> {
+const SearchBox = (props)=> {
   const [searchWord, setSearchWord] = useState("");
-
+  const isLogin = useRecoilValue(isLoginSelector);
 
   const rdoWeather = util.makeRaioGroup("weather"); 
   const rdoSeason = util.makeRaioGroup("seasons"); 
@@ -12,21 +16,43 @@ const SearchBox = ()=> {
   const [season, setSeason] = useState("");
 
 
-  
-  
+  const param     = useParams();
+
+
+  useEffect(()=> {
+    if(!util.isEmpty(param)) {
+      const params = param.search.split("&");
+      params.forEach((e, idx) => {
+        let tmp = e.split("=");
+        
+        if(tmp[0] === "word")   {setSearchWord(tmp[1]);}
+        else if(tmp[0] === "w") {
+          setWeather(tmp[1]);
+          rdoWeather.setValue(tmp[1]);
+          
+        }
+        else if(tmp[0] === "s") {
+          setSeason(tmp[1]);
+          rdoSeason.setValue(tmp[1]);
+        }
+      });
+    }
+  },[])
   /*라디오버튼 클릭 이벤트*/
   const weatherClick = (e) => {
-    const val = e.target.value;
+    setWeather(e.target.value);
   }
 
   const seasonsClick = (e) => {
-    const val = e.target.value;
+    setSeason(e.target.value);
   }
   
   /*초기화 버튼 클릭 이벤트*/
   const searchOptInit = (e) => {
     rdoWeather.init();
     rdoSeason.init();
+    setWeather("")
+    setSeason("")
     setSearchWord("");
   }
 
@@ -39,8 +65,8 @@ const SearchBox = ()=> {
     <>
       <div className="search-box">
         <div className="search-word">
-          <input type="text" placeholder="검색할" onChange={onSearchWordHandler} value={searchWord}/>
-          <button className="search"/>
+          {isLogin ? <input type="text" placeholder="검색할" onChange={onSearchWordHandler} value={searchWord}/> : <input type="text" disabled="disabled" />}
+          <Link to={"/feed/word="+searchWord+"&w="+weather+"&s="+season+""} className="search"/>
         </div>
         <div className="mt20">
           <div className="h4">검색옵션</div>
