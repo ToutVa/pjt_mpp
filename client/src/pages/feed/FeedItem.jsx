@@ -5,6 +5,8 @@ import 'css/post.css';
 import { useRecoilValue } from 'recoil';
 import { isLoginSelector } from 'comm/recoil/TokenAtom';
 import axios from 'axios';
+import Modal from 'react-modal';
+
 
 import useModals from '../../hooks/useModals';
 import { modals } from '../../comm/Modals';
@@ -12,8 +14,12 @@ import { modals } from '../../comm/Modals';
 import util from 'comm/util';
 import ConfirmModal from 'component/ConfirmModal';
 import AlertModal from 'component/AlertModal';
+import BookMarkPopup from 'pages/myPage/BookMarkPopup';
 const FeedItem = (props) => {
   const { openModal } = useModals();
+  const [bookmarIsOpen, setBookmarIsOpen] = useState(false);
+
+
   const alertModal = (msg) => {
     openModal(modals.alertModal, {
       msg: msg,
@@ -200,6 +206,10 @@ const FeedItem = (props) => {
 
   //북마크 클릭
   const fnChangeBookmark = (e) => {
+    debugger;
+    setBookmarIsOpen(true);
+
+    return;
     if (!isLogin) alertModal('로그인을 해주세요.');
 
     const btnId = `btnBookmark${props.content._id}`;
@@ -357,6 +367,14 @@ const FeedItem = (props) => {
           )}
           {props.content.like}
         </div>
+        <Modal className="test" isOpen={bookmarIsOpen} onRequestClose={() => setBookmarIsOpen(false)} ariaHideApp={false}>
+          <div className="header">
+            <div/>
+            <div className='title ml20'>북마크 등록하기</div>
+            <div className="close" onClick={()=> {setBookmarIsOpen(false)}} />
+          </div>
+          <BookMarkPopup />
+        </Modal>
       </div>
     );
   }

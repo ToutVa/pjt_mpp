@@ -65,8 +65,11 @@ const SearchBox = (props)=> {
     <>
       <div className="search-box">
         <div className="search-word">
-          {isLogin ? <input type="text" placeholder="검색할" onChange={onSearchWordHandler} value={searchWord}/> : <input type="text" disabled="disabled" />}
-          <Link to={"/feed/word="+searchWord+"&w="+weather+"&s="+season+""} className="search"/>
+          {isLogin ? <input type="text" placeholder="검색할 단어를 입력하세요" onChange={onSearchWordHandler} value={searchWord}/> : <input type="text" disabled="disabled" />}
+          <Link to={ util.isEmpty(searchWord) && util.isEmpty(weather) && util.isEmpty(season) 
+            ? "/feed"
+            : "/feed/word="+searchWord+"&w="+weather+"&s="+season+""}
+          className="search"/>
         </div>
         <div className="mt20">
           <div className="h4">검색옵션</div>

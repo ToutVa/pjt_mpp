@@ -10,15 +10,29 @@ const { default: FeedItem } = require('./FeedItem');
 
 const FeedContent = (props) => {
   const isLogin = useRecoilValue(isLoginSelector);
-  const [itemAry] = useState([]);
-  const [throttle, setThrottle] = useState(false);
-  const tmp       = useParams();
-  
+  const [itemAry      ,setItemAry]        = useState([]);
+  const [throttle     , setThrottle]      = useState(false);
+  const [befSrchParam , setBefSrchParam]  = useState();
+  const tmp = useParams();
+
+  if(!util.isEmpty(befSrchParam)) {
+    if(befSrchParam.searchWord  === tmp.search.split("&")[0].split("=")[1]
+    && befSrchParam.weather     === tmp.search.split("&")[1].split("=")[1]
+    && befSrchParam.season      === tmp.search.split("&")[2].split("=")[1]) {
+      
+    }else {
+      befSrchParam.searchWord  = tmp.search.split("&")[0].split("=")[1];
+      befSrchParam.weather     = tmp.search.split("&")[1].split("=")[1];
+      befSrchParam.season      = tmp.search.split("&")[2].split("=")[1];
+      setItemAry([]);
+    }
+  }
+
+
   const getFeed = async () => {
     if (itemAry.length === 0) commUtil.scrollTop();
     let loadUrl = isLogin ? '/api/post/' : '/api/post/guestFeed';
     setThrottle(true);
-    debugger;
     let paramJson = {
       lastId      : itemAry[itemAry.length - 1]?._id,
     }
@@ -31,8 +45,6 @@ const FeedContent = (props) => {
       paramJson.weather     = param[1].split("=")[1];
       paramJson.season      = param[2].split("=")[1];
     }
-    
-
     await axios
       .post(loadUrl, paramJson)
       .then((res) => {
@@ -42,6 +54,8 @@ const FeedContent = (props) => {
             itemAry.push(item);
           });
         }
+
+        setBefSrchParam(paramJson);
       })
       .catch(
         (err) => {
@@ -65,7 +79,7 @@ const FeedContent = (props) => {
     getFeed();
     window.addEventListener('scroll', scrollEvent);
     return () => window.removeEventListener('scroll', scrollEvent);
-  }, [tmp]);
+  }, [itemAry]);
 
   let elements = [];
   itemAry.forEach((val, idx) => {
