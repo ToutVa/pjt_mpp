@@ -8,10 +8,10 @@ import axios from 'axios';
 
 import useModals from '../../hooks/useModals';
 import { modals } from '../../comm/Modals';
-
+import Modal from 'react-modal';
+import BookMarkPopup from '../myPage/BookMarkPopup';
 import util from 'comm/util';
-import ConfirmModal from 'component/ConfirmModal';
-import AlertModal from 'component/AlertModal';
+
 const FeedItem = (props) => {
   const { openModal } = useModals();
   const alertModal = (msg) => {
@@ -199,51 +199,55 @@ const FeedItem = (props) => {
   };
 
   //북마크 클릭
-  const fnChangeBookmark = (e) => {
-    if (!isLogin) alertModal('로그인을 해주세요.');
+  const BookMarkModalButton = (e) => {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
-    const btnId = `btnBookmark${props.content._id}`;
-    const btnRes = document.getElementById(btnId);
-    
+    return (
+      <>
+        <button
+          type='button'
+          id = {'btnBookmark' + props.content._id}
+          className={ (props.content.bookmarkchk.length > 0) ? 'bookmark' : 'unbookmark'}
+          onClick={() => {
+            setModalIsOpen(true);
+          }}
+        >
+          {props.label}
+        </button>
+        <Modal
+          className='test'
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)}
+          ariaHideApp={false}
+        >
+          <div className='header'>
+            <div />
+            <div className='title ml20'>북마크</div>
+            <div
+              className='close'
+              onClick={() => {
+                setModalIsOpen(false);
+              }}
+            />
+          </div>
+          <BookMarkPopup props={props}  />
+          <div className='btn-group mt10'>
+            <div className='right mr10'>
+              {/* <button
+                type='submit'
+                className='btn-primary wd110'
+                onClick={(param) => {
+                  setModalIsOpen(false);
+                }}
+              >
+                저장
+              </button> */}
+            </div>
+          </div>
+        </Modal>
+      </>
+    );
 
-    let bookmarkUrl = '';
-
-    if (btnRes.className === 'bookmark') {
-      bookmarkUrl = '/api/bookmark/delete';
-    } else {
-      bookmarkUrl = '/api/bookmark/create';
-    }
-
-    const _postId = props.content._id;
-    const data = {
-      _postId : _postId,
-    }
-
-    try {
-      axios
-        .post(bookmarkUrl, data)
-        .then((res) => {
-         
-          if (btnRes.className === 'bookmark') {
-            btnRes.className = 'unbookmark';
-          } else {
-            btnRes.className = 'bookmark';
-          }
-          
-          // const AlertModal = ({ onSubmit, onClose, msg, wid, hei })
-          const opt = {
-            msg : "res.data.message"
-          }
-
-          util.alert(opt);
-          // return(<AlertModal msg="res.data.message" />);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } catch (err) {
-      alert(err.response.data.message);
-    } 
   };
 
   // 댓글 등록 
@@ -328,7 +332,7 @@ const FeedItem = (props) => {
              <button className='comment active' onClick={fnCloseComment} />
              : <button className='comment' onClick={fnLoadComment} />
             }
-            <button id = {'btnBookmark' + props.content._id} className= { (props.content.bookmarkchk.length > 0) ? 'bookmark' : 'unbookmark'}  onClick={fnChangeBookmark}></button>
+            <BookMarkModalButton label = {'북마크'}/>
           </div>
           <div className='like-count ml5 mb5 mt5'>{likes} 명이 좋아합니다.</div>
           {comment.length > 0 ? (

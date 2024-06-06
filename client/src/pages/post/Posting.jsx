@@ -2,7 +2,6 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import axios from 'axios';
 import 'css/post.css';
 import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { postingFiles } from 'comm/recoil/FileAtom';
 import { useNavigate } from 'react-router';

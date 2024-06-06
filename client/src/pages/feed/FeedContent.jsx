@@ -18,7 +18,6 @@ const FeedContent = (props) => {
     if (itemAry.length === 0) commUtil.scrollTop();
     let loadUrl = isLogin ? '/api/post/' : '/api/post/guestFeed';
     setThrottle(true);
-    debugger;
     let paramJson = {
       lastId      : itemAry[itemAry.length - 1]?._id,
     }
