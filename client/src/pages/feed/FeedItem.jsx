@@ -5,9 +5,6 @@ import 'css/post.css';
 import { useRecoilValue } from 'recoil';
 import { isLoginSelector } from 'comm/recoil/TokenAtom';
 import axios from 'axios';
-import Modal from 'react-modal';
-
-
 import useModals from '../../hooks/useModals';
 import { modals } from '../../comm/Modals';
 import Modal from 'react-modal';
@@ -15,7 +12,6 @@ import BookMarkPopup from '../myPage/BookMarkPopup';
 import util from 'comm/util';
 import ConfirmModal from 'component/ConfirmModal';
 import AlertModal from 'component/AlertModal';
-import BookMarkPopup from 'pages/myPage/BookMarkPopup';
 
 const FeedItem = (props) => {
   const { openModal } = useModals();

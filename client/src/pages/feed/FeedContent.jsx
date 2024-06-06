@@ -15,7 +15,7 @@ const FeedContent = (props) => {
   const [befSrchParam , setBefSrchParam]  = useState();
   const tmp = useParams();
 
-  if(!util.isEmpty(befSrchParam)) {
+  if(!util.isEmpty(befSrchParam) && !util.isEmpty(tmp)) {
     if(befSrchParam.searchWord  === tmp.search.split("&")[0].split("=")[1]
     && befSrchParam.weather     === tmp.search.split("&")[1].split("=")[1]
     && befSrchParam.season      === tmp.search.split("&")[2].split("=")[1]) {
