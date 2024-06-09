@@ -44,6 +44,7 @@ function App() {
                     <Route path='/feed' element={<Feed />} />
                     <Route path='/feed/:search' element={<SearchFeed />} />
                     <Route path='/myPage' element={<MyPage />} />
+                    <Route path='/myPage/:userEmail' element={<MyPage />} />
                     <Route path='/setting' element={<Setting />} />
                     <Route path='/post' element={<PostDragDrop />} />
                     <Route path='/post/:postId' element={<PostDetail />} />

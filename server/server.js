@@ -14,6 +14,7 @@ const post = require('./router/post');
 const comment = require('./router/comment');
 const like = require('./router/like');
 const bookmark = require('./router/bookmark');
+const follow = require('./router/follow');
 
 // CONST 설정 
 const PORT = 5000 // port 5000;
@@ -39,6 +40,7 @@ app.use('/api/post', post);
 app.use('/api/comment', comment);
 app.use('/api/like', like);
 app.use('/api/bookmark', bookmark);
+app.use('/api/follow', follow);
 
 
 /****************************************************************************

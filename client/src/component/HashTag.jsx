@@ -58,7 +58,7 @@ const HashTag = (props) => {
         props.setHashTags((prevHashTags) => {
             let itemArr = [];
             prevHashTags.forEach((item, index)=> {
-                if(index != idx) itemArr.push(item);
+                if(index !== idx) itemArr.push(item);
             })
             return itemArr;
         });
