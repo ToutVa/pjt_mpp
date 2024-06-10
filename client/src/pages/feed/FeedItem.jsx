@@ -295,7 +295,11 @@ const FeedItem = (props) => {
             <Link to={'/post/' + props.content._id} className='title'>
               {props.content.title}
             </Link>
-            <div className='user-id'>{props.content.userEmail}</div>
+            <div className='user-id'>
+              <Link to={'/mypage/' + props.content.userEmail}>
+                {props.content.userEmail}
+              </Link>
+            </div>
           </div>
         </div>
         <div className='content'>
