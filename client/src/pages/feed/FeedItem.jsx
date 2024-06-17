@@ -340,7 +340,7 @@ const FeedItem = (props) => {
                   <button id = 'commentC' className='submit' onClick={createComment}>등록</button>
                   </div>
               </div>
-              <div className='more' onClick={tset}>더보기 +</div>
+              <div className='more' onClick={()=>{}}>더보기 +</div>
             </div>
           ) : (
             <></>
