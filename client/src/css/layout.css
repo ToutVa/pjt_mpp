@@ -400,10 +400,6 @@ button, Link {font-size: 14px;}
   background-color: #9e9e9e;
 }
 
-
-
-
-
 p {
   margin: 0;
   font-size: 12px;
@@ -437,13 +433,13 @@ label.text {
 }
 
 input:checked + label.text {
-  background-color: #c0c0c0;
+  background-color: #c1dee0;
 }
 label.text {
   transition: all 0.2s;
   display: block;
   &:hover {
-    background-color: #a3a3a3;
+    background-color: #9ad9e2;
   }
 }
 
@@ -464,7 +460,10 @@ textarea {
   outline: none;
 }
 
-
+hr {
+  background-color: red;
+}
+ 
 .flex {
   display: flex;
   flex-direction: row;
@@ -530,6 +529,42 @@ textarea {
   }
 }
 
+@keyframes loading-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.networking::before {
+  content: "";
+  position: absolute;
+  width: 90%;
+  height: 65%;
+  border-radius: 4px;
+  background-color: #0000002e;
+  box-shadow: 0px 0px 3px 10px #0000002e;
+}
+
+.networking::after {
+  animation: loading-rotate 1.5s linear infinite;
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  left: calc(50% - 50px);
+  top: calc(50% - 50px);
+  z-index: 9999;
+  border-radius: 50%;
+  border-left: 5px solid #00000000;
+  border-right: 5px solid #00a5ba;
+  border-top: 5px solid #00a5ba;
+  border-bottom: 5px solid #00a5ba;
+}
+
+
 .message-main {
   width: 100%;
   height: 100%;
@@ -582,12 +617,25 @@ textarea {
   display: none;
 }
 
+.input-form.single {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input-form.single > input {
+  height: 24px;
+}
+
+
 /*width 공통*/
 .w10 {width: 10px;}
 .w20 {width: 20px;}
 .w30 {width: 30px;}
 .w50 {width: 50px;}
 .w100 {width: 100px;}
+.w150 {width: 150px;}
+.w200 {width: 200px;}
+.w250 {width: 250px;}
 .w10p {width: 10%;}
 .w50p {width: 50%;}
 .w100p {width: 100%;}

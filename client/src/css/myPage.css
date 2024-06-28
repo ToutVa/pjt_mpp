@@ -11,6 +11,7 @@ p.pin::before {
 
 .my-page > .center > .profile {
   padding: 20px;
+  width: 650px;
 }
 
 .my-page > .center > .profile > .info {
@@ -142,4 +143,20 @@ p.pin::before {
   grid-template-columns: 1fr 1fr 1fr;
   row-gap: 5px;
   column-gap: 5px;
+}
+
+.bookmark-list {
+  padding: 20px 5px 50px 5px;
+  border: 1px solid rgb(197, 197, 197);
+  box-shadow: 2px 2px 5px #00000036;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 10px 10px 40px 10px;
+  height: 335px;
+}
+
+.bookmark-list > .list {
+  display: block;
+  height: 258px;
+  overflow-y: scroll;
 }
