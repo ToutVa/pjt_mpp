@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { useRecoilValue } from 'recoil';
 import { isLoginSelector } from 'comm/recoil/TokenAtom';
 import 'css/myPage.css';
-import Follower from "pages/follow/Follower";
+import FollowContent from "pages/follow/FollowContent";
 
 const SelectFollow = (props) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -27,7 +27,7 @@ const SelectFollow = (props) => {
           <div className='title ml20'>{props.popupName}</div>
           <div className="close" onClick={()=> {setModalIsOpen(false)}} />
         </div>
-        <Follower targetEmail = {param.userEmail}/>
+        <FollowContent type = {props.type} targetEmail = {param.userEmail}/>
       </Modal>
     </>
   );
@@ -154,12 +154,12 @@ const Profile = () => {
         <div className='follow'>
           팔로워
           <br />
-          {info?.follower || <SelectFollow popupName ={'팔로워'} followCnt = {followerCnt + '명'}/>}
+          {info?.follower || <SelectFollow popupName ={'팔로워'} followCnt = {followerCnt + '명'} type = {'follower'}/>}
         </div>
         <div className='follow'>
           팔로우
           <br />
-          {info?.follow || <SelectFollow popupName ={'팔로우'} followCnt = {followCnt + '명'}/>}
+          {info?.follow || <SelectFollow popupName ={'팔로우'} followCnt = {followCnt + '명'} type = {'follow'}/>}
         </div>
       </div>
       <div>
