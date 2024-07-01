@@ -114,6 +114,9 @@
   border-radius: 100%;
   display: inline-block;
   margin-right: 10px;
+  background-image: url('../assets/defaultProfileImage.svg');
+  background-size: contain;
+  clip-path: border-box;
 }
 .setting .user-info > .identifier {
   width: calc(100% - 200px);
