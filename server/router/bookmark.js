@@ -23,11 +23,21 @@ route.post("/getUsrBookmark", authValidator, async(req,res) => {
             res.json({result : false, message : err});
     });
 
+    console.log(req.body._postId);
+    console.log(req.body);
+
+    const selectedBookmark = await Bookmark.find({userEmail : email, bookmarkType : '2', _postId : req.body._postId})
+        .catch((err) => {
+            res.json({result : false, message : err});
+    });
+
 
     console.log(bookmarkJson);
+    console.log(selectedBookmark);
     res.status(200).json({
         success : true,
-        bookmark : bookmarkJson
+        bookmark : bookmarkJson,
+        selectedBookmark : selectedBookmark
     });
 });
 

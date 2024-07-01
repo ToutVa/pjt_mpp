@@ -25,18 +25,24 @@ const BookMarkPopup = (props) => {
   const [bookmarkLst, setBookmarkLst] = useState([]);
   const [bookmarkTitle, setBookmarkTitle] = useState();
   const [networking, setNetworking] = useState(false);
+  const [idx, setIdx] = useState(0);
 
   // init
   useEffect(() => {
     getUsrBookmark();
   }, []);
 
+  useEffect(() => {
+    console.log(idx);
+    if (rdoBookmark.list.length > 1) rdoBookmark.list[idx].click();
+  }, [bookmarkLst]);
+
   // userBookmark 가져오기
   const getUsrBookmark = async () => {
     const loadUrl = '/api/bookmark/getUsrBookmark';
     setNetworking(true);
     await axios
-      .post(loadUrl)
+      .post(loadUrl, { _postId: props.props.content._id })
       .then((res) => {
         const data = res.data;
         console.log(data);
@@ -44,6 +50,10 @@ const BookMarkPopup = (props) => {
           setBookmarkLst(data.bookmark);
         }
         setNetworking(false);
+
+        data.bookmark.forEach((val,idx) => {if (data.selectedBookmark[1]._bookmarkTypeId === val._id) {
+          setIdx(idx);
+        }});
       })
       .catch(
         (err) => {
@@ -56,7 +66,7 @@ const BookMarkPopup = (props) => {
   // bookmark 형태 변경
   const fnChangeBookmark = (e) => {
     if (!isLogin) alertModal('로그인을 해주세요.');
-    
+
     debugger;
     const bookmarkTitleId = bookmarkLst[clicked]?._id;
 
@@ -74,7 +84,7 @@ const BookMarkPopup = (props) => {
     const _postId = props.props.content._id;
     const data = {
       _postId: _postId,
-      _bookmarkTypeId : bookmarkTitleId
+      _bookmarkTypeId: bookmarkTitleId,
     };
 
     try {
@@ -112,60 +122,66 @@ const BookMarkPopup = (props) => {
       bookmarkTitle: bookmarkTitle,
     };
 
-    if(util.isEmpty(bookmarkTitle)) {
+    if (util.isEmpty(bookmarkTitle)) {
       return;
-    }else {
-      let sameChk = false;  //동일한 북마크목록 존재여부
-      bookmarkLst.map((item, idx) => { 
-        if(item.bookmarkTitle === bookmarkTitle) {
+    } else {
+      let sameChk = false; //동일한 북마크목록 존재여부
+      bookmarkLst.map((item, idx) => {
+        if (item.bookmarkTitle === bookmarkTitle) {
           sameChk = !sameChk;
-        };
+        }
       });
 
-      if(sameChk) {
-        console.log("동일한 북마크 존재!");
-      }else {
+      if (sameChk) {
+        console.log('동일한 북마크 존재!');
+      } else {
         try {
           axios
             .post(bookmarkUrl, data)
             .then((res) => {
-              console.log(res, "북마크 추가 성공");
-              setBookmarkTitle("");
+              console.log(res, '북마크 추가 성공');
+              setBookmarkTitle('');
               getUsrBookmark();
             })
             .catch((err) => {
-              console.log(err, "북마크 추가 실패 ㅠㅠ");
+              console.log(err, '북마크 추가 실패 ㅠㅠ');
             });
         } catch (err) {
           alert(err.response.data.message);
         }
       }
     }
-   
-  }; 
+  };
 
   return (
     <>
       <div className='ml15 mt15 h4'>내 북마크 리스트</div>
-      <div className={'bookmark-list ' + (networking? "networking" : "")}>
+      <div className={'bookmark-list ' + (networking ? 'networking' : '')}>
         <div>
           <div className='h5 w150'>새 북마크 그룹 추가</div>
           <div className='input-form single mt15 mb25'>
-            <input className='w250 mr20'
+            <input
+              className='w250 mr20'
               type='text'
               placeholder='북마크 명 입력'
-              onChange={(e) => {setBookmarkTitle(e.target.value);}}
+              onChange={(e) => {
+                setBookmarkTitle(e.target.value);
+              }}
               value={bookmarkTitle}
             />
             <div className='btn-group'>
               <div className='right mr10'>
-                <button type='submit' className='btn-primary wd110' onClick={fnNewBookmarkGrp}>
+                <button
+                  type='submit'
+                  className='btn-primary wd110'
+                  onClick={fnNewBookmarkGrp}
+                >
                   추가
                 </button>
               </div>
             </div>
           </div>
-          <hr/>
+          <hr />
         </div>
 
         <div className='list'>
@@ -193,7 +209,6 @@ const BookMarkPopup = (props) => {
       </div>
       <div className='btn-group mt10'>
         <div className='right mr10'>
-          
           <button
             type='submit'
             className='btn-primary wd110'
