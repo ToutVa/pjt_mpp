@@ -21,13 +21,13 @@ import Feed from 'pages/feed/Feed';
 import GuestFeed from 'pages/feed/GuestFeed'
 import LoginModal from 'pages/register/LoginModal';
 import SignupModal from 'pages/register/SignupModal';
-import Setting from 'pages/register/Setting';
+import Setting from 'pages/setting/Setting';
 import { useState } from 'react';
 import AlertModal from 'component/AlertModal';
 import SearchFeed from 'pages/feed/SearchFeed';
 
 function App() {
-  const [alertModal, setAlertModal] = useState(false);
+  const [alertModal] = useState(false);
   return (
     <RecoilRoot>
       <div className='App'>

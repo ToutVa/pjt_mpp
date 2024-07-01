@@ -1,5 +1,6 @@
 const express = require("express");
 const route = express.Router();
+const dayjs = require("dayjs");
 
 const { authValidator } = require("../middleware/auth");
 
@@ -38,6 +39,21 @@ route.get("/myInfo", authValidator, async (req, res) => {
   res.status(200).json({
     success: true,
     info: myInfo,
+  });
+});
+
+// 프로필 수정
+route.post("/create", authValidator, async (req, res) => {
+  const user = new User(req.userInfo);
+  await user.updateOne({
+    profileIntro: req.body.profileIntro
+  }).then(() => {
+    res.status(200).json({
+      success: true,
+      message: "프로필이 수정 되었습니다.",
+    });
+  }).catch((err) => {
+    res.json({ success: false, err });
   });
 });
 
