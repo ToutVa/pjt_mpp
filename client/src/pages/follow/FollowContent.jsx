@@ -9,7 +9,7 @@ import { isLoginSelector } from 'comm/recoil/TokenAtom';
 const { default: FollowItem } = require('./FollowItem');
 const FollowContent = (props) => {
   const isLogin = useRecoilValue(isLoginSelector);
-  const [itemAry] = useState([]);
+  const [itemAry, setItemAry] = useState([]);
   const { openModal } = useModals();
   const alertModal = (msg) => {
     openModal(modals.alertModal, {
@@ -21,6 +21,10 @@ const FollowContent = (props) => {
   useEffect(() => {
     fnFollow();
   }, []);
+
+  useEffect(() => {
+    console.log(itemAry); 
+  },[itemAry])
 
   const fnFollow = (e) => {
     if (!isLogin) alertModal('로그인을 해주세요.');
@@ -45,10 +49,7 @@ const FollowContent = (props) => {
         .then((res) => {
           const data = res.data;
           if (data.success) {
-            data.comments.forEach((item, idx) => {
-              itemAry.push(item); 
-              console.log(item);
-            });
+            setItemAry(data.comments);
           }
         })
         .catch((err) => {
@@ -60,7 +61,7 @@ const FollowContent = (props) => {
   };
 
   itemAry.forEach((val, idx) => {
-    console.log('val', val.toUser);
+    console.log('val', val.toUser); 
     elements.push(<FollowItem targetEmail = {val.toUser}/>);
   }); 
 
