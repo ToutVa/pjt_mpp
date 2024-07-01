@@ -52,14 +52,14 @@ route.post("/getFollow", async(req,res) => {
     const toUser = req.body.toUser;
     console.log(req.body.toUser)
 
-    const commentJson = await Follow.find({toUser : toUser})
+    const followJson = await Follow.find({toUser : toUser})
         .catch((err) => {
             res.json({result : false, message : err});
     });
 
     res.status(200).json({
         success : true,
-        comments : commentJson
+        comments : followJson
     });
 });
 
@@ -71,17 +71,19 @@ route.post("/getFollow", async(req,res) => {
 
 route.post("/getFollower", async(req,res) => {
     const fromUser = req.body.fromUser;
-    console.log(req.body.fromUser)
 
-    const commentJson = await Follow.find({fromUser : fromUser})
+    const followJson = await Follow.find({fromUser : fromUser})
         .catch((err) => {
             res.json({result : false, message : err});
     });
 
-    res.status(200).json({
-        success : true,
-        comments : commentJson
-    });
+    console.log(followJson);
+    if(followJson !== undefined){
+        res.status(200).json({
+            success : true,
+            comments : followJson
+        });
+    }
 });
 
 /**
@@ -91,15 +93,18 @@ route.post("/getFollower", async(req,res) => {
  */
 route.post("/createFollow", authValidator, async(req, res) => {
     const data = req?.body;
-    console.log(data);
-    // const date = dayjs().format("YYYY/MM/DD HH:mm:ss");
 
-    // data.registDate = date;
+    if (data.toUser === null || data.fromUser === null) {
+        return res.json({
+        loginSucces: false,
+        message: "유저 이메일이 올바르지 않습니다.",
+        });
+    }
+
     data._followId = new ObjectId(data._followId);
     console.log(data);
 
     const follow = new Follow(data);
-
     const result = await follow.save().then((e) => {
         res.status(200).json({
             result : true,
