@@ -1,24 +1,48 @@
 import "css/myPage.css";
 import BookMarkItem from "./BookMarkItem";
 
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+
 const Bookmark = () => {
 
+  const [bookmarkAry, setBookmarkAry] = useState([]);
 
-  const fnCreateBookMark = () => {
-    const testArr = [{title:"부산여행", color:"red"},
-                     {title:"나두몰라", color:"blue"},
-                     {title:"맛집List", color:"green"},
-                     {title:"풍경", color:"purple"},
-                    ];
 
+  const getBookmark = async () => {
+    await axios
+      .get('/api/user/mypageBookmark', {
+      })
+      .then((res) => {
+        const data = res.data;
+        if (data.success) {
+          console.log(data);
+          setBookmarkAry(data.bookmarkAry);
+          
+        } 
+      })
+      .catch(
+        (err) => { 
+          console.log(err);
+        },
+        [bookmarkAry]
+      );
+  };
+
+
+  const fnCreateBookMark = () => { 
     let elements = [];
-    
-    testArr.forEach((val, idx) => {
-      elements.push(<BookMarkItem prop={testArr[idx]} key={idx}/>);
+     
+    bookmarkAry.forEach((val, idx) => {
+      elements.push(<BookMarkItem prop={bookmarkAry[idx]} key={idx}/>);
     });
   
-    return elements;
+    return elements; 
   }
+
+  useEffect (() => {
+    getBookmark();
+  }, [])
 
   return (
     <>
