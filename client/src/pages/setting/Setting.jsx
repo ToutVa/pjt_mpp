@@ -20,6 +20,7 @@ const Setting = () => {
   const [profileIntro, setProfileIntro] = useState(); //비공개 계정 상태값
   const { openModal } = useModals();
   const fileInput = React.createRef();
+  const lgnUser = JSON.parse(localStorage.getItem('userData')).userData.email;
 
   /*타이틀 온클릭 이벤트(펼치기, 접기)*/
   const titleOnClick = (idx) => {
@@ -36,7 +37,7 @@ const Setting = () => {
 
   const getProfile = async () => {
     await axios
-      .get('/api/user/myInfo')
+      .post('/api/user/myInfo', {id : lgnUser})
       .then((res) => {
         if (res.data.success && res.data.info.length === 1) {
           const myInfo = res.data.info[0];

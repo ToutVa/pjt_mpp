@@ -18,7 +18,7 @@ route.post("/getFollowCnt", async(req,res) => {
     const toUser = req.body.toUser;
     const fromUser = req.body.fromUser;
 
-    const toUserCnt = await Follow.countDocuments({toUser : fromUser})
+    const toUserCnt = await Follow.countDocuments({toUser : fromUser !== null && fromUser !== undefined? fromUser: toUser})
         .catch((err) => {
             res.json({result : false, message : err});
     }); // 팔로우 수
@@ -50,7 +50,6 @@ route.post("/getFollowCnt", async(req,res) => {
 
 route.post("/getFollow", async(req,res) => {
     const toUser = req.body.toUser;
-    console.log(req.body.toUser)
 
     const followJson = await Follow.find({toUser : toUser})
         .catch((err) => {

@@ -61,8 +61,11 @@ const FollowContent = (props) => {
   };
 
   itemAry.forEach((val, idx) => {
-    console.log('val', val.toUser); 
-    elements.push(<FollowItem targetEmail = {val.toUser}/>);
+    if(props.type === 'follower'){
+      elements.push(<FollowItem targetEmail = {val.toUser}/>);
+    }else{
+      elements.push(<FollowItem targetEmail = {val.fromUser}/>);
+    }
   }); 
 
   return elements;
