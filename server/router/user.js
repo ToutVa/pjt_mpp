@@ -26,12 +26,12 @@ route.get("/mypage", authValidator, async (req, res) => {
 });
 
 // mypage api
-route.get("/myInfo", authValidator, async (req, res) => {
+route.post("/myInfo", authValidator, async (req, res) => {
   // authValidator에서 req에 userInfo 저장
-  const userInfo = req.userInfo;
-
+  const userInfo = req.body?.id;
+  
   // 유저정보 확인
-  const myInfo = await User.find({ email: userInfo.email }).catch((err) => {
+  const myInfo = await User.find({ email: userInfo }).catch((err) => {
     res.json({ success: false, err });
   });
 

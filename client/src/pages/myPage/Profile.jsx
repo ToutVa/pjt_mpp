@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import useModals from '../../hooks/useModals';
+import util from 'comm/util';
 import { Link } from "react-router-dom";
 import { modals } from '../../comm/Modals';
 import { useParams } from "react-router-dom";
@@ -27,7 +28,7 @@ const SelectFollow = (props) => {
           <div className='title ml20'>{props.popupName}</div>
           <div className="close" onClick={()=> {setModalIsOpen(false)}} />
         </div>
-        <FollowContent type = {props.type} targetEmail = {param.userEmail}/>
+        <FollowContent type = {props.type} targetEmail = {props.param}/>
       </Modal>
     </>
   );
@@ -50,8 +51,15 @@ const Profile = () => {
   };
 
   const getPost = async () => {
+    let _paramId = "";
+    if(!util.isEmpty(param.userEmail)){
+      _paramId = param.userEmail;
+    }else{
+      _paramId = lgnUser;
+    }
+    
     await axios
-      .get('/api/user/myInfo')
+      .post('/api/user/myInfo', {id : _paramId})
       .then((res) => {
         if (res.data.success && res.data.info.length === 1) {
           setInfo(res.data.info[0]);
@@ -105,7 +113,7 @@ const Profile = () => {
     let followUrl = '/api/follow/getFollowCnt';
   
     const data = {
-      toUser: lgnUser,
+      toUser   : lgnUser,
       fromUser : param.userEmail
     };
   
@@ -154,12 +162,12 @@ const Profile = () => {
         <div className='follow'>
           팔로워
           <br />
-          {info?.follower || <SelectFollow popupName ={'팔로워'} followCnt = {followerCnt + '명'} type = {'follower'}/>}
+          {info?.follower || <SelectFollow popupName ={'팔로워'} followCnt = {followerCnt + '명'} type = {'follower'} param = {param.userEmail}/>}
         </div>
         <div className='follow'>
           팔로우
           <br />
-          {info?.follow || <SelectFollow popupName ={'팔로우'} followCnt = {followCnt + '명'} type = {'follow'}/>}
+          {info?.follow || <SelectFollow popupName ={'팔로우'} followCnt = {followCnt + '명'} type = {'follow'} param = {lgnUser}/>}
         </div>
       </div>
       <div>
